@@ -16,6 +16,16 @@ connection.query(
     function(err, result){
         if(err) throw err;
             console.log("Table Users created or modified");
+    }
+);
+
+//Create friends table
+connection.query(
+    'CREATE OR REPLACE TABLE Friends (friend_ID VARCHAR(255) PRIMARY KEY, user_ID VARCHAR(255) NOT NULL, CONSTRAINT fk_user_id FOREIGN KEY (user_ID) REFERENCES Users (user_ID) ON DELETE CASCADE ON UPDATE RESTRICT)',
+    function(err, result){
+        if(err) throw err;
+            console.log("Table Friends created or modified");
             process.exit();
     }
 );
+//
