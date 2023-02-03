@@ -4,7 +4,9 @@ import { InputTypeHandler } from "../Interfaces";
 function FormSubmitButton(type: InputTypeHandler) {
 	return (
 		<div>
-			<Button variant="outlined">{type.inputType}</Button>
+			<Button variant="contained" color="success">
+				{type.inputType}
+			</Button>
 		</div>
 	);
 }
