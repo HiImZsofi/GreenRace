@@ -16,9 +16,12 @@ app.listen(PORT, () => {
 app.post("/login", (req, res) => {
 	//Store data in from the POST request
 	const { username, password } = req.body;
+
+	let passwordInDB;
+
 	//Try username againts the database
 	try {
-		const { passwordInDB } = connection
+		passwordInDB = connection
 			.selectFrom(user)
 			.where(user.username.equals(username))
 			.select({
