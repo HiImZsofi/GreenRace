@@ -8,6 +8,10 @@ const app = express();
 const cors = require("cors");
 app.use(cors());
 
+app.listen(PORT, () => {
+	console.log(`Server listening on ${PORT}`);
+});
+
 //User POSTs info to the backend
 app.post("/login", (req, res) => {
 	//Store data in from the POST request
