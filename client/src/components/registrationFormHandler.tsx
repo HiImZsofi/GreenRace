@@ -42,10 +42,10 @@ class RegistrationFormHandler extends React.Component<{}, any>{ //TODO avoid usi
 
     render() {
         return (
-          <form onSubmit={this.handleSubmit}>
+          <form onSubmit={this.handleSubmit}>    
             <label>
                 Name:
-                <input type="text" value={this.state.value} name="name" onChange={this.handleChange} />
+                <input type="text" value={this.state.value} name="name" onChange={this.handleChange} />  //get the data from the input field
             </label>
             <label>
                 Password:
