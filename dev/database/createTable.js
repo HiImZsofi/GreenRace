@@ -10,22 +10,44 @@ const connection = mysql.createConnection({
     port: 3306
 });
 
+connection.query(
+    'SET FOREIGN_KEY_CHECKS=0;',
+);
 //Create users table
 connection.query(
     'CREATE OR REPLACE TABLE Users (user_ID VARCHAR(255) PRIMARY KEY, username VARCHAR(30) NOT NULL, password VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, points INT, picfilename VARCHAR(255), picfilepath VARCHAR(255))',
     function(err, result){
         if(err) throw err;
-            console.log("Table Users created or modified");
+            console.log("Table Users created or modified");          
     }
 );
 
 //Create friends table
 connection.query(
-    'CREATE OR REPLACE TABLE Friends (friend_ID VARCHAR(255) PRIMARY KEY, user_ID VARCHAR(255) NOT NULL, CONSTRAINT fk_user_id FOREIGN KEY (user_ID) REFERENCES Users (user_ID) ON DELETE CASCADE ON UPDATE RESTRICT)',
+    'CREATE OR REPLACE TABLE Friendships (friendship_ID VARCHAR(255) PRIMARY KEY, user_ID VARCHAR(255) NOT NULL, friend_id VARCHAR(255) NOT NULL, CONSTRAINT fk_fuuser_id FOREIGN KEY (user_ID) REFERENCES Users (user_ID), CONSTRAINT fk_ffuser_id FOREIGN KEY (friend_ID) REFERENCES Users (user_ID))',
     function(err, result){
         if(err) throw err;
-            console.log("Table Friends created or modified");
-            process.exit();
+            console.log("Table Friends created or modified");    
     }
 );
-//
+
+//Create achivements table
+connection.query(
+    'CREATE OR REPLACE TABLE Achivements (achivement_ID VARCHAR(255) PRIMARY KEY)',
+    function(err, result){
+        if(err) throw err;
+            console.log("Table Achivements created or modified");    
+    }
+);
+
+//Create Completions table
+connection.query(
+    'CREATE OR REPLACE TABLE Completions (completion_ID VARCHAR(255) PRIMARY KEY, user_ID VARCHAR(255) NOT NULL, achivement_ID VARCHAR(255) NOT NULL, completion_date DATETIME NOT NULL, CONSTRAINT fk_cuser_id FOREIGN KEY (user_ID) REFERENCES Users (user_ID), CONSTRAINT fk_achi_id FOREIGN KEY (achivement_ID) REFERENCES Achivements (achivement_ID))',
+    function(err, result){
+        if(err) throw err;
+            console.log("Table Completions created or modified");
+               
+    }
+);
+
+//process.exit();
