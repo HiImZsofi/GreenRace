@@ -10,9 +10,11 @@ const connection = mysql.createConnection({
     port: 3306
 });
 
+// This helps to avoid FOREIGN KEY's bullshit
 connection.query(
     'SET FOREIGN_KEY_CHECKS=0;',
 );
+
 // Create users table
 connection.query(
     'CREATE OR REPLACE TABLE Users (user_ID VARCHAR(255) PRIMARY KEY, username VARCHAR(30) NOT NULL, password VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, points INT, picfilename VARCHAR(255), picfilepath VARCHAR(255))',
@@ -66,6 +68,10 @@ connection.query(
     function(err, result){
         if(err) throw err;
             console.log("Table Routes created or modified");
-            process.exit();   
+            process.exit();                      
     }
+);
+
+connection.query(
+    'SET FOREIGN_KEY_CHECKS=1;',   
 );
