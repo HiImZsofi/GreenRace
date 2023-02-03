@@ -5,8 +5,8 @@ class LoginForm extends React.Component {
 	render(): React.ReactNode {
 		return (
 			<React.StrictMode>
-				<InputField type={"Username"} />
-				<InputField type={"Password"} />
+				<InputField inputType={"Username"} />
+				<InputField inputType={"Password"} />
 			</React.StrictMode>
 		);
 	}

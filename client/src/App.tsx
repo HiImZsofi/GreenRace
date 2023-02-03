@@ -1,8 +1,8 @@
 //imports
 import React, { useEffect, useState } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { response } from 'express';
+import LoginForm from './Login';
 
 function App() {
 
@@ -17,11 +17,9 @@ function App() {
     }, []);
   
     return (
-      <div>
-        <>
-        {data ? <pre>{JSON.stringify(data, null, 2)}</pre> : 'Loading...'}
-        </>
-      </div>
+      <React.StrictMode>
+        <LoginForm />
+      </React.StrictMode>
     );
 }
 

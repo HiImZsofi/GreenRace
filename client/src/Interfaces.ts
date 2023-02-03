@@ -3,6 +3,6 @@ export interface UserLoginDto{
     password: string
 }
 
-export interface InputType{
-    type:string
+export interface InputTypeHandler{
+    inputType:string
 }
