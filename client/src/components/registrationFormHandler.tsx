@@ -1,20 +1,34 @@
 import React, {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-class RegistrationForm extends React.Component<any, any>{
+interface FormProps {
+    name: string;
+    password: string;
+    email: string;
+    value: string;
+}
+
+
+class RegistrationFormHandler extends React.Component<{}, any>{ //TODO avoid using any
+
     //initialize the local state of the component
-    constructor(props: any){
+    constructor(props: FormProps) {
         super(props);       //the props will not end up undefined
-        this.state = { name: '' };
+        this.state = {
+            name: '',
+            password: '',
+            email: '',
+            value: ''
+        };
     }
 
     //create an event object and pass it over on user input
-    handleChange = (event : any) => {
+    handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({[event.target.name]: event.target.value});
     }
 
     //handle the change that happened previously
-    handleSubmit = (event : any) => {
+    handleSubmit = (event : React.FormEvent<HTMLFormElement>) => {
         fetch('http://localhost:3000/store-data', {   //hardcoded links <333
             method: 'POST',                           //httprequest method
             body: JSON.stringify(this.state)          //convert the react state into a json file
@@ -26,9 +40,27 @@ class RegistrationForm extends React.Component<any, any>{
     }
 
 
+    render() {
+        return (
+          <form onSubmit={this.handleSubmit}>
+            <label>
+                Name:
+                <input type="text" value={this.state.value} name="name" onChange={this.handleChange} />
+            </label>
+            <label>
+                Password:
+                <input type="text" value={this.state.value} name="password" onChange={this.handleChange} />
+            </label>
+            <label>
+                Email:
+                <input type="text" value={this.state.value} name="email" onChange={this.handleChange} />
+            </label>
+            <input type="submit" value="Submit" />
+          </form>
+        );
+      }
 
-    //create the form in another file
     //import it to app.tsx
 }
 
-export default RegistrationForm;
+export default RegistrationFormHandler;
