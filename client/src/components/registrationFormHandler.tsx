@@ -28,39 +28,38 @@ class RegistrationFormHandler extends React.Component<{}, any>{ //TODO avoid usi
     }
 
     //handle the change that happened previously
-    handleSubmit = (event : React.FormEvent<HTMLFormElement>) => {
-        fetch('http://localhost:3000/store-data', {   //hardcoded links <333
-            method: 'POST',                           //httprequest method
-            body: JSON.stringify(this.state)          //convert the react state into a json file
-        }).then(function (response){
-            console.log(response);
-            return response.json;
-        });
-        event.preventDefault();      //if the event is cancelable nothing gonna happen
-    }
+    // handleSubmit = (event : React.FormEvent<HTMLFormElement>) => {
+    //     fetch('http://localhost:3000/register', {   
+    //         method: 'POST',                           
+    //         body: JSON.stringify(this.state)          //convert the react state into a json file
+    //     }).then(function (response){
+    //         console.log(response);
+    //         return response.json;
+    //     });
+    //     event.preventDefault();      //if the event is cancelable nothing gonna happen
+    // }
 
 
     render() {
         return (
-          <form onSubmit={this.handleSubmit}>    
+          <form action='http://localhost:3001/register' method='POST' /*onSubmit={this.handleSubmit}*/>    
             <label>
                 Name:
-                <input type="text" value={this.state.value} name="name" onChange={this.handleChange} />  //get the data from the input field
+                <input type="text" /*value={this.state.value}*/ defaultValue="" name="name" /*onChange={this.handleChange}*/ />  
             </label>
             <label>
-                Password:
-                <input type="text" value={this.state.value} name="password" onChange={this.handleChange} />
+                Password:   
+                <input type="password" defaultValue="" name="password" />
             </label>
             <label>
                 Email:
-                <input type="text" value={this.state.value} name="email" onChange={this.handleChange} />
+                <input type="email" defaultValue="" name="email" />
             </label>
-            <input type="submit" value="Submit" />
+            <button type="submit">Submit</button>
           </form>
         );
       }
 
-    //import it to app.tsx
 }
 
 export default RegistrationFormHandler;
