@@ -51,11 +51,6 @@ app.listen(PORT, () => {
 
 //register page route
 app.post('/register', jsonParser, (req, res, next) => {
-  // let data = {
-  //   name: req.body.name,
-  //   passwords: req.body.password,
-  //   email: req.body.email
-  // };
 
   //request headers
   res.set({
@@ -66,14 +61,6 @@ app.post('/register', jsonParser, (req, res, next) => {
   var name = req.body.username; 
   var password = req.body.password;
   var email = req.body.email;
-
-
-  // let sql = "INSERT INTO Users SET ?";
-  // let query = connection.query(sql, data,(err, results) => {
-  //   if(err) throw err;
-  //   res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
-  //   res.redirect('/');
-  // });
 
   
   //sql query
