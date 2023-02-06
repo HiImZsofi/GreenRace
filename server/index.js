@@ -10,10 +10,6 @@ var jsonParser = bodyParser.json();
 // create application/x-www-form-urlencoded parser
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
-var headers = { 
-  'Content-Type' : 'application/json' 
-};
-
 //Connect to database
 const connection = mysql.createConnection({
   host: '127.0.0.1',
@@ -22,7 +18,7 @@ const connection = mysql.createConnection({
   port: '3306'
 });
 
-//connect to database
+//check if mysql server is ok
 connection.connect((err) =>{
   if(err) throw err;
   console.log('Mysql Connected...');
@@ -31,6 +27,8 @@ connection.connect((err) =>{
 
 //server port
 const PORT = process.env.PORT || 3001;
+
+
 const app = express();
 const cors = require("cors");
 app.use(cors());
@@ -39,6 +37,7 @@ app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }))
 
 
+//test page route
 app.get("/", (req, res) => {
   res.send("Main page");
 });
@@ -49,17 +48,22 @@ app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
 
+
+//register page route
 app.post('/register', jsonParser, (req, res, next) => {
   // let data = {
   //   name: req.body.name,
   //   passwords: req.body.password,
   //   email: req.body.email
   // };
+
+  //request headers
   res.set({
     'Content-Type': 'application/json'
   }) 
   
-  var name = req.body.username; //TODO username buggy
+  //form data
+  var name = req.body.username; 
   var password = req.body.password;
   var email = req.body.email;
 
@@ -71,11 +75,13 @@ app.post('/register', jsonParser, (req, res, next) => {
   //   res.redirect('/');
   // });
 
+  
+  //sql query
   var sql = `INSERT INTO users (username, password, email) VALUES ("${name}", "${password}", "${email}")`; //TODO user id
   connection.query(sql, function(err, result) {
     if (err) throw err;
     console.log('record inserted');
-    res.redirect('http://localhost:3001/');
+    res.redirect('http://localhost:3001/');  //redirect to the main page if insert was successful
   });
 });
 
