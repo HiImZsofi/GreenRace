@@ -12,7 +12,34 @@ class LoginForm extends React.Component<{}, any> {
 
 	//HTTP POST request to backend
 	loginHandler() {
-		window.alert(this.state.username + " " + this.state.password);
+		const requestOptions = {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({
+				username: this.state.username,
+				password: this.state.password,
+			}),
+		};
+		fetch("http://localhost:3001/login", requestOptions)
+			.then(async (response) => {
+				const isJson = response.headers
+					.get("content-type")
+					?.includes("application/json");
+				const data = isJson && (await response.json());
+
+				// check for error response
+				if (!response.ok) {
+					// get error message from body or default to response status
+					const error = (data && data.message) || response.status;
+					return Promise.reject(error);
+				}
+
+				this.setState({ postId: data.id });
+			})
+			.catch((error) => {
+				this.setState({ errorMessage: error.toString() });
+				console.error("There was an error!", error);
+			});
 	}
 
 	render(): React.ReactNode {
