@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { response } from 'express';
+import {  BrowserRouter as Router,  Routes,  Route,  Link, BrowserRouter  } from 'react-router-dom';
+import UserPage from './userPage';
 
 function App() {
 
@@ -17,11 +19,12 @@ function App() {
     }, []);
   
     return (
-      <div>
-        <>
-        {data ? <pre>{JSON.stringify(data, null, 2)}</pre> : 'Loading...'}
-        </>
-      </div>
+      <BrowserRouter>
+      <Routes>
+        <Route path="/userPage" element={<UserPage />}>
+        </Route>
+      </Routes>
+    </BrowserRouter>
     );
 }
 

@@ -1,0 +1,25 @@
+#logo{
+    height: 50px;
+}
+#profpic{
+    height: 50px;
+    border-radius: 50%;
+}
+#menu {
+    background-color: lightgreen;
+    overflow: auto;
+    white-space: nowrap;
+  }
+  
+#menu a {
+    background-color: green;
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 14px;
+    text-decoration: none;
+  }
+  
+#menu a:hover {
+    background-color: darkgreen;
+  }
