@@ -10,6 +10,10 @@ var jsonParser = bodyParser.json();
 // create application/x-www-form-urlencoded parser
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
+var headers = { 
+  'Content-Type' : 'application/json' 
+};
+
 //Connect to database
 const connection = mysql.createConnection({
   host: '127.0.0.1',
@@ -45,14 +49,17 @@ app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
 
-app.post('/register', jsonParser, (req, res) => {
+app.post('/register', jsonParser, (req, res, next) => {
   // let data = {
   //   name: req.body.name,
   //   passwords: req.body.password,
   //   email: req.body.email
   // };
-
-  var name = JSON.stringify(req.body.username); //TODO username buggy
+  res.set({
+    'Content-Type': 'application/json'
+  }) 
+  
+  var name = req.body.username; //TODO username buggy
   var password = req.body.password;
   var email = req.body.email;
 
