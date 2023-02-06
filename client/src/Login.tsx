@@ -1,24 +1,46 @@
 import React from "react";
 import FormSubmitButton from "./components/FormSubmitButton";
-import InputField from "./components/InputField";
-
-//HTTP GET request to backend
-function loginHandler():void {
-	let usernameFieldValue:string;
-	let passwordFieldValue:string;
-	alert('e4')
-	
-}
+import TextField from "@mui/material/TextField";
 
 //LoginForm componenet
-class LoginForm extends React.Component {
+class LoginForm extends React.Component<{}, any> {
+	constructor(props: any) {
+		super(props);
+		this.loginHandler = this.loginHandler.bind(this);
+		this.state = { username: "", password: "" };
+	}
+
+	//HTTP POST request to backend
+	loginHandler() {
+		window.alert(this.state.username + " " + this.state.password);
+	}
+
 	render(): React.ReactNode {
 		return (
-			<React.StrictMode>
-				<InputField inputType={"Username"} />
-				<InputField inputType={"Password"} />
-				<FormSubmitButton type={{inputType: 'Login'}} onClickHandler={loginHandler}/>
-			</React.StrictMode>
+			<div>
+				<div>
+					<TextField
+						type={"text"}
+						placeholder={"Username"}
+						value={this.state.username}
+						onChange={(e) => this.setState({ username: e.target.value })}
+						required
+					/>
+				</div>
+				<div>
+					<TextField
+						type={"password"}
+						placeholder={"Password"}
+						value={this.state.password}
+						onChange={(e) => this.setState({ password: e.target.value })}
+						required
+					/>
+				</div>
+				<FormSubmitButton
+					type={{ inputType: "Login" }}
+					onClickHandler={this.loginHandler}
+				/>
+			</div>
 		);
 	}
 }
