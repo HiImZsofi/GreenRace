@@ -6,7 +6,15 @@ const express = require("express");
 const PORT = process.env.PORT || 3306;
 const app = express();
 const cors = require("cors");
+const { connect } = require("http2");
 app.use(cors());
+
+const connection = mysql.createConnection({
+	host: "localhost",
+	user: "root",
+	database: "greenRace",
+	port: 3306,
+});
 
 app.listen(PORT, () => {
 	console.log(`Server listening on ${PORT}`);
@@ -16,22 +24,25 @@ app.listen(PORT, () => {
 app.post("/login", (req, res) => {
 	//Store data in from the POST request
 	const { username, password } = req.body;
+	console.log(req.body, "Success");
 
-	let passwordInDB;
+	let passwordInDB = connection.query(
+		'SELECT password FROM users WHERE username="asd"'
+	);
 
 	//Try username againts the database
-	try {
-		passwordInDB = connection
-			.selectFrom(user)
-			.where(user.username.equals(username))
-			.select({
-				username: user.username,
-				password: user.password,
-			})
-			.executeSelectOne();
-	} catch (error) {
-		res.send("Incorrect username");
-	}
+	// try {
+	// 	passwordInDB = connection
+	// 		.selectFrom(user)
+	// 		.where(user.username.equals(username))
+	// 		.select({
+	// 			username: user.username,
+	// 			password: user.password,
+	// 		})
+	// 		.executeSelectOne();
+	// } catch (error) {
+	// 	res.send("Incorrect username");
+	// }
 
 	//Check password againts the one fetched from the database
 	if (password === passwordInDB) {
