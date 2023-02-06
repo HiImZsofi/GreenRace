@@ -26,8 +26,9 @@ app.listen(PORT, () => {
 //User POSTs info to the backend
 app.post("/login", (req, res) => {
 	//Store data in from the POST request
-	//const { username, password } = req.body;
+	const { username, password } = req.body;
 	console.log(req.body, "Success");
+	console.log(password);
 
 	// let passwordInDB = connection.query(
 	// 	'SELECT password FROM users WHERE username="asd"'
