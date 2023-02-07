@@ -15,7 +15,7 @@ class LoginForm extends React.Component<{}, any> {
 		this.loginHandler = this.loginHandler.bind(this);
 
 		//Decalare state variables
-		this.state = { username: "", password: "", usernameErr: false, passwordErr: false };
+		this.state = { username: "", password: "", usernameErr: false, passwordErr: false, usernameErrMsg: '', passwordErrMsg: '' };
 	}
 
 	//Lifted setState for the username field
@@ -31,13 +31,18 @@ class LoginForm extends React.Component<{}, any> {
 	//HTTP POST request to backend
 	loginHandler() {
 		if (
+			//TODO Fine tune the condition
 			this.state.username == null ||
 			this.state.username == "" ||
 			this.state.password == null ||
 			this.state.password == ""
 		) {
-			this.setState({usernameErr: true});
-			this.setState({passwordErr: true});
+			this.setState({ usernameErr: true });
+			this.setState({ passwordErr: true });
+			this.setState({
+				usernameErrMsg: "Invalid input",
+				passwordErrMsg: "Invalid input",
+			});
 		}
 
 		const requestOptions = {
@@ -85,6 +90,7 @@ class LoginForm extends React.Component<{}, any> {
 							onChangeHandler: this.usernameChangeHandler,
 						}}
 						error={this.state.usernameErr}
+						errorMessage={this.state.usernameErrMsg}
 					/>
 				</div>
 				<div>
@@ -95,6 +101,7 @@ class LoginForm extends React.Component<{}, any> {
 							onChangeHandler: this.passwordChangeHandler,
 						}}
 						error={this.state.passwordErr}
+						errorMessage={this.state.passwordErrMsg}
 					/>
 				</div>
 				<FormSubmitButton
