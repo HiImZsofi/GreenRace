@@ -1,7 +1,10 @@
+//Imports
 import TextField from "@mui/material/TextField";
 import { InputTypeHandler } from "../Interfaces";
 
+//InputField function component
 function InputField(props: { type: InputTypeHandler }) {
+	//If else that decides which type of field to return
 	if (props.type.inputType == "Username") {
 		return (
 			<div>

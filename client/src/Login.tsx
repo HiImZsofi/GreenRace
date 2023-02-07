@@ -1,28 +1,28 @@
+//Impors
 import React from "react";
 import FormSubmitButton from "./components/FormSubmitButton";
 import InputField from "./components/InputField";
 
-//LoginForm componenet
+//LoginForm component
 class LoginForm extends React.Component<{}, any> {
+	//TODO remove any
 	constructor(props: any) {
 		super(props);
+		//Bind functions to this so they actually work
 		this.usernameChangeHandler = this.usernameChangeHandler.bind(this);
 		this.passwordChangeHandler = this.passwordChangeHandler.bind(this);
 		this.loginHandler = this.loginHandler.bind(this);
+
+		//Decalare state variables
 		this.state = { username: "", password: "" };
 	}
 
-	//Lifted states
-	//TODO Export components to files
-	//const {value} = this.state
-	//const {setValue}=(value:number)=>{
-	//this.setState(value)
-	//}
-
+	//Lifted setState for the username field
 	usernameChangeHandler(e: React.SyntheticEvent<HTMLInputElement>) {
 		this.setState({ username: e.currentTarget.value });
 	}
 
+	//Lifted setState for the username field
 	passwordChangeHandler(e: React.SyntheticEvent<HTMLInputElement>) {
 		this.setState({ password: e.currentTarget.value });
 	}
