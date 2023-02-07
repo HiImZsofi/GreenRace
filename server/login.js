@@ -46,13 +46,14 @@ app.post("/login", async (req, res) => {
 	const passwordInDB = await getPassQuery(username);
 
 	//Check password againts the one fetched from the database
+	//TODO send http codes
 	if (password === passwordInDB) {
-		//TODO reroute to main page
+		res.statusCode = 200;
 		res.send("Successful login");
 		console.log("200 OK");
 	} else {
-		//TODO Make the input fields red
+		res.statusCode = 401;
 		res.send("Incorrect password");
-		console.log("404 err");
+		console.log("401 err");
 	}
 });
