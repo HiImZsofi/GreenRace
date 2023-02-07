@@ -2,9 +2,8 @@
 const express = require("express");
 const PORT = process.env.PORT || 3001;
 const app = express();
-const cors = require("cors");
 var mysql = require("mysql2");
-const { connect } = require("http2");
+const cors = require("cors");
 app.use(cors());
 const bp = require("body-parser");
 app.use(bp.json());
@@ -19,40 +18,39 @@ const connection = mysql.createConnection({
 	port: 3306,
 });
 
+//Query password from the users table in the database
+function getPassQuery(username) {
+	return new Promise((resolve, rejects) => {
+		connection.query(
+			"SELECT password FROM users WHERE username = ?",
+			[username],
+			function (err, result) {
+				if (err) return rejects(err);
+				return resolve(result[0].password);
+			}
+		);
+	});
+}
+
 app.listen(PORT, () => {
 	console.log(`Server listening on ${PORT}`);
 });
 
 //User POSTs info to the backend
-app.post("/login", (req, res) => {
+app.post("/login", async (req, res) => {
+	//TODO: decrypt encrypted password
 	//Store data in from the POST request
 	const { username, password } = req.body;
-	console.log(req.body, "Success");
-	console.log(password);
 
-	// let passwordInDB = connection.query(
-	// 	'SELECT password FROM users WHERE username="asd"'
-	// );
-
-	//Try username againts the database
-	// try {
-	// 	passwordInDB = connection
-	// 		.selectFrom(user)
-	// 		.where(user.username.equals(username))
-	// 		.select({
-	// 			username: user.username,
-	// 			password: user.password,
-	// 		})
-	// 		.executeSelectOne();
-	// } catch (error) {
-	// 	res.send("Incorrect username");
-	// }
+	//Store data from SELECT query
+	const passwordInDB = await getPassQuery(username);
 
 	//Check password againts the one fetched from the database
-	// if (password === passwordInDB) {
-	// 	//TODO: decrypt encrypted password
-	// 	res.send("Successful login");
-	// } else {
-	// 	res.send("Incorrect password");
-	// }
+	if (password === passwordInDB) {
+		res.send("Successful login");
+		console.log("200 OK");
+	} else {
+		res.send("Incorrect password");
+		console.log("404 err");
+	}
 });
