@@ -3,7 +3,7 @@ import TextField from "@mui/material/TextField";
 import { InputTypeHandler } from "../Interfaces";
 
 //InputField function component
-function InputField(props: { type: InputTypeHandler }) {
+function InputField(props: { type: InputTypeHandler; error: boolean }) {
 	//If else that decides which type of field to return
 	if (props.type.inputType == "Username") {
 		return (
@@ -13,6 +13,7 @@ function InputField(props: { type: InputTypeHandler }) {
 					placeholder={props.type.inputType}
 					value={props.type.value}
 					onChange={props.type.onChangeHandler}
+					error={props.error}
 					required
 				/>
 			</div>
@@ -25,6 +26,7 @@ function InputField(props: { type: InputTypeHandler }) {
 					placeholder={props.type.inputType}
 					value={props.type.value}
 					onChange={props.type.onChangeHandler}
+					error={props.error}
 					required
 				/>
 			</div>

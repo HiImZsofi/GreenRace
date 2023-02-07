@@ -15,7 +15,7 @@ class LoginForm extends React.Component<{}, any> {
 		this.loginHandler = this.loginHandler.bind(this);
 
 		//Decalare state variables
-		this.state = { username: "", password: "" };
+		this.state = { username: "", password: "", usernameErr: false, passwordErr: false };
 	}
 
 	//Lifted setState for the username field
@@ -36,6 +36,8 @@ class LoginForm extends React.Component<{}, any> {
 			this.state.password == null ||
 			this.state.password == ""
 		) {
+			this.setState({usernameErr: true});
+			this.setState({passwordErr: true});
 		}
 
 		const requestOptions = {
@@ -82,6 +84,7 @@ class LoginForm extends React.Component<{}, any> {
 							value: this.state.username,
 							onChangeHandler: this.usernameChangeHandler,
 						}}
+						error={this.state.usernameErr}
 					/>
 				</div>
 				<div>
@@ -91,6 +94,7 @@ class LoginForm extends React.Component<{}, any> {
 							value: this.state.password,
 							onChangeHandler: this.passwordChangeHandler,
 						}}
+						error={this.state.passwordErr}
 					/>
 				</div>
 				<FormSubmitButton
