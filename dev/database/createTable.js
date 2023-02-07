@@ -17,7 +17,7 @@ connection.query(
 
 // Create users table
 connection.query(
-    'CREATE OR REPLACE TABLE Users (user_ID int PRIMARY KEY AUTO_INCREMENT, username VARCHAR(30) NOT NULL, password VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, points INT, picfilename VARCHAR(255), picfilepath VARCHAR(255))',
+    'CREATE OR REPLACE TABLE Users (user_ID int PRIMARY KEY AUTO_INCREMENT, username VARCHAR(30) NOT NULL UNIQUE, password VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL UNIQUE, points INT, picfilename VARCHAR(255), picfilepath VARCHAR(255))',
     function(err, result){
         if(err) throw err;
             console.log("Table Users created or modified");        
