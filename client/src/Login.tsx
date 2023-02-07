@@ -1,4 +1,4 @@
-//Impors
+//Imports
 import React from "react";
 import FormSubmitButton from "./components/FormSubmitButton";
 import InputField from "./components/InputField";
@@ -8,6 +8,7 @@ class LoginForm extends React.Component<{}, any> {
 	//TODO remove any
 	constructor(props: any) {
 		super(props);
+
 		//Bind functions to this so they actually work
 		this.usernameChangeHandler = this.usernameChangeHandler.bind(this);
 		this.passwordChangeHandler = this.passwordChangeHandler.bind(this);
@@ -29,6 +30,14 @@ class LoginForm extends React.Component<{}, any> {
 
 	//HTTP POST request to backend
 	loginHandler() {
+		if (
+			this.state.username == null ||
+			this.state.username == "" ||
+			this.state.password == null ||
+			this.state.password == ""
+		) {
+		}
+
 		const requestOptions = {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
@@ -44,8 +53,12 @@ class LoginForm extends React.Component<{}, any> {
 					?.includes("application/json");
 				const data = isJson && (await response.json());
 
-				// check for error response
-				if (!response.ok) {
+				//Check for server response
+				if (response.status == 200) {
+					//TODO reroute to main page
+				} else if (response.status == 401) {
+					//TODO Make the input fields red
+				} else {
 					// get error message from body or default to response status
 					const error = (data && data.message) || response.status;
 					return Promise.reject(error);
