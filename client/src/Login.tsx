@@ -1,13 +1,30 @@
 import React from "react";
 import FormSubmitButton from "./components/FormSubmitButton";
-import TextField from "@mui/material/TextField";
+import InputField from "./components/InputField";
 
 //LoginForm componenet
 class LoginForm extends React.Component<{}, any> {
 	constructor(props: any) {
 		super(props);
+		this.usernameChangeHandler = this.usernameChangeHandler.bind(this);
+		this.passwordChangeHandler = this.passwordChangeHandler.bind(this);
 		this.loginHandler = this.loginHandler.bind(this);
 		this.state = { username: "", password: "" };
+	}
+
+	//Lifted states
+	//TODO Export components to files
+	//const {value} = this.state
+	//const {setValue}=(value:number)=>{
+	//this.setState(value)
+	//}
+
+	usernameChangeHandler(e: React.SyntheticEvent<HTMLInputElement>) {
+		this.setState({ username: e.currentTarget.value });
+	}
+
+	passwordChangeHandler(e: React.SyntheticEvent<HTMLInputElement>) {
+		this.setState({ password: e.currentTarget.value });
 	}
 
 	//HTTP POST request to backend
@@ -46,21 +63,21 @@ class LoginForm extends React.Component<{}, any> {
 		return (
 			<div>
 				<div>
-					<TextField
-						type={"text"}
-						placeholder={"Username"}
-						value={this.state.username}
-						onChange={(e) => this.setState({ username: e.target.value })}
-						required
+					<InputField
+						type={{
+							inputType: "Username",
+							value: this.state.username,
+							onChangeHandler: this.usernameChangeHandler,
+						}}
 					/>
 				</div>
 				<div>
-					<TextField
-						type={"password"}
-						placeholder={"Password"}
-						value={this.state.password}
-						onChange={(e) => this.setState({ password: e.target.value })}
-						required
+					<InputField
+						type={{
+							inputType: "Password",
+							value: this.state.password,
+							onChangeHandler: this.passwordChangeHandler,
+						}}
 					/>
 				</div>
 				<FormSubmitButton
