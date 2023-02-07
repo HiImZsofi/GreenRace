@@ -1,3 +1,9 @@
 .color-nav {
-  background-color: green;
+  background-color: darkgreen;
+}
+
+#logo, #profpic{ 
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
 }
