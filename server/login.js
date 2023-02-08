@@ -25,7 +25,7 @@ function getPassQuery(username) {
 			"SELECT password FROM users WHERE username = ?",
 			[username],
 			function (err, result) {
-				if (err) return rejects(err);
+				if (err || result.length == 0) return rejects(err);
 				return resolve(result[0].password);
 			}
 		);
@@ -43,17 +43,20 @@ app.post("/login", async (req, res) => {
 	const { username, password } = req.body;
 
 	//Store data from SELECT query
-	const passwordInDB = await getPassQuery(username);
+	const passwordInDB = await getPassQuery(username).catch((error) => {
+		res.statusCode = 404;
+		console.log(404);
+		res.send(JSON.stringify({ error: "Invalid username", response: error }));
+	});
 
 	//Check password againts the one fetched from the database
-	//TODO send http codes
-	if (password === passwordInDB) {
+	if (res.statusCode != 404 && password === passwordInDB) {
 		res.statusCode = 200;
 		res.send("Successful login");
 		console.log("200 OK");
-	} else {
+	} else if (res.statusCode != 404) {
 		res.statusCode = 401;
-		res.send("Incorrect password");
-		console.log("401 err");
+		res.send(JSON.stringify({ error: "Invalid password" }));
+		console.log("401 Auth Err");
 	}
 });
