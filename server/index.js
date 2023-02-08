@@ -58,15 +58,16 @@ app.post('/register', jsonParser, (req, res, next) => {
   }) 
   
   //form data
-  var name = req.body.username; 
-  var password = req.body.password;
-  var email = req.body.email;
+  // var name = req.body.username; 
+  // var password = req.body.password;
+  // var email = req.body.email;
 
+  const { username, password, email } = req.body;
   
   //sql query
-  var sql = `INSERT INTO users (username, password, email) VALUES ("${name}", "${password}", "${email}")`; //TODO user id
+  var sql = `INSERT INTO users (username, password, email) VALUES ("${username}", "${password}", "${email}")`; //TODO prevent duplicates in database
   connection.query(sql, function(err, result) {
-    if (err) throw err;
+    if (err) throw err; 
     console.log('record inserted');
     res.redirect('http://localhost:3001/');  //redirect to the main page if insert was successful
   });
