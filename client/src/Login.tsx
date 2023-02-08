@@ -82,7 +82,6 @@ class LoginForm extends React.Component<{}, any> {
 							passwordErrMsg: "",
 						});
 					} else if (response.status == 404) {
-						//TODO Make the input fields red
 						this.setState({
 							usernameErr: true,
 							usernameErrMsg: "Wrong username",
