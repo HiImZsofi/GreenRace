@@ -1,4 +1,5 @@
 //Imports
+import Box from "@mui/material/Box";
 import React from "react";
 import {
 	createBrowserRouter,
@@ -76,7 +77,6 @@ class LoginForm extends React.Component<{}, any> {
 
 					//Check for server response
 					if (response.status == 200) {
-						//TODO reroute to main page
 						this.setState({
 							usernameErr: false,
 							usernameErrMsg: "",
@@ -118,7 +118,15 @@ class LoginForm extends React.Component<{}, any> {
 			return <Navigate to="/" replace={true} />;
 		} else {
 			return (
-				<div>
+				<Box
+					component="form"
+					sx={{
+						"& .MuiTextField-root": { m: 1, width: "25ch" },
+					}}
+					textAlign={"center"}
+					noValidate
+					autoComplete="off"
+				>
 					<div>
 						<InputField
 							type={{
@@ -145,7 +153,7 @@ class LoginForm extends React.Component<{}, any> {
 						type={{ inputType: "Login" }}
 						onClickHandler={this.loginHandler}
 					/>
-				</div>
+				</Box>
 			);
 		}
 	}
