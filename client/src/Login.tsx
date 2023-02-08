@@ -1,5 +1,11 @@
 //Imports
 import React from "react";
+import {
+	createBrowserRouter,
+	redirect,
+	RouterProvider,
+	useNavigate,
+} from "react-router-dom";
 import FormSubmitButton from "./components/FormSubmitButton";
 import InputField from "./components/InputField";
 
@@ -15,7 +21,14 @@ class LoginForm extends React.Component<{}, any> {
 		this.loginHandler = this.loginHandler.bind(this);
 
 		//Decalare state variables
-		this.state = { username: "", password: "", usernameErr: false, passwordErr: false, usernameErrMsg: '', passwordErrMsg: '' };
+		this.state = {
+			username: "",
+			password: "",
+			usernameErr: false,
+			passwordErr: false,
+			usernameErrMsg: "",
+			passwordErrMsg: "",
+		};
 	}
 
 	//Lifted setState for the username field
@@ -43,42 +56,59 @@ class LoginForm extends React.Component<{}, any> {
 				usernameErrMsg: "Invalid input",
 				passwordErrMsg: "Invalid input",
 			});
+		} else {
+			const requestOptions = {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					username: this.state.username,
+					password: this.state.password,
+				}),
+			};
+			fetch("http://localhost:3001/login", requestOptions)
+				.then(async (response) => {
+					const isJson = response.headers
+						.get("content-type")
+						?.includes("application/json");
+					const data = isJson && (await response.json());
+
+					//Check for server response
+					if (response.status == 200) {
+						//TODO reroute to main page
+						this.setState({
+							usernameErr: false,
+							usernameErrMsg: "",
+							passwordErr: false,
+							passwordErrMsg: "",
+						});
+					} else if (response.status == 404) {
+						//TODO Make the input fields red
+						this.setState({
+							usernameErr: true,
+							usernameErrMsg: "Wrong username",
+							passwordErr: true,
+							passwordErrMsg: "Invalid password",
+						});
+					} else if (response.status == 401) {
+						this.setState({
+							usernameErr: false,
+							usernameErrMsg: "",
+							passwordErr: true,
+							passwordErrMsg: "Invalid password",
+						});
+					} else {
+						// get error message from body or default to response status
+						const error = (data && data.message) || response.status;
+						return Promise.reject(error);
+					}
+
+					this.setState({ postId: data.id });
+				})
+				.catch((error) => {
+					this.setState({ errorMessage: error.toString() });
+					console.error("There was an error!", error);
+				});
 		}
-
-		const requestOptions = {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({
-				username: this.state.username,
-				password: this.state.password,
-			}),
-		};
-		fetch("http://localhost:3001/login", requestOptions)
-			.then(async (response) => {
-				const isJson = response.headers
-					.get("content-type")
-					?.includes("application/json");
-				const data = isJson && (await response.json());
-
-				//Check for server response
-				if (response.status == 200) {
-					//TODO reroute to main page
-					
-				} else if (response.status == 401) {
-					//TODO Make the input fields red
-					this.setState({usernameErr: true, usernameErrMsg: 'Wrong username', passwordErr: true, passwordErrMsg: 'Wrong password'});
-				} else {
-					// get error message from body or default to response status
-					const error = (data && data.message) || response.status;
-					return Promise.reject(error);
-				}
-
-				this.setState({ postId: data.id });
-			})
-			.catch((error) => {
-				this.setState({ errorMessage: error.toString() });
-				console.error("There was an error!", error);
-			});
 	}
 
 	render(): React.ReactNode {
