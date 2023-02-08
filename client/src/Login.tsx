@@ -63,8 +63,10 @@ class LoginForm extends React.Component<{}, any> {
 				//Check for server response
 				if (response.status == 200) {
 					//TODO reroute to main page
+					
 				} else if (response.status == 401) {
 					//TODO Make the input fields red
+					this.setState({usernameErr: true, usernameErrMsg: 'Wrong username', passwordErr: true, passwordErrMsg: 'Wrong password'});
 				} else {
 					// get error message from body or default to response status
 					const error = (data && data.message) || response.status;
