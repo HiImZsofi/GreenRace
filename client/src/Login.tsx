@@ -2,6 +2,7 @@
 import React from "react";
 import {
 	createBrowserRouter,
+	Navigate,
 	redirect,
 	RouterProvider,
 	useNavigate,
@@ -28,6 +29,7 @@ class LoginForm extends React.Component<{}, any> {
 			passwordErr: false,
 			usernameErrMsg: "",
 			passwordErrMsg: "",
+			loginSuccess: false,
 		};
 	}
 
@@ -80,6 +82,7 @@ class LoginForm extends React.Component<{}, any> {
 							usernameErrMsg: "",
 							passwordErr: false,
 							passwordErrMsg: "",
+							loginSuccess: true,
 						});
 					} else if (response.status == 404) {
 						this.setState({
@@ -111,37 +114,42 @@ class LoginForm extends React.Component<{}, any> {
 	}
 
 	render(): React.ReactNode {
-		return (
-			<div>
+		if (this.state.loginSuccess) {
+			return <Navigate to="/" replace={true} />;
+		} else {
+			return (
 				<div>
-					<InputField
-						type={{
-							inputType: "Username",
-							value: this.state.username,
-							onChangeHandler: this.usernameChangeHandler,
-						}}
-						error={this.state.usernameErr}
-						errorMessage={this.state.usernameErrMsg}
+					<div>
+						<InputField
+							type={{
+								inputType: "Username",
+								value: this.state.username,
+								onChangeHandler: this.usernameChangeHandler,
+							}}
+							error={this.state.usernameErr}
+							errorMessage={this.state.usernameErrMsg}
+						/>
+					</div>
+					<div>
+						<InputField
+							type={{
+								inputType: "Password",
+								value: this.state.password,
+								onChangeHandler: this.passwordChangeHandler,
+							}}
+							error={this.state.passwordErr}
+							errorMessage={this.state.passwordErrMsg}
+						/>
+					</div>
+					<FormSubmitButton
+						type={{ inputType: "Login" }}
+						onClickHandler={this.loginHandler}
 					/>
 				</div>
-				<div>
-					<InputField
-						type={{
-							inputType: "Password",
-							value: this.state.password,
-							onChangeHandler: this.passwordChangeHandler,
-						}}
-						error={this.state.passwordErr}
-						errorMessage={this.state.passwordErrMsg}
-					/>
-				</div>
-				<FormSubmitButton
-					type={{ inputType: "Login" }}
-					onClickHandler={this.loginHandler}
-				/>
-			</div>
-		);
+			);
+		}
 	}
 }
+
 
 export default LoginForm;
