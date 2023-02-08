@@ -36,22 +36,21 @@ class LoginForm extends React.Component<{}, any> {
 
 	//Lifted setState for the username field
 	usernameChangeHandler(e: React.SyntheticEvent<HTMLInputElement>) {
-		this.setState({ username: e.currentTarget.value });
+		this.setState({ username: e.currentTarget.value.trim() });
 	}
 
 	//Lifted setState for the username field
 	passwordChangeHandler(e: React.SyntheticEvent<HTMLInputElement>) {
-		this.setState({ password: e.currentTarget.value });
+		this.setState({ password: e.currentTarget.value.trim() });
 	}
 
 	//HTTP POST request to backend
 	loginHandler() {
 		if (
-			//TODO Fine tune the condition
-			this.state.username == null ||
-			this.state.username == "" ||
-			this.state.password == null ||
-			this.state.password == ""
+			this.state.username.trim() == null ||
+			this.state.username.trim() == "" ||
+			this.state.password.trim() == null ||
+			this.state.password.trim() == ""
 		) {
 			this.setState({ usernameErr: true });
 			this.setState({ passwordErr: true });
