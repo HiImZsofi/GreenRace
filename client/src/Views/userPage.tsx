@@ -1,7 +1,6 @@
 import React, {  } from 'react';
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './Pages.css';
-import NavMenu from './navBar';
+import NavMenu from '../navBar';
 
 class UserPage extends React.Component<{}, any> {
     render(): React.ReactNode {

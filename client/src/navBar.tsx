@@ -5,6 +5,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 
+const profpic = "npic.png"
 const NavMenu = ()=> {
     return (
         <div>
@@ -23,7 +24,9 @@ const NavMenu = ()=> {
             <Nav className='me-auto'>
                 <Nav.Link href="./friendPage">Barátok</Nav.Link>		
             </Nav>
-             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`}><img id="profpic" alt="Profpic" src="npic.png" width="30vh=" height="30vh="/></Navbar.Toggle>
+             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`}>
+                <img id="profpic" alt="Profpic" src={profpic} width="30vh=" height="30vh="/>
+                </Navbar.Toggle>
             <Navbar.Offcanvas
                   id={`offcanvasNavbar-expand-${expand}`}
                   aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
@@ -35,7 +38,7 @@ const NavMenu = ()=> {
               </Offcanvas.Header>
               <Offcanvas.Body>
               <Container className='text-center'>
-              <img id="profpic" alt="Profpic" src="npic.png" width="90vh=" height="90vh=" className='mb-3'/>
+              <img id="profpic" alt="Profpic" src={profpic} width="90vh=" height="90vh=" className='mb-3'/>
               <p>Username.placeholder</p>
               <p>Options.placeholder</p>
               <p>Logout.placeholder</p>

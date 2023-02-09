@@ -1,5 +1,4 @@
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import './Pages.css';
+import '../Views/Pages.css';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';

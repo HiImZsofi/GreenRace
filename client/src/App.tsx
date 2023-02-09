@@ -1,11 +1,9 @@
 //imports
 import React, { useEffect, useState } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LoginForm from "./Views/Login";
 import Grid from "@mui/material/Grid";
-import { response } from "express";
 import {
 	BrowserRouter as Router,
 	Routes,
@@ -36,7 +34,7 @@ function App() {
 	]);
 
 	return (
-		<React.StrictMode>
+		/*<React.StrictMode>
 			<Grid
 				container
 				spacing={0}
@@ -48,8 +46,8 @@ function App() {
 				<Grid item xs={3}>
 					<RouterProvider router={router} />
 				</Grid>
-			</Grid>
-			<Routes>
+			</Grid>*/
+		<Routes>
         <Route path="/userPage" element={<UserPage />}>
         </Route>
         <Route path="/rankPage" element={<RankPage />}>
@@ -57,7 +55,7 @@ function App() {
         <Route path="/friendPage" element={<FriendPage />}>
         </Route>
       </Routes>
-		</React.StrictMode>
+		//</React.StrictMode>
 	);
 }
 

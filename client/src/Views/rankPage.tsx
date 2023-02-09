@@ -1,5 +1,4 @@
 import React from "react";
-import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "./Pages.css";
 import NavMenu from "../components/navBar";
 
