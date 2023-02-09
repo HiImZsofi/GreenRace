@@ -36,6 +36,7 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 
+//checks if email already exists in database
 function checkEmailInDB(email) {
   return new Promise((resolve, reject) => {
     connection.query(
@@ -43,23 +44,26 @@ function checkEmailInDB(email) {
       [email],
       function (err, result) {
         if (err || result.length === 0) {
-          return reject(err);
+          return reject(err); //if not then the query automatically moves on
         }
-        return resolve(result[0].email);
+        return resolve(result[0].email); //if it exists then return the same email
       }
     );
   });
 }
+
+//own promise for sql query so async will not mess it up
 function insertNewUser(sql) {
   return new Promise((resolve, reject) => {
     connection.query(sql, function (err, result) {
       if (err) {
         return reject(err);
       }
-      return resolve(200);
+      return resolve(200); //status code is 200 if insert was successful
     });
   });
 }
+
 // return new Promise((resolve, rejects) => {
 //   connection.query(sqlQuery, function (err, result) {
 //     if (err || result.length == 0) return rejects(err);
@@ -84,31 +88,14 @@ app.post("/register", jsonParser, async (req, res, next) => {
     "Content-Type": "application/json",
   });
 
-  //form data
-  // var name = req.body.username;
-  // var password = req.body.password;
-  // var email = req.body.email;
-
+  //request data
   const { username, password, email } = req.body;
 
-  // bcrypt.genSalt(10, (err, salt) => {
-  //   bcrypt.hash(password, salt, function (err, hash) {
-  //     if (err) throw err;
-  //     password = hash;
-  //   });
-  // });
-
-  const saltRounds = 10;
-  var hash = bcrypt.hashSync(req.body.password, saltRounds);
+  const saltRounds = 10; //higher number harder it is to reverse
+  var hash = bcrypt.hashSync(req.body.password, saltRounds); //hash the given password with salt before inserting
 
   var sql = `INSERT INTO users (username, password, email) VALUES ("${username}", "${hash}", "${email}")`;
 
-  // connection.query(sql, function (err, result) {
-  // if (err.code === "ER_DUP_ENTRY") {
-  //   throw new Error("Ez az email cím már foglalt");
-  //   res.statusCode = 409;
-  // } else if (err) throw err;
-  // else {
   const emailInDb = await checkEmailInDB(email).catch((error) => {
     console.log("code changed");
     res.statusCode = 100;
@@ -120,9 +107,7 @@ app.post("/register", jsonParser, async (req, res, next) => {
   } else {
     res.statusCode = await insertNewUser(sql);
   }
-  //}
 });
-// });
 //TODO send emails to validate registration
 //TODO ports are acting up
 //TODO SQL injection????
