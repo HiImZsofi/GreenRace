@@ -64,13 +64,6 @@ function insertNewUser(sql) {
   });
 }
 
-// return new Promise((resolve, rejects) => {
-//   connection.query(sqlQuery, function (err, result) {
-//     if (err || result.length == 0) return rejects(err);
-//     return resolve(result[0].password);
-//   });
-// });
-
 //test page route
 app.get("/", (req, res) => {
   res.send("Main page");
@@ -92,20 +85,28 @@ app.post("/register", jsonParser, async (req, res, next) => {
   const { username, password, email } = req.body;
 
   const saltRounds = 10; //higher number harder it is to reverse
-  var hash = bcrypt.hashSync(req.body.password, saltRounds); //hash the given password with salt before inserting
+  var hash = bcrypt.hashSync(password, saltRounds); //hash the given password with salt before inserting
+  //Jelszó bepácolva
 
   var sql = `INSERT INTO users (username, password, email) VALUES ("${username}", "${hash}", "${email}")`;
 
-  const emailInDb = await checkEmailInDB(email).catch((error) => {
-    console.log("code changed");
+  try {
+    await checkEmailInDB(email);
+  } catch (error) {
     res.statusCode = 100;
-  });
+    console.log("code changed to", res.statusCode);
+  }
 
-  if (res.statusCode != 100) {
-    res.statusCode = 409;
-    console.log("conflict");
-  } else {
-    res.statusCode = await insertNewUser(sql);
+  if (res.statusCode == 100) {
+    try {
+      await insertNewUser(sql);
+      res.statusCode = 200;
+      console.log("Inserted user", res.statusCode);
+    } catch (error) {
+      res.statusCode = 500;
+      res.sendStatus(error);
+      console.log("Server error", res.statusCode);
+    }
   }
 });
 //TODO send emails to validate registration
