@@ -13,7 +13,7 @@ class RegisterForm extends React.Component<{}, UserRegisterDto> {
 		this.usernameChangeHandler = this.usernameChangeHandler.bind(this);
 		this.passwordChangeHandler = this.passwordChangeHandler.bind(this);
 		this.emailChangeHandler = this.emailChangeHandler.bind(this);
-		this.registerSubmitHandler = this.registerSubmitHandler.bind(this);
+		this.submitHandler = this.submitHandler.bind(this);
 
 		this.state = {
 			username: "",
@@ -40,7 +40,7 @@ class RegisterForm extends React.Component<{}, UserRegisterDto> {
 		this.setState({ email: e.currentTarget.value });
 	}
 
-	registerSubmitHandler() {
+	submitHandler() {
 		const requestOptions = {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
@@ -137,7 +137,7 @@ class RegisterForm extends React.Component<{}, UserRegisterDto> {
 							<div>
 								<FormSubmitButton
 									type={{ inputType: "Register" }}
-									onClickHandler={this.registerSubmitHandler}
+									onClickHandler={this.submitHandler}
 								/>
 							</div>
 						</Card>
