@@ -5,6 +5,8 @@ import './App.css';
 import { response } from 'express';
 import {  BrowserRouter as Router,  Routes,  Route,  Link, BrowserRouter  } from 'react-router-dom';
 import UserPage from './userPage';
+import RankPage from './rankPage';
+import FriendPage from './friendPage';
 
 function App() {
 
@@ -22,6 +24,10 @@ function App() {
       <BrowserRouter>
       <Routes>
         <Route path="/userPage" element={<UserPage />}>
+        </Route>
+        <Route path="/rankPage" element={<RankPage />}>
+        </Route>
+        <Route path="/friendPage" element={<FriendPage />}>
         </Route>
       </Routes>
     </BrowserRouter>

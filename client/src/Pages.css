@@ -2,9 +2,15 @@
   background-color: darkgreen;
 }
 
-#logo, #profpic{ 
+#profpic{ 
   border-radius: 50%;
 }
+#logo {
+  border-radius: 10%
+} 
 #pont {
   color: darkgreen;
+}
+ul{
+  list-style: none;
 }
