@@ -3,13 +3,19 @@ import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import LoginForm from "./Login";
+import LoginForm from "./Views/Login";
 import Grid from "@mui/material/Grid";
-import { response } from 'express';
-import {  BrowserRouter as Router,  Routes,  Route,  Link, BrowserRouter  } from 'react-router-dom';
-import UserPage from './userPage';
-import RankPage from './rankPage';
-import FriendPage from './friendPage';
+import { response } from "express";
+import {
+	BrowserRouter as Router,
+	Routes,
+	Route,
+	Link,
+	BrowserRouter,
+} from "react-router-dom";
+import UserPage from "./Views/userPage";
+import RankPage from "./Views/rankPage";
+import FriendPage from "./Views/friendPage";
 
 function App() {
 	const [data, setData] = useState(null);
