@@ -86,7 +86,6 @@ app.post("/register", jsonParser, async (req, res, next) => {
 
   const saltRounds = 10; //higher number harder it is to reverse
   var hash = bcrypt.hashSync(password, saltRounds); //hash the given password with salt before inserting
-  //Jelszó bepácolva
 
   var sql = `INSERT INTO users (username, password, email) VALUES ("${username}", "${hash}", "${email}")`;
 
