@@ -8,6 +8,7 @@ export interface UserRegisterDto {
 	usernameErrMsg: string;
 	passwordErrMsg: string;
 	emailErrMsg: string;
+	registerSuccess: boolean;
 }
 
 export interface UserLoginDto {
