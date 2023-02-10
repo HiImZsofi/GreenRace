@@ -27,22 +27,17 @@ function App() {
 			.catch((error) => setError(error));
 	}, []);
 
-	const router = createBrowserRouter([
-		{
-			path: "/login",
- 			element: <LoginForm />,
-		},
-	]);
-
 	return (
+		<BrowserRouter>
 		<React.StrictMode>
-			<RouterProvider router={router} />
 			<Routes>
-				<Route path="/userPage" element={<UserPage />}></Route>
-				<Route path="/rankPage" element={<RankPage />}></Route>
-				<Route path="/friendPage" element={<FriendPage />}></Route>
+				<Route path="/login" element={<LoginForm />}></Route>
+				<Route path="/userPage" element={<UserPage/>}></Route>
+				<Route path="/rankPage" element={<RankPage/>}></Route>
+				<Route path="/friendPage" element={<FriendPage/>}></Route>
 			</Routes>
 		</React.StrictMode>
+		</BrowserRouter>
 	);
 }
 

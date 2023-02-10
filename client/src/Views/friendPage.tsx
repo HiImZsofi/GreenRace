@@ -1,12 +1,13 @@
 import React, {  } from 'react';
 import './Pages.css';
-import NavMenu from '../navBar';
+import NavMenu from '../components/navBar';
+import 'bootstrap/dist/css/bootstrap.css';
 
 class FriendPage extends React.Component<{}, any> {
     render(): React.ReactNode {
 		return (
-			<>
-			<NavMenu></NavMenu>
+			<div key={"friendPage"}>
+			<NavMenu/>
 				<div className='text-center'>
 					<div>
 						<h1>Barátok:</h1>
@@ -24,7 +25,7 @@ class FriendPage extends React.Component<{}, any> {
                         </ul>
 					</div>
 				</div>
-			</>
+			</div>
 		);
     }
 }

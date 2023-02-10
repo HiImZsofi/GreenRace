@@ -1,12 +1,13 @@
 import React from "react";
 import "./Pages.css";
 import NavMenu from "../components/navBar";
+import 'bootstrap/dist/css/bootstrap.css';
 
 class RankPage extends React.Component<{}, any> {
 	render(): React.ReactNode {
 		return (
-			<>
-				<NavMenu></NavMenu>
+			<div key={"rankPage"}>
+				<NavMenu/>
 				<div className="text-center">
 					<div>
 						<h1>Rang Lista:</h1>
@@ -24,7 +25,7 @@ class RankPage extends React.Component<{}, any> {
 						</ul>
 					</div>
 				</div>
-			</>
+			</div>
 		);
 	}
 }

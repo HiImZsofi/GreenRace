@@ -1,8 +1,6 @@
+import { Navbar, Container, Nav, Offcanvas} from 'react-bootstrap';
 import '../Views/Pages.css';
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import Offcanvas from 'react-bootstrap/Offcanvas';
+
 
 const NavMenu = ()=> {
     return (

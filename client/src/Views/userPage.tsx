@@ -1,12 +1,13 @@
 import React, {  } from 'react';
 import './Pages.css';
-import NavMenu from '../navBar';
+import NavMenu from '../components/navBar';
+import 'bootstrap/dist/css/bootstrap.css';
 
 class UserPage extends React.Component<{}, any> {
     render(): React.ReactNode {
 		return (
-			<>
-			<NavMenu></NavMenu>
+			<div key={"userPage"}>
+			<NavMenu />
 				<div className='text-center'>
 					<div>
 						<h1>10000 <span id='pont'>Zöldpont</span>-od van</h1>
@@ -21,7 +22,7 @@ class UserPage extends React.Component<{}, any> {
 						<img alt="Graph" src="graph-placeholder.jpg" className='mb-3'/>
 					</div>
 				</div>
-			</>
+			</div>
 		);
     }
 }
