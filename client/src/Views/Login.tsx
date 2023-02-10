@@ -1,5 +1,6 @@
 //Imports
 import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
 import React from "react";
 import { Navigate } from "react-router-dom";
 import FormSubmitButton from "../components/FormSubmitButton";
@@ -111,42 +112,53 @@ class LoginForm extends React.Component<{}, any> {
 			return <Navigate to="/" replace={true} />;
 		} else {
 			return (
-				<Box
-					component="form"
-					sx={{
-						"& .MuiTextField-root": { m: 1, width: "25ch" },
-					}}
-					textAlign={"center"}
-					noValidate
-					autoComplete="off"
+				<Grid
+					container
+					spacing={0}
+					direction="column"
+					alignItems="center"
+					justifyContent="center"
+					style={{ minHeight: "100vh" }}
 				>
-					<div>
-						<InputField
-							type={{
-								inputType: "Username",
-								value: this.state.username,
-								onChangeHandler: this.usernameChangeHandler,
+					<Grid item xs={3}>
+						<Box
+							component="form"
+							sx={{
+								"& .MuiTextField-root": { m: 1, width: "25ch" },
 							}}
-							error={this.state.usernameErr}
-							errorMessage={this.state.usernameErrMsg}
-						/>
-					</div>
-					<div>
-						<InputField
-							type={{
-								inputType: "Password",
-								value: this.state.password,
-								onChangeHandler: this.passwordChangeHandler,
-							}}
-							error={this.state.passwordErr}
-							errorMessage={this.state.passwordErrMsg}
-						/>
-					</div>
-					<FormSubmitButton
-						type={{ inputType: "Login" }}
-						onClickHandler={this.loginHandler}
-					/>
-				</Box>
+							textAlign={"center"}
+							noValidate
+							autoComplete="off"
+						>
+							<div>
+								<InputField
+									type={{
+										inputType: "Username",
+										value: this.state.username,
+										onChangeHandler: this.usernameChangeHandler,
+									}}
+									error={this.state.usernameErr}
+									errorMessage={this.state.usernameErrMsg}
+								/>
+							</div>
+							<div>
+								<InputField
+									type={{
+										inputType: "Password",
+										value: this.state.password,
+										onChangeHandler: this.passwordChangeHandler,
+									}}
+									error={this.state.passwordErr}
+									errorMessage={this.state.passwordErrMsg}
+								/>
+							</div>
+							<FormSubmitButton
+								type={{ inputType: "Login" }}
+								onClickHandler={this.loginHandler}
+							/>
+						</Box>
+					</Grid>
+				</Grid>
 			);
 		}
 	}
