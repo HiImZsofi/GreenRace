@@ -41,6 +41,7 @@ class LoginForm extends React.Component<{}, any> {
 
 	//HTTP POST request to backend
 	loginHandler() {
+		//Check if the input fields are empty or not
 		if (
 			this.state.username.trim() == null ||
 			this.state.username.trim() == "" ||
@@ -54,6 +55,7 @@ class LoginForm extends React.Component<{}, any> {
 				passwordErrMsg: "Invalid input",
 			});
 		} else {
+			//Send POST request to the server
 			const requestOptions = {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
@@ -108,6 +110,7 @@ class LoginForm extends React.Component<{}, any> {
 	}
 
 	render(): React.ReactNode {
+		//Redirect to the home page
 		if (this.state.loginSuccess) {
 			return <Navigate to="/" replace={true} />;
 		} else {

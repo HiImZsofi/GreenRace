@@ -29,14 +29,15 @@ function App() {
 
 	return (
 		<BrowserRouter>
-		<React.StrictMode>
-			<Routes>
-				<Route path="/login" element={<LoginForm />}></Route>
-				<Route path="/userPage" element={<UserPage/>}></Route>
-				<Route path="/rankPage" element={<RankPage/>}></Route>
-				<Route path="/friendPage" element={<FriendPage/>}></Route>
-			</Routes>
-		</React.StrictMode>
+			<React.StrictMode>
+				//Routes in the webapp
+				<Routes>
+					<Route path="/login" element={<LoginForm />}></Route>
+					<Route path="/userPage" element={<UserPage />}></Route>
+					<Route path="/rankPage" element={<RankPage />}></Route>
+					<Route path="/friendPage" element={<FriendPage />}></Route>
+				</Routes>
+			</React.StrictMode>
 		</BrowserRouter>
 	);
 }
