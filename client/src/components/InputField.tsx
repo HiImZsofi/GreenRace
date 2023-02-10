@@ -1,5 +1,6 @@
 //Imports
 import TextField from "@mui/material/TextField";
+import React from "react";
 import { InputTypeHandler } from "../Interfaces";
 
 //InputField function component
@@ -23,11 +24,25 @@ function InputField(props: {
 				/>
 			</div>
 		);
-	} else {
+	} else if (props.type.inputType == "Password") {
 		return (
 			<div>
 				<TextField
 					type={"Password"}
+					placeholder={props.type.inputType}
+					value={props.type.value}
+					onChange={props.type.onChangeHandler}
+					error={props.error}
+					helperText={props.errorMessage}
+					required
+				/>
+			</div>
+		);
+	} else {
+		return (
+			<div>
+				<TextField
+					type={"email"}
 					placeholder={props.type.inputType}
 					value={props.type.value}
 					onChange={props.type.onChangeHandler}

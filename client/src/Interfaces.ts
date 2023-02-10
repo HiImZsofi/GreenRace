@@ -1,3 +1,16 @@
+export interface UserRegisterDto {
+	username: string;
+	password: string;
+	email: string;
+	usernameErr: boolean;
+	passwordErr: boolean;
+	emailErr: boolean;
+	usernameErrMsg: string;
+	passwordErrMsg: string;
+	emailErrMsg: string;
+	registerSuccess: boolean;
+}
+
 export interface UserLoginDto {
 	username: string;
 	password: string;
