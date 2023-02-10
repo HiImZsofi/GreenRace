@@ -18,6 +18,8 @@ const connection = mysql.createConnection({
 	port: 3306,
 });
 
+//TODO Combine server code into one file
+
 //Query password from the users table in the database
 function getPassQuery(username) {
 	return new Promise((resolve, rejects) => {
