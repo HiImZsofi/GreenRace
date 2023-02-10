@@ -76,37 +76,35 @@ app.listen(PORT, () => {
 
 //register page route
 app.post("/register", jsonParser, async (req, res, next) => {
-  //request headers
-  res.set({
-    "Content-Type": "application/json",
-  });
+	//request headers
+	res.set({
+		"Content-Type": "application/json",
+	});
 
-  //request data
-  const { username, password, email } = req.body;
+	//request data
+	const { username, password, email } = req.body;
 
-  const saltRounds = 10; //higher number harder it is to reverse
-  var hash = bcrypt.hashSync(password, saltRounds); //hash the given password with salt before inserting
+	const saltRounds = 10; //higher number harder it is to reverse
+	var hash = bcrypt.hashSync(password, saltRounds); //hash the given password with salt before inserting
 
-  var sql = `INSERT INTO users (username, password, email) VALUES ("${username}", "${hash}", "${email}")`;
+	var sql = `INSERT INTO users (username, password, email) VALUES ("${username}", "${hash}", "${email}")`;
 
-  try {
-    await checkEmailInDB(email);
-  } catch (error) {
-    res.statusCode = 100;
-    console.log("code changed to", res.statusCode);
-  }
-
-  if (res.statusCode == 100) {
-    try {
-      await insertNewUser(sql);
-      res.statusCode = 200;
-      console.log("Inserted user", res.statusCode);
-    } catch (error) {
-      res.statusCode = 500;
-      res.sendStatus(error);
-      console.log("Server error", res.statusCode);
-    }
-  }
+	try {
+		await checkEmailInDB(email);
+		res.statusCode = 500;
+	} catch (error) {
+		res.statusCode = 100;
+		console.log("code changed to", res.statusCode);
+	}
+	try {
+		await insertNewUser(sql);
+		res.statusCode = 200;
+		console.log("Inserted user", res.statusCode);
+	} catch (error) {
+		res.statusCode = 500;
+		res.sendStatus(error);
+		console.log("Server error", res.statusCode);
+	}
 });
 //TODO send emails to validate registration
 //TODO ports are acting up
