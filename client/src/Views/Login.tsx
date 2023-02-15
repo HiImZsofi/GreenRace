@@ -13,25 +13,25 @@ class LoginForm extends React.Component<{}, UserLoginDto> {
 		super(props);
 
 		//Bind functions to this so they actually work
-		this.usernameChangeHandler = this.usernameChangeHandler.bind(this);
+		this.emailChangeHandler = this.emailChangeHandler.bind(this);
 		this.passwordChangeHandler = this.passwordChangeHandler.bind(this);
 		this.loginHandler = this.loginHandler.bind(this);
 
 		//Decalare state variables
 		this.state = {
-			username: "",
+			email: "",
 			password: "",
-			usernameErr: false,
+			emailErr: false,
 			passwordErr: false,
-			usernameErrMsg: "",
+			emailErrMsg: "",
 			passwordErrMsg: "",
 			loginSuccess: false,
 		};
 	}
 
 	//Lifted setState for the username field
-	usernameChangeHandler(e: React.SyntheticEvent<HTMLInputElement>) {
-		this.setState({ username: e.currentTarget.value.trim() });
+	emailChangeHandler(e: React.SyntheticEvent<HTMLInputElement>) {
+		this.setState({ email: e.currentTarget.value.trim() });
 	}
 
 	//Lifted setState for the username field
@@ -43,15 +43,15 @@ class LoginForm extends React.Component<{}, UserLoginDto> {
 	loginHandler() {
 		//Check if the input fields are empty or not
 		if (
-			this.state.username.trim() == null ||
-			this.state.username.trim() == "" ||
+			this.state.email.trim() == null ||
+			this.state.email.trim() == "" ||
 			this.state.password.trim() == null ||
 			this.state.password.trim() == ""
 		) {
-			this.setState({ usernameErr: true });
+			this.setState({ emailErr: true });
 			this.setState({ passwordErr: true });
 			this.setState({
-				usernameErrMsg: "Invalid input",
+				emailErrMsg: "Invalid input",
 				passwordErrMsg: "Invalid input",
 			});
 		} else {
@@ -60,7 +60,7 @@ class LoginForm extends React.Component<{}, UserLoginDto> {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
-					username: this.state.username,
+					username: this.state.email,
 					password: this.state.password,
 				}),
 			};
@@ -74,23 +74,23 @@ class LoginForm extends React.Component<{}, UserLoginDto> {
 					//Check for server response
 					if (response.status == 200) {
 						this.setState({
-							usernameErr: false,
-							usernameErrMsg: "",
+							emailErr: false,
+							emailErrMsg: "",
 							passwordErr: false,
 							passwordErrMsg: "",
 							loginSuccess: true,
 						});
 					} else if (response.status == 404) {
 						this.setState({
-							usernameErr: true,
-							usernameErrMsg: "Wrong username",
+							emailErr: true,
+							emailErrMsg: "Wrong email address",
 							passwordErr: true,
 							passwordErrMsg: "Invalid password",
 						});
 					} else if (response.status == 401) {
 						this.setState({
-							usernameErr: false,
-							usernameErrMsg: "",
+							emailErr: false,
+							emailErrMsg: "",
 							passwordErr: true,
 							passwordErrMsg: "Invalid password",
 						});
@@ -133,12 +133,12 @@ class LoginForm extends React.Component<{}, UserLoginDto> {
 							<div>
 								<InputField
 									type={{
-										inputType: "Username",
-										value: this.state.username,
-										onChangeHandler: this.usernameChangeHandler,
+										inputType: "Email",
+										value: this.state.email,
+										onChangeHandler: this.emailChangeHandler,
 									}}
-									error={this.state.usernameErr}
-									errorMessage={this.state.usernameErrMsg}
+									error={this.state.emailErr}
+									errorMessage={this.state.emailErrMsg}
 								/>
 							</div>
 							<div>
