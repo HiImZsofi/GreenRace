@@ -11,7 +11,7 @@ class UserPage extends React.Component<{}, any> {
 				<div className='text-center'>
 					<div>
 						<h1>10000 <span id='pont'>Zöldpont</span>-od van</h1>
-						<p>Ez 1000 szenezésnek felel meg</p>
+						<p>Ez 1000 szenyezésnek felel meg</p>
 					</div>
 					<div>
 						<h6>Elért eredmények:</h6>
