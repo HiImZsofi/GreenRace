@@ -5,9 +5,10 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 import FormSubmitButton from "../components/FormSubmitButton";
 import InputField from "../components/InputField";
+import { UserLoginDto } from "../Interfaces";
 
 //LoginForm component
-class LoginForm extends React.Component<{}, any> {
+class LoginForm extends React.Component<{}, UserLoginDto> {
 	//TODO change any to State Interface
 	constructor(props: any) {
 		super(props);
@@ -99,11 +100,8 @@ class LoginForm extends React.Component<{}, any> {
 						const error = (data && data.message) || response.status;
 						return Promise.reject(error);
 					}
-
-					this.setState({ postId: data.id });
 				})
 				.catch((error) => {
-					this.setState({ errorMessage: error.toString() });
 					console.error("There was an error!", error);
 				});
 		}

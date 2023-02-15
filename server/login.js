@@ -8,6 +8,7 @@ app.use(cors());
 const bp = require("body-parser");
 app.use(bp.json());
 app.use(bp.urlencoded({ extended: true }));
+const bcrypt = require("bcrypt");
 
 //Database config
 //? Maybe extract it to another js file for easier reuse
@@ -52,13 +53,18 @@ app.post("/login", async (req, res) => {
 	});
 
 	//Check password againts the one fetched from the database
-	if (res.statusCode != 404 && password === passwordInDB) {
-		res.statusCode = 200;
-		res.send("Successful login");
-		console.log("200 OK");
-	} else if (res.statusCode != 404) {
-		res.statusCode = 401;
-		res.send(JSON.stringify({ error: "Invalid password" }));
-		console.log("401 Auth Err");
+	if (res.statusCode != 404) {
+		bcrypt.compare(password, passwordInDB).then((compareRes, compareErr) => {
+			if (compareErr) throw compareErr;
+			if (compareRes) {
+				res.statusCode = 200;
+				res.send("Successful login");
+				console.log("200 OK");
+			} else {
+				res.statusCode = 401;
+				res.send(JSON.stringify({ error: "Invalid password" }));
+				console.log("401 Auth Err");
+			}
+		});
 	}
 });

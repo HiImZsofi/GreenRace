@@ -15,7 +15,7 @@ import {
 import UserPage from "./Views/userPage";
 import RankPage from "./Views/rankPage";
 import FriendPage from "./Views/friendPage";
-import RegisterForm from './Views/RegisterForm';
+import RegisterForm from "./Views/RegisterForm";
 
 function App() {
 	const [data, setData] = useState(null);
@@ -29,9 +29,11 @@ function App() {
 	}, []);
 //Routes in the webapp
 	return (
+		//Routes in the webapp
 		<BrowserRouter>
 			<React.StrictMode>
 				<Routes>
+					<Route path="/register" element={<RegisterForm />} />
 					<Route path="/login" element={<LoginForm />}></Route>
 					<Route path="/register" element={<RegisterForm />}></Route>
 					<Route path="/userPage" element={<UserPage />}></Route>

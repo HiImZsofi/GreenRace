@@ -20,6 +20,7 @@ export interface UserLoginDto {
 	passwordErr: boolean;
 	usernameErrMsg: string;
 	passwordErrMsg: string;
+	loginSuccess: boolean;
 }
 
 //Helps handle props when generating input fields
