@@ -54,9 +54,9 @@ app.post("/login", async (req, res) => {
 
 	//Check password againts the one fetched from the database
 	if (res.statusCode != 404) {
-		bcrypt.compare(password, passwordInDB).then((res, err) => {
-			if (err) throw err;
-			if (res) {
+		bcrypt.compare(password, passwordInDB).then((compareRes, compareErr) => {
+			if (compareErr) throw compareErr;
+			if (compareRes) {
 				res.statusCode = 200;
 				res.send("Successful login");
 				console.log("200 OK");
