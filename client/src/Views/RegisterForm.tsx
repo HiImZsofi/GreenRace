@@ -62,11 +62,12 @@ class RegisterForm extends React.Component<{}, UserRegisterDto> {
 				//Check for server response
 				if (response.status == 200) {
 					//TODO reroute to main page
-					console.log(200);
 					this.setState({ registerSuccess: true });
 				} else if (response.status == 500) {
-					const error = (data && data.message) || response.status;
-					return Promise.reject(error);
+					this.setState({
+						emailErr: true,
+						emailErrMsg: "Email already in use",
+					});
 				} else {
 					// get error message from body or default to response status
 					const error = (data && data.message) || response.status;
