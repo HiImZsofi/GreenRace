@@ -9,7 +9,6 @@ import { UserLoginDto } from "../Interfaces";
 
 //LoginForm component
 class LoginForm extends React.Component<{}, UserLoginDto> {
-	//TODO change any to State Interface
 	constructor(props: any) {
 		super(props);
 
@@ -158,7 +157,7 @@ class LoginForm extends React.Component<{}, UserLoginDto> {
 								onClickHandler={this.loginHandler}
 							/>
 						</Box>
-						<a href="./register">Nincs még fiókom</a>	
+						<a href="./register">Nincs még fiókom</a>
 					</Grid>
 				</Grid>
 			);
