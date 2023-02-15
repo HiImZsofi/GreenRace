@@ -12,7 +12,6 @@ import Card from "@mui/material/Card";
 
 //LoginForm component
 class LoginForm extends React.Component<{}, UserLoginDto> {
-	//TODO change any to State Interface
 	constructor(props: any) {
 		super(props);
 
