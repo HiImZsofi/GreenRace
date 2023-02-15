@@ -160,6 +160,7 @@ class LoginForm extends React.Component<{}, any> {
 								onClickHandler={this.loginHandler}
 							/>
 						</Box>
+						<a href="./register">Nincs még fiókom</a>	
 					</Grid>
 				</Grid>
 			);

@@ -6,7 +6,7 @@ import InputField from "../components/InputField";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import "./RegisterForm.css";
-import { Navigate, redirect } from "react-router-dom";
+import { Navigate, redirect, useNavigate } from "react-router-dom";
 import { response } from "express";
 
 class RegisterForm extends React.Component<{}, UserRegisterDto> {
@@ -150,6 +150,7 @@ class RegisterForm extends React.Component<{}, UserRegisterDto> {
 								</div>
 							</Card>
 						</Box>
+						<a href="./login">Van már fiókom</a>
 					</Grid>
 				</Grid>
 			);
