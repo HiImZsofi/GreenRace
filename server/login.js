@@ -41,7 +41,6 @@ app.listen(PORT, () => {
 
 //User POSTs info to the backend
 app.post("/login", async (req, res) => {
-	//TODO: decrypt encrypted password
 	//Store data in from the POST request
 	const { username, password } = req.body;
 
