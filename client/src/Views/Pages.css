@@ -14,3 +14,16 @@
 ul{
   list-style: none;
 }
+
+a:link, a:visited{
+  color: #007133;
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.loginbackground {
+  background: rgb(63, 251, 145);
+  background: radial-gradient(circle, rgba(63, 251, 145, 1) 0%, rgba(46, 125, 50, 1) 41%);
+}

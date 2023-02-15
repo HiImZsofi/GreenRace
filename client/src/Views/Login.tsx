@@ -6,6 +6,9 @@ import { Navigate } from "react-router-dom";
 import FormSubmitButton from "../components/FormSubmitButton";
 import InputField from "../components/InputField";
 import { UserLoginDto } from "../Interfaces";
+import '../Views/Pages.css';
+import { Navbar, Container, Nav, Offcanvas} from 'react-bootstrap';
+import Card from "@mui/material/Card";
 
 //LoginForm component
 class LoginForm extends React.Component<{}, UserLoginDto> {
@@ -113,6 +116,7 @@ class LoginForm extends React.Component<{}, UserLoginDto> {
 			return <Navigate to="/" replace={true} />;
 		} else {
 			return (
+				<>
 				<Grid
 					container
 					spacing={0}
@@ -120,6 +124,7 @@ class LoginForm extends React.Component<{}, UserLoginDto> {
 					alignItems="center"
 					justifyContent="center"
 					style={{ minHeight: "100vh" }}
+					className="loginbackground"
 				>
 					<Grid item xs={3}>
 						<Box
@@ -131,6 +136,14 @@ class LoginForm extends React.Component<{}, UserLoginDto> {
 							noValidate
 							autoComplete="off"
 						>
+							<Card
+								variant="outlined"
+								sx={{
+									padding: 2,
+									backgroundColor: "rgba(255, 255, 255, 0.85);",
+									boxShadow: 5,
+								}}
+							>
 							<div>
 								<InputField
 									type={{
@@ -157,10 +170,12 @@ class LoginForm extends React.Component<{}, UserLoginDto> {
 								type={{ inputType: "Login" }}
 								onClickHandler={this.loginHandler}
 							/>
-						</Box>
-						<a href="./register">Nincs még fiókom</a>	
+							<a href="./register">Nincs még fiókom</a>	
+							</Card>
+						</Box>		
 					</Grid>
 				</Grid>
+				</>
 			);
 		}
 	}

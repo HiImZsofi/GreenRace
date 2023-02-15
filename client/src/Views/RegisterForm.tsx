@@ -5,7 +5,6 @@ import FormSubmitButton from "../components/FormSubmitButton";
 import InputField from "../components/InputField";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
-import "./RegisterForm.css";
 import { Navigate, redirect, useNavigate } from "react-router-dom";
 import { response } from "express";
 
@@ -80,7 +79,7 @@ class RegisterForm extends React.Component<{}, UserRegisterDto> {
 
 	render(): React.ReactNode {
 		if (this.state.registerSuccess) {
-			return <Navigate to="/" replace={true} />;
+			return <Navigate to="/login" replace={true} />;
 		} else {
 			return (
 				<Grid
@@ -90,6 +89,7 @@ class RegisterForm extends React.Component<{}, UserRegisterDto> {
 					alignItems="center"
 					justifyContent="center"
 					style={{ minHeight: "100vh" }}
+					className="loginbackground"
 				>
 					<Grid item xs={3}>
 						<Box
@@ -148,9 +148,9 @@ class RegisterForm extends React.Component<{}, UserRegisterDto> {
 										onClickHandler={this.submitHandler}
 									/>
 								</div>
+								<a href="./login">Van már fiókom</a>
 							</Card>
-						</Box>
-						<a href="./login">Van már fiókom</a>
+						</Box>					
 					</Grid>
 				</Grid>
 			);
