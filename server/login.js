@@ -47,7 +47,7 @@ app.post("/login", async (req, res) => {
 
   let secretKey = require("crypto").randomBytes(256).toString("base64");
   let data = {
-    time: Date.now(),
+    time: new Date.now(),
     email: req.body.email,
   };
 
