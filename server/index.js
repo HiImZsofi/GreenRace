@@ -75,7 +75,7 @@ app.listen(PORT, () => {
 });
 
 //register page route
-app.post("/register", jsonParser, async (req, res, next) => {
+app.post("/register", async (req, res) => {
 	//request headers
 	res.set({
 		"Content-Type": "application/json",
@@ -100,10 +100,11 @@ app.post("/register", jsonParser, async (req, res, next) => {
 		await insertNewUser(sql);
 		res.statusCode = 200;
 		console.log("Inserted user", res.statusCode);
+		res.json();
 	} catch (error) {
 		res.statusCode = 500;
-		res.sendStatus(error);
 		console.log("Server error", res.statusCode);
+		res.json();
 	}
 });
 //TODO send emails to validate registration
