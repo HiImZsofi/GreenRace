@@ -149,7 +149,7 @@ class RegisterForm extends React.Component<{}, UserRegisterDto> {
 										onClickHandler={this.submitHandler}
 									/>
 								</div>
-								<a href="./login">Van már fiókom</a>
+								<a href="./login" className="LRlink">Van már fiókom</a>
 							</Card>
 						</Box>					
 					</Grid>

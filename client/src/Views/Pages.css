@@ -15,7 +15,7 @@ ul{
   list-style: none;
 }
 
-a:link, a:visited{
+.LRlink:link, .LRlink:visited{
   color: #007133;
   padding: 14px 25px;
   text-align: center;

@@ -112,7 +112,7 @@ class LoginForm extends React.Component<{}, UserLoginDto> {
 	render(): React.ReactNode {
 		//Redirect to the home page
 		if (this.state.loginSuccess) {
-			return <Navigate to="/" replace={true} />;
+			return <Navigate to="/userPage" replace={true} />;
 		} else {
 			return (
 				<>
@@ -169,7 +169,7 @@ class LoginForm extends React.Component<{}, UserLoginDto> {
 								type={{ inputType: "Login" }}
 								onClickHandler={this.loginHandler}
 							/>
-							<a href="./register">Nincs még fiókom</a>	
+							<a href="./register" className="LRlink">Nincs még fiókom</a>	
 							</Card>
 						</Box>		
 					</Grid>
