@@ -14,11 +14,11 @@ export interface UserRegisterDto {
 
 //TODO Implement this interface in the Login component
 export interface UserLoginDto {
-	username: string;
+	email: string;
 	password: string;
-	usernameErr: boolean;
+	emailErr: boolean;
 	passwordErr: boolean;
-	usernameErrMsg: string;
+	emailErrMsg: string;
 	passwordErrMsg: string;
 	loginSuccess: boolean;
 }
