@@ -22,11 +22,11 @@ const connection = mysql.createConnection({
 //TODO Combine server code into one file
 
 //Query password from the users table in the database
-function getPassQuery(username) {
+function getPassQuery(email) {
 	return new Promise((resolve, rejects) => {
 		connection.query(
-			"SELECT password FROM users WHERE username = ?",
-			[username],
+			"SELECT password FROM users WHERE email = ?",
+			[email],
 			function (err, result) {
 				if (err || result.length == 0) return rejects(err);
 				return resolve(result[0].password);
@@ -42,13 +42,13 @@ app.listen(PORT, () => {
 //User POSTs info to the backend
 app.post("/login", async (req, res) => {
 	//Store data in from the POST request
-	const { username, password } = req.body;
+	const { email, password } = req.body;
 
 	//Store data from SELECT query
-	const passwordInDB = await getPassQuery(username).catch((error) => {
+	const passwordInDB = await getPassQuery(email).catch((error) => {
 		res.statusCode = 404;
 		console.log(404);
-		res.send(JSON.stringify({ error: "Invalid username", response: error }));
+		res.send(JSON.stringify({ error: "Invalid email", response: error }));
 	});
 
 	//Check password againts the one fetched from the database
