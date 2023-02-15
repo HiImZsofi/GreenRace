@@ -44,7 +44,15 @@ app.listen(PORT, () => {
 app.post("/login", async (req, res) => {
   //TODO: decrypt encrypted password
   //Store data in from the POST request
-  const { username, password } = req.body;
+  const { username, password } = req.body; //TODO change username to email
+
+  let secretKey = require("crypto").randomBytes(256).toString("base64");
+  let data = {
+    time: Date.now(),
+    email: req.body.email,
+  };
+
+  const token = jwt.sign(data, secretKey);
 
   //Store data from SELECT query
   const passwordInDB = await getPassQuery(username).catch((error) => {
@@ -59,8 +67,9 @@ app.post("/login", async (req, res) => {
       if (compareErr) throw compareErr;
       if (compareRes) {
         res.statusCode = 200;
-        res.send("Successful login");
+        res.send(token);
         console.log("200 OK");
+        console.log(token);
       } else {
         res.statusCode = 401;
         res.send(JSON.stringify({ error: "Invalid password" }));
