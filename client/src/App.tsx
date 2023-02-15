@@ -1,7 +1,7 @@
 //imports
 import React, { useEffect, useState } from 'react';
 import './App.css';
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 import LoginForm from "./Views/Login";
 import Grid from "@mui/material/Grid";
 import { response } from "express";
@@ -33,6 +33,7 @@ function App() {
 		<BrowserRouter>
 			<React.StrictMode>
 				<Routes>
+					<Route path="/" element={<Navigate to='/login'/>}/>
 					<Route path="/register" element={<RegisterForm />} />
 					<Route path="/login" element={<LoginForm />}></Route>
 					<Route path="/register" element={<RegisterForm />}></Route>

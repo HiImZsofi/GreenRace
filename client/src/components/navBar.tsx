@@ -1,8 +1,10 @@
-import { Navbar, Container, Nav, Offcanvas} from 'react-bootstrap';
+import { useNavigate } from "react-router-dom";
+import { Navbar, Container, Nav, Offcanvas, Button} from 'react-bootstrap';
 import '../Views/Pages.css';
 
 
 const NavMenu = ()=> {
+  const navigate = useNavigate();
     return (
         <div>
         {[false].map((expand) => (
@@ -35,7 +37,7 @@ const NavMenu = ()=> {
               <img id="profpic" alt="Profpic" src="npic.png" width="90vh=" height="90vh=" className='mb-3'/>
               <p>Username.placeholder</p>
               <p>Options.placeholder</p>
-              <p>Logout.placeholder</p>
+              <Button variant="danger" onClick={() => navigate("/login")}>Logout</Button>
               </Container>		  
               </Offcanvas.Body>
             </Navbar.Offcanvas>
