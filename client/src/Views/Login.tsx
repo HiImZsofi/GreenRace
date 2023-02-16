@@ -9,6 +9,7 @@ import { UserLoginDto } from "../Interfaces";
 import "../Views/Pages.css";
 import { Navbar, Container, Nav, Offcanvas } from "react-bootstrap";
 import Card from "@mui/material/Card";
+import LoginForm from "../components/LoginForm";
 
 //LoginForm component
 class Login extends React.Component<{}, UserLoginDto> {
@@ -115,66 +116,34 @@ class Login extends React.Component<{}, UserLoginDto> {
 			return <Navigate to="/userPage" replace={true} />;
 		} else {
 			return (
-				<Grid
-					container
-					spacing={0}
-					direction="column"
-					alignItems="center"
-					justifyContent="center"
-					style={{ minHeight: "100vh" }}
-					className="loginbackground"
-				>
-					<Grid item xs={3}>
-						<Box
-							component="form"
-							sx={{
-								"& .MuiTextField-root": { m: 1, width: "25ch" },
-							}}
-							textAlign={"center"}
-							noValidate
-							autoComplete="off"
-						>
-							<Card
-								variant="outlined"
-								sx={{
-									padding: 2,
-									backgroundColor: "rgba(255, 255, 255, 0.85);",
-									boxShadow: 5,
-								}}
-							>
-								<div>
-									<InputField
-										type={{
-											inputType: "Email",
-											value: this.state.email,
-											onChangeHandler: this.emailChangeHandler,
-										}}
-										error={this.state.emailErr}
-										errorMessage={this.state.emailErrMsg}
-									/>
-								</div>
-								<div>
-									<InputField
-										type={{
-											inputType: "Password",
-											value: this.state.password,
-											onChangeHandler: this.passwordChangeHandler,
-										}}
-										error={this.state.passwordErr}
-										errorMessage={this.state.passwordErrMsg}
-									/>
-								</div>
-								<FormSubmitButton
-									type={{ inputType: "Login" }}
-									onClickHandler={this.loginHandler}
-								/>
-								<a href="./register" className="LRlink">
-									Nincs még fiókom
-								</a>
-							</Card>
-						</Box>
-					</Grid>
-				</Grid>
+				<LoginForm>
+					<InputField
+						type={{
+							inputType: "Email",
+							value: this.state.email,
+							onChangeHandler: this.emailChangeHandler,
+						}}
+						error={this.state.emailErr}
+						errorMessage={this.state.emailErrMsg}
+					/>
+					<InputField
+						type={{
+							inputType: "Password",
+							value: this.state.password,
+							onChangeHandler: this.passwordChangeHandler,
+						}}
+						error={this.state.passwordErr}
+						errorMessage={this.state.passwordErrMsg}
+					/>
+					<FormSubmitButton
+						type={{ inputType: "Login" }}
+						onClickHandler={this.loginHandler}
+					/>
+					//TODO destruct to component
+					<a href="./register" className="LRlink">
+						Nincs még fiókom
+					</a>
+				</LoginForm>
 			);
 		}
 	}
