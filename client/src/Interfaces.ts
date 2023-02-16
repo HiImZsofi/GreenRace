@@ -12,7 +12,6 @@ export interface UserRegisterDto {
 	registerSuccess: boolean;
 }
 
-//TODO Implement this interface in the Login component
 export interface UserLoginDto {
 	email: string;
 	password: string;
