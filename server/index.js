@@ -52,6 +52,7 @@ function checkEmailInDB(email) {
 
 //own promise for sql query so async will not mess it up
 function insertNewUser(sql) {
+	//TODO set points to zero
 	return new Promise((resolve, reject) => {
 		connection.query(sql, function (err, result) {
 			if (err) {
@@ -76,14 +77,14 @@ function getPassQuery(email) {
 	});
 }
 
-//test page route
-app.get("/", (req, res) => {
-	res.send("Main page");
-});
-
 //start server on given port
 app.listen(PORT, () => {
 	console.log(`Server listening on ${PORT}`);
+});
+
+//test page route
+app.get("/", (req, res) => {
+	res.send("Main page");
 });
 
 //register page route
@@ -137,7 +138,10 @@ app.post("/login", async (req, res) => {
 		res.send(JSON.stringify({ error: "Invalid email", response: error }));
 	});
 
-	const token = jwt.sign(data, secretKey);
+	const token = jwt.sign(data, secretKey, {
+		algorithm: "HS256",
+		expiresIn: "1h",
+	});
 
 	//Check password againts the one fetched from the database
 	if (res.statusCode != 404) {
