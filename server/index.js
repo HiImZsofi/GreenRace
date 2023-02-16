@@ -52,7 +52,6 @@ function checkEmailInDB(email) {
 
 //own promise for sql query so async will not mess it up
 function insertNewUser(sql) {
-	//TODO set points to zero
 	return new Promise((resolve, reject) => {
 		connection.query(sql, function (err, result) {
 			if (err) {
