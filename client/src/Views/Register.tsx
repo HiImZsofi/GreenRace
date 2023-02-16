@@ -45,39 +45,55 @@ class Register extends React.Component<{}, UserRegisterDto> {
 	}
 
 	submitHandler() {
-		const requestOptions = {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({
-				username: this.state.username,
-				password: this.state.password,
-				email: this.state.email,
-			}),
-		};
-		fetch("http://localhost:3001/register", requestOptions)
-			.then(async (response) => {
-				const isJson = response.headers
-					.get("content-type")
-					?.includes("application/json");
-				const data = isJson && (await response.json()); //if response headers include json then await
-				//Check for server response
-				if (response.status == 200) {
-					//TODO reroute to main page
-					this.setState({ registerSuccess: true });
-				} else if (response.status == 500) {
-					this.setState({
-						emailErr: true,
-						emailErrMsg: "Email already in use",
-					});
-				} else {
-					// get error message from body or default to response status
-					const error = (data && data.message) || response.status;
-					return Promise.reject(error);
-				}
-			})
-			.catch((error) => {
-				console.error("There was an error!", error);
+		if (
+			this.state.username.trim() == null ||
+			this.state.username.trim() == "" ||
+			this.state.email.trim() == null ||
+			this.state.email.trim() == "" ||
+			this.state.password.trim() == null ||
+			this.state.password.trim() == ""
+		) {
+			this.setState({ emailErr: true });
+			this.setState({ passwordErr: true });
+			this.setState({
+				emailErrMsg: "Invalid input",
+				passwordErrMsg: "Invalid input",
 			});
+		} else {
+			const requestOptions = {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					username: this.state.username,
+					password: this.state.password,
+					email: this.state.email,
+				}),
+			};
+			fetch("http://localhost:3001/register", requestOptions)
+				.then(async (response) => {
+					const isJson = response.headers
+						.get("content-type")
+						?.includes("application/json");
+					const data = isJson && (await response.json()); //if response headers include json then await
+					//Check for server response
+					if (response.status == 200) {
+						//TODO reroute to main page
+						this.setState({ registerSuccess: true });
+					} else if (response.status == 500) {
+						this.setState({
+							emailErr: true,
+							emailErrMsg: "Email already in use",
+						});
+					} else {
+						// get error message from body or default to response status
+						const error = (data && data.message) || response.status;
+						return Promise.reject(error);
+					}
+				})
+				.catch((error) => {
+					console.error("There was an error!", error);
+				});
+		}
 	}
 
 	render(): React.ReactNode {
