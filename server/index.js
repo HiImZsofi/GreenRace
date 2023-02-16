@@ -100,7 +100,7 @@ app.post("/register", async (req, res) => {
 	const saltRounds = 10; //higher number harder it is to reverse
 	var hash = bcrypt.hashSync(password, saltRounds); //hash the given password with salt before inserting
 
-	var sql = `INSERT INTO users (username, password, email) VALUES ("${username}", "${hash}", "${email}")`;
+	var sql = `INSERT INTO users (username, password, email, points) VALUES ("${username}", "${hash}", "${email}",0)`;
 
 	try {
 		await checkEmailInDB(email);
