@@ -7,8 +7,10 @@ import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import { Navigate, redirect, useNavigate } from "react-router-dom";
 import { response } from "express";
+import FormWrapper from "../components/FormWrapper";
+import FormRedirectLink from "../components/FormRedirectLink";
 
-class RegisterForm extends React.Component<{}, UserRegisterDto> {
+class Register extends React.Component<{}, UserRegisterDto> {
 	constructor(props: any) {
 		super(props);
 		this.usernameChangeHandler = this.usernameChangeHandler.bind(this);
@@ -83,80 +85,47 @@ class RegisterForm extends React.Component<{}, UserRegisterDto> {
 			return <Navigate to="/login" replace={true} />;
 		} else {
 			return (
-				<Grid
-					container
-					spacing={0}
-					direction="column"
-					alignItems="center"
-					justifyContent="center"
-					style={{ minHeight: "100vh" }}
-					className="loginbackground"
-				>
-					<Grid item xs={3}>
-						<Box
-							component="form"
-							sx={{
-								"& .MuiTextField-root": { m: 1, width: "25ch" },
-							}}
-							textAlign={"center"}
-							noValidate
-							autoComplete="off"
-						>
-							<Card
-								variant="outlined"
-								sx={{
-									padding: 2,
-									backgroundColor: "rgba(255, 255, 255, 0.85);",
-									boxShadow: 5,
-								}}
-							>
-								<div>
-									<InputField
-										type={{
-											inputType: "Username",
-											value: this.state.username,
-											onChangeHandler: this.usernameChangeHandler,
-										}}
-										error={this.state.usernameErr}
-										errorMessage={this.state.usernameErrMsg}
-									/>
-								</div>
-								<div>
-									<InputField
-										type={{
-											inputType: "Password",
-											value: this.state.password,
-											onChangeHandler: this.passwordChangeHandler,
-										}}
-										error={this.state.passwordErr}
-										errorMessage={this.state.passwordErrMsg}
-									/>
-								</div>
-								<div>
-									<InputField
-										type={{
-											inputType: "Email",
-											value: this.state.email,
-											onChangeHandler: this.emailChangeHandler,
-										}}
-										error={this.state.emailErr}
-										errorMessage={this.state.emailErrMsg}
-									/>
-								</div>
-								<div>
-									<FormSubmitButton
-										type={{ inputType: "Register" }}
-										onClickHandler={this.submitHandler}
-									/>
-								</div>
-								<a href="./login" className="LRlink">Van már fiókom</a>
-							</Card>
-						</Box>					
-					</Grid>
-				</Grid>
+				<FormWrapper>
+					<InputField
+						type={{
+							inputType: "Username",
+							value: this.state.username,
+							onChangeHandler: this.usernameChangeHandler,
+						}}
+						error={this.state.usernameErr}
+						errorMessage={this.state.usernameErrMsg}
+					/>
+					<InputField
+						type={{
+							inputType: "Password",
+							value: this.state.password,
+							onChangeHandler: this.passwordChangeHandler,
+						}}
+						error={this.state.passwordErr}
+						errorMessage={this.state.passwordErrMsg}
+					/>
+					<InputField
+						type={{
+							inputType: "Email",
+							value: this.state.email,
+							onChangeHandler: this.emailChangeHandler,
+						}}
+						error={this.state.emailErr}
+						errorMessage={this.state.emailErrMsg}
+					/>
+					<FormSubmitButton
+						type={{ inputType: "Register" }}
+						onClickHandler={this.submitHandler}
+					/>
+					<FormRedirectLink
+						url="/login"
+						classname="LRlink"
+						text="Már van fiókom"
+					/>
+				</FormWrapper>
 			);
 		}
 	}
 }
 
-export default RegisterForm;
+export default Register;

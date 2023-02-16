@@ -5,6 +5,17 @@
 #profpic{ 
   border-radius: 50%;
 }
+#profpicbor{
+  margin: 10px;
+}
+#profpicbut{
+  padding: 0;
+  border-radius: 50%;
+  border: darkgreen solid 5px;
+}
+#profpicbut:hover{
+  border: #8cad8d solid 5px;
+}
 #logo {
   border-radius: 10%
 } 
