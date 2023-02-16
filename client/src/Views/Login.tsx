@@ -6,12 +6,12 @@ import { Navigate } from "react-router-dom";
 import FormSubmitButton from "../components/FormSubmitButton";
 import InputField from "../components/InputField";
 import { UserLoginDto } from "../Interfaces";
-import '../Views/Pages.css';
-import { Navbar, Container, Nav, Offcanvas} from 'react-bootstrap';
+import "../Views/Pages.css";
+import { Navbar, Container, Nav, Offcanvas } from "react-bootstrap";
 import Card from "@mui/material/Card";
 
 //LoginForm component
-class LoginForm extends React.Component<{}, UserLoginDto> {
+class Login extends React.Component<{}, UserLoginDto> {
 	constructor(props: any) {
 		super(props);
 
@@ -20,7 +20,7 @@ class LoginForm extends React.Component<{}, UserLoginDto> {
 		this.passwordChangeHandler = this.passwordChangeHandler.bind(this);
 		this.loginHandler = this.loginHandler.bind(this);
 
-		//Decalare state variables
+		//Initalize state variables
 		this.state = {
 			email: "",
 			password: "",
@@ -115,7 +115,6 @@ class LoginForm extends React.Component<{}, UserLoginDto> {
 			return <Navigate to="/userPage" replace={true} />;
 		} else {
 			return (
-				<>
 				<Grid
 					container
 					spacing={0}
@@ -143,41 +142,42 @@ class LoginForm extends React.Component<{}, UserLoginDto> {
 									boxShadow: 5,
 								}}
 							>
-							<div>
-								<InputField
-									type={{
-										inputType: "Email",
-										value: this.state.email,
-										onChangeHandler: this.emailChangeHandler,
-									}}
-									error={this.state.emailErr}
-									errorMessage={this.state.emailErrMsg}
+								<div>
+									<InputField
+										type={{
+											inputType: "Email",
+											value: this.state.email,
+											onChangeHandler: this.emailChangeHandler,
+										}}
+										error={this.state.emailErr}
+										errorMessage={this.state.emailErrMsg}
+									/>
+								</div>
+								<div>
+									<InputField
+										type={{
+											inputType: "Password",
+											value: this.state.password,
+											onChangeHandler: this.passwordChangeHandler,
+										}}
+										error={this.state.passwordErr}
+										errorMessage={this.state.passwordErrMsg}
+									/>
+								</div>
+								<FormSubmitButton
+									type={{ inputType: "Login" }}
+									onClickHandler={this.loginHandler}
 								/>
-							</div>
-							<div>
-								<InputField
-									type={{
-										inputType: "Password",
-										value: this.state.password,
-										onChangeHandler: this.passwordChangeHandler,
-									}}
-									error={this.state.passwordErr}
-									errorMessage={this.state.passwordErrMsg}
-								/>
-							</div>
-							<FormSubmitButton
-								type={{ inputType: "Login" }}
-								onClickHandler={this.loginHandler}
-							/>
-							<a href="./register" className="LRlink">Nincs még fiókom</a>	
+								<a href="./register" className="LRlink">
+									Nincs még fiókom
+								</a>
 							</Card>
-						</Box>		
+						</Box>
 					</Grid>
 				</Grid>
-				</>
 			);
 		}
 	}
 }
 
-export default LoginForm;
+export default Login;
