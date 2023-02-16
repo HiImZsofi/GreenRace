@@ -38,6 +38,7 @@ export interface UserSettingsDto {
 //Helps handle props when generating input fields
 export interface InputTypeHandler {
 	inputType: string;
+	placeholder?: string;
 	value?: string;
 	onChangeHandler?: (e: any) => void;
 }
