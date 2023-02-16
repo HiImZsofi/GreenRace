@@ -8,7 +8,7 @@ import Grid from "@mui/material/Grid";
 import { Navigate, redirect, useNavigate } from "react-router-dom";
 import { response } from "express";
 
-class RegisterForm extends React.Component<{}, UserRegisterDto> {
+class Register extends React.Component<{}, UserRegisterDto> {
 	constructor(props: any) {
 		super(props);
 		this.usernameChangeHandler = this.usernameChangeHandler.bind(this);
@@ -149,9 +149,11 @@ class RegisterForm extends React.Component<{}, UserRegisterDto> {
 										onClickHandler={this.submitHandler}
 									/>
 								</div>
-								<a href="./login" className="LRlink">Van már fiókom</a>
+								<a href="./login" className="LRlink">
+									Van már fiókom
+								</a>
 							</Card>
-						</Box>					
+						</Box>
 					</Grid>
 				</Grid>
 			);
@@ -159,4 +161,4 @@ class RegisterForm extends React.Component<{}, UserRegisterDto> {
 	}
 }
 
-export default RegisterForm;
+export default Register;
