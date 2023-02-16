@@ -22,6 +22,13 @@ export interface UserLoginDto {
 	loginSuccess: boolean;
 }
 
+export interface UserSettingsDto {
+	newUsername: string;
+	newPassword: string;
+	currentPassword: string;
+	theme: boolean;
+}
+
 //Helps handle props when generating input fields
 export interface InputTypeHandler {
 	inputType: string;
