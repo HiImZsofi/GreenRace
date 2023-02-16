@@ -8,6 +8,7 @@ import Grid from "@mui/material/Grid";
 import { Navigate, redirect, useNavigate } from "react-router-dom";
 import { response } from "express";
 import FormWrapper from "../components/FormWrapper";
+import FormRedirectLink from "../components/FormRedirectLink";
 
 class Register extends React.Component<{}, UserRegisterDto> {
 	constructor(props: any) {
@@ -116,9 +117,11 @@ class Register extends React.Component<{}, UserRegisterDto> {
 						type={{ inputType: "Register" }}
 						onClickHandler={this.submitHandler}
 					/>
-					<a href="./login" className="LRlink">
-						Van már fiókom
-					</a>
+					<FormRedirectLink
+						url="/login"
+						classname="LRlink"
+						text="Már van fiókom"
+					/>
 				</FormWrapper>
 			);
 		}

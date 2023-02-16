@@ -10,6 +10,7 @@ import "../Views/Pages.css";
 import { Navbar, Container, Nav, Offcanvas } from "react-bootstrap";
 import Card from "@mui/material/Card";
 import FormWrapper from "../components/FormWrapper";
+import FormRedirectLink from "../components/FormRedirectLink";
 
 //LoginForm component
 class Login extends React.Component<{}, UserLoginDto> {
@@ -139,9 +140,11 @@ class Login extends React.Component<{}, UserLoginDto> {
 						type={{ inputType: "Login" }}
 						onClickHandler={this.loginHandler}
 					/>
-					<a href="./register" className="LRlink">
-						Nincs még fiókom
-					</a>
+					<FormRedirectLink
+						url="/register"
+						classname="LRlink"
+						text="Még nincs fiókom"
+					/>
 				</FormWrapper>
 			);
 		}
