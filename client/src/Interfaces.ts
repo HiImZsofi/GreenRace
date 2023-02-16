@@ -24,8 +24,14 @@ export interface UserLoginDto {
 
 export interface UserSettingsDto {
 	newUsername: string;
+	newUsernameErr: boolean;
+	newUsernameErrMsg: string;
 	newPassword: string;
+	newPasswordErr: boolean;
+	newPasswordErrMsg: string;
 	currentPassword: string;
+	currentPasswordErr: string;
+	currentPasswordErrMsg: string;
 	theme: boolean;
 }
 
