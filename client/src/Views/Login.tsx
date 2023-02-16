@@ -139,7 +139,6 @@ class Login extends React.Component<{}, UserLoginDto> {
 						type={{ inputType: "Login" }}
 						onClickHandler={this.loginHandler}
 					/>
-					//TODO destruct to component
 					<a href="./register" className="LRlink">
 						Nincs még fiókom
 					</a>
