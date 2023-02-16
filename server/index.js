@@ -100,13 +100,11 @@ app.post("/register", async (req, res) => {
 		await insertNewUser(sql);
 		res.statusCode = 200;
 		console.log("Inserted user", res.statusCode);
-    res.send(JSON.stringify({ result: "Successful registration" }));
+		res.send(JSON.stringify({ result: "Successful registration" }));
 	} catch (error) {
 		res.statusCode = 500;
 		console.log("Server error", res.statusCode);
 		res.json(JSON.stringify({ error: "Duplicate email" }));
 	}
 });
-//TODO send emails to validate registration
-//TODO ports are acting up
 //TODO SQL injection????
