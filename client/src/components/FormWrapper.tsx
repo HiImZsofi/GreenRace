@@ -1,7 +1,7 @@
 import { Box, Card, Grid } from "@mui/material";
 import { PropsWithChildren } from "react";
 
-function LoginForm(props: PropsWithChildren) {
+function FormWrapper(props: PropsWithChildren) {
 	return (
 		<Grid
 			container
@@ -38,4 +38,4 @@ function LoginForm(props: PropsWithChildren) {
 	);
 }
 
-export default LoginForm;
+export default FormWrapper;

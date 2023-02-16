@@ -9,7 +9,7 @@ import { UserLoginDto } from "../Interfaces";
 import "../Views/Pages.css";
 import { Navbar, Container, Nav, Offcanvas } from "react-bootstrap";
 import Card from "@mui/material/Card";
-import LoginForm from "../components/LoginForm";
+import FormWrapper from "../components/FormWrapper";
 
 //LoginForm component
 class Login extends React.Component<{}, UserLoginDto> {
@@ -116,7 +116,7 @@ class Login extends React.Component<{}, UserLoginDto> {
 			return <Navigate to="/userPage" replace={true} />;
 		} else {
 			return (
-				<LoginForm>
+				<FormWrapper>
 					<InputField
 						type={{
 							inputType: "Email",
@@ -143,7 +143,7 @@ class Login extends React.Component<{}, UserLoginDto> {
 					<a href="./register" className="LRlink">
 						Nincs még fiókom
 					</a>
-				</LoginForm>
+				</FormWrapper>
 			);
 		}
 	}
