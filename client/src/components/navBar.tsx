@@ -86,7 +86,7 @@ const NavMenu = ()=> {
                       <Container className='text-center'>
                         <img id="profpic" alt="Profpic" src={picfilepath !== "" ? picfilepath : "npic.png"} width="90vh=" height="90vh=" className='mb-3'/>
                         <Row><p>{username !== "" ? username : "username_placeholder"}</p></Row>
-                        <Row><Button variant="success" className="mb-1">Options</Button></Row>
+                        <Row><Button variant="success" className="mb-1" onClick={() => navigate("/settings")}>Options</Button></Row>
                         <Row><Button variant="danger" onClick={() => navigate("/login")}>Logout</Button>  </Row>          
                       </Container>	
                     </Offcanvas.Body>
