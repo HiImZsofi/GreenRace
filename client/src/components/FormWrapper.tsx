@@ -1,7 +1,10 @@
 import { Box, Card, Grid } from "@mui/material";
 import { PropsWithChildren } from "react";
 
-function FormWrapper(props: PropsWithChildren) {
+interface Props {
+	vhnum:string
+}
+function FormWrapper(props: PropsWithChildren<Props>) {
 	return (
 		<Grid
 			container
@@ -9,7 +12,7 @@ function FormWrapper(props: PropsWithChildren) {
 			direction="column"
 			alignItems="center"
 			justifyContent="center"
-			style={{ minHeight: "100vh" }}
+			style={{ minHeight: props.vhnum }}
 			className="loginbackground"
 		>
 			<Grid item xs={3}>

@@ -8,7 +8,7 @@ class UserPage extends React.Component<{}, any> {
 		return (
 			<div key={"userPage"}>
 			<NavMenu />
-				<div className='text-center'>
+				<div className='text-center mt-3'>
 					<div>
 						<h1>10000 <span id='pont'>Zöldpont</span>-od van</h1>
 						<p>Ez 1000 szenyezésnek felel meg</p>

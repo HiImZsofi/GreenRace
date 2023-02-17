@@ -61,7 +61,7 @@ const NavMenu = ()=> {
     return (
         <>
         {[false].map((expand) => (
-            <Navbar expand={expand} className="mb-3 color-nav" variant='dark' key={"navbar"}>
+            <Navbar expand={expand} className="color-nav" variant='dark' key={"navbar"} style={{minHeight: "11vh"}}>
               <Container fluid>
                 <Navbar.Brand>
                   <img id="logo" alt="Green_Race_Logo" src="greenRaceLogo.png" width="50vh=" height="50vh="/>
