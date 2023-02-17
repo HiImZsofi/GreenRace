@@ -105,6 +105,7 @@ class Register extends React.Component<{}, UserRegisterDto> {
 					<InputField
 						type={{
 							inputType: "Username",
+							placeholder: "Username",
 							value: this.state.username,
 							onChangeHandler: this.usernameChangeHandler,
 						}}
@@ -114,6 +115,7 @@ class Register extends React.Component<{}, UserRegisterDto> {
 					<InputField
 						type={{
 							inputType: "Password",
+							placeholder: "Password",
 							value: this.state.password,
 							onChangeHandler: this.passwordChangeHandler,
 						}}
@@ -123,6 +125,7 @@ class Register extends React.Component<{}, UserRegisterDto> {
 					<InputField
 						type={{
 							inputType: "Email",
+							placeholder: "Email",
 							value: this.state.email,
 							onChangeHandler: this.emailChangeHandler,
 						}}

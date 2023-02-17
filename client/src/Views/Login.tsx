@@ -121,6 +121,7 @@ class Login extends React.Component<{}, UserLoginDto> {
 					<InputField
 						type={{
 							inputType: "Email",
+							placeholder: "Email",
 							value: this.state.email,
 							onChangeHandler: this.emailChangeHandler,
 						}}
