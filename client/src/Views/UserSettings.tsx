@@ -63,6 +63,7 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 	}
 	render(): React.ReactNode {
 		return (
+			//TODO Store dark theme option in a cookie
 			<>
 				<NavMenu />
 				<FormWrapper vhnum="89vh">
