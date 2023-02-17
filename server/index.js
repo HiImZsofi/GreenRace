@@ -78,6 +78,19 @@ function getPassQuery(email) {
   });
 }
 
+function getIDFromDB(email) {
+  return new Promise((resolve, rejects) => {
+    connection.query(
+      "SELECT user_ID FROM users WHERE email = ?",
+      [email],
+      function (err, result) {
+        if (err || result.length == 0) return rejects(err);
+        return resolve(result[0].user_ID);
+      }
+    );
+  });
+}
+
 //start server on given port
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
@@ -131,6 +144,9 @@ app.post("/login", async (req, res) => {
     time: Date.now(),
     email: req.body.email,
   };
+
+  //TODO Get id from the database based on the email
+  //put it in user object with the token
 
   //Store data from SELECT query
   const passwordInDB = await getPassQuery(email).catch((error) => {
@@ -253,5 +269,25 @@ app.post("/settings", async (req, res) => {
     res.statusCode = 200;
     res.send(JSON.stringify({ result: "OK" }));
   }
+  //Check password againts the one fetched from the database
+  if (res.statusCode != 404) {
+    bcrypt
+      .compare(password, passwordInDB)
+      .then(async (compareRes, compareErr) => {
+        if (compareErr) throw compareErr;
+        if (compareRes) {
+          const id = await getIDFromDB(email);
+          res.statusCode = 200;
+          res.send({ id: id });
+          console.log("200 OK");
+          console.log(token);
+        } else {
+          res.statusCode = 401;
+          res.send(JSON.stringify({ error: "Invalid password" }));
+          console.log("401 Auth Err");
+        }
+      });
+  }
 });
+
 //TODO SQL injection????
