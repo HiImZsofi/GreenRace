@@ -61,12 +61,11 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 			}),
 		};
 	}
-
 	render(): React.ReactNode {
 		return (
 			<>
 				<NavMenu />
-				<FormWrapper>
+				<FormWrapper vhnum="89vh">
 					<InputField
 						type={{
 							inputType: "Username",

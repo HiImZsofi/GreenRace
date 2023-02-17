@@ -8,7 +8,7 @@ class FriendPage extends React.Component<{}, any> {
 		return (
 			<div key={"friendPage"}>
 			<NavMenu/>
-				<div className='text-center'>
+				<div className='text-center mt-3'>
 					<div>
 						<h1>Barátok:</h1>
                         <ul>

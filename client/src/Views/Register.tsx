@@ -101,7 +101,7 @@ class Register extends React.Component<{}, UserRegisterDto> {
 			return <Navigate to="/login" replace={true} />;
 		} else {
 			return (
-				<FormWrapper>
+				<FormWrapper vhnum="100vh">
 					<InputField
 						type={{
 							inputType: "Username",

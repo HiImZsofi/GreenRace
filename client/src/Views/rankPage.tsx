@@ -8,7 +8,7 @@ class RankPage extends React.Component<{}, any> {
 		return (
 			<div key={"rankPage"}>
 				<NavMenu/>
-				<div className="text-center">
+				<div className="text-center mt-3">
 					<div>
 						<h1>Rang Lista:</h1>
 						<ul>

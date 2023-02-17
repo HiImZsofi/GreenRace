@@ -117,7 +117,7 @@ class Login extends React.Component<{}, UserLoginDto> {
 			return <Navigate to="/userPage" replace={true} />;
 		} else {
 			return (
-				<FormWrapper>
+				<FormWrapper vhnum="100vh">
 					<InputField
 						type={{
 							inputType: "Email",
