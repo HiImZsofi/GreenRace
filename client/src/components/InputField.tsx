@@ -15,7 +15,7 @@ function InputField(props: {
 			<div>
 				<TextField
 					type={"text"}
-					placeholder={props.type.inputType}
+					placeholder={props.type.placeholder}
 					value={props.type.value}
 					onChange={props.type.onChangeHandler}
 					error={props.error}
@@ -29,6 +29,20 @@ function InputField(props: {
 			<div>
 				<TextField
 					type={"Password"}
+					placeholder={props.type.placeholder}
+					value={props.type.value}
+					onChange={props.type.onChangeHandler}
+					error={props.error}
+					helperText={props.errorMessage}
+					required
+				/>
+			</div>
+		);
+	} else if (props.type.inputType === "Email") {
+		return (
+			<div>
+				<TextField
+					type={"email"}
 					placeholder={props.type.inputType}
 					value={props.type.value}
 					onChange={props.type.onChangeHandler}
@@ -42,11 +56,10 @@ function InputField(props: {
 		return (
 			<div>
 				<TextField
-					type={"email"}
+					type={"text"}
 					placeholder={props.type.inputType}
 					value={props.type.value}
 					onChange={props.type.onChangeHandler}
-					error={props.error}
 					helperText={props.errorMessage}
 					required
 				/>

@@ -130,6 +130,7 @@ class Login extends React.Component<{}, UserLoginDto> {
 					<InputField
 						type={{
 							inputType: "Password",
+							placeholder: "Password",
 							value: this.state.password,
 							onChangeHandler: this.passwordChangeHandler,
 						}}

@@ -7,6 +7,7 @@ import Register from "./Views/Register";
 import UserPage from "./Views/userPage";
 import RankPage from "./Views/rankPage";
 import FriendPage from "./Views/friendPage";
+import UserSettings from "./Views/UserSettings";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/userPage" element={<UserPage />}></Route>
           <Route path="/rankPage" element={<RankPage />}></Route>
           <Route path="/friendPage" element={<FriendPage />}></Route>
+          <Route path="/settings" element={<UserSettings />} />
         </Routes>
       </React.StrictMode>
     </BrowserRouter>

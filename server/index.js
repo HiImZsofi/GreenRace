@@ -205,3 +205,53 @@ app.get("/userPage", checkToken, (req, res) => {
     }
   });
 });
+
+app.post("/settings", async (req, res) => {
+  const { newUsername, newPassword, currentPassword } = req.body;
+  if (newUsername !== null) {
+    //TODO use id instead of email
+    const passwordInDB = await getPassQuery(email).catch((error) => {
+      res.statusCode = 404;
+      console.log(404);
+      res.send(JSON.stringify({ error: "Invalid email", response: error }));
+    });
+    bcrypt
+      .compare(currentPassword, passwordInDB)
+      .then((compareRes, compareErr) => {
+        if (compareErr) throw compareErr;
+        if (compareRes) {
+          //TODO update sql with id
+          res.statusCode = 200;
+          res.send(JSON.stringify({ result: "Saved" }));
+        } else {
+          res.statusCode = 401;
+          res.send(JSON.stringify({ error: "Invalid password" }));
+          console.log("401 Auth Err");
+        }
+      });
+  } else if (newPassword !== null) {
+    const passwordInDB = await getPassQuery(email).catch((error) => {
+      res.statusCode = 404;
+      console.log(404);
+      res.send(JSON.stringify({ error: "Invalid email", response: error }));
+    });
+    bcrypt
+      .compare(currentPassword, passwordInDB)
+      .then((compareRes, compareErr) => {
+        if (compareErr) throw compareErr;
+        if (compareRes) {
+          //TODO update sql with id
+          res.statusCode = 200;
+          res.send(JSON.stringify({ result: "Saved" }));
+        } else {
+          res.statusCode = 401;
+          res.send(JSON.stringify({ error: "Invalid password" }));
+          console.log("401 Auth Err");
+        }
+      });
+  } else {
+    res.statusCode = 200;
+    res.send(JSON.stringify({ result: "OK" }));
+  }
+});
+//TODO SQL injection????
