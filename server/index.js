@@ -167,8 +167,7 @@ app.post("/login", async (req, res) => {
 				if (compareRes) {
 					const id = await getIDFromDB(email);
 					res.statusCode = 200;
-					res.send([{ id: id, token: token }]);
-					//res.send(token);
+					res.send({ id: id });
 					console.log("200 OK");
 					console.log(token);
 				} else {
