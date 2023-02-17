@@ -1,6 +1,6 @@
 import React, {  } from 'react';
 import './Pages.css';
-import NavMenu from '../components/navBar';
+import NavMenu from '../components/NavBar';
 import 'bootstrap/dist/css/bootstrap.css';
 
 class UserPage extends React.Component<{}, any> {

@@ -4,9 +4,9 @@ import "./App.css";
 import { Navigate, Routes, Route, BrowserRouter } from "react-router-dom";
 import Login from "./Views/Login";
 import Register from "./Views/Register";
-import UserPage from "./Views/userPage";
-import RankPage from "./Views/rankPage";
-import FriendPage from "./Views/friendPage";
+import UserPage from "./Views/UserPage";
+import RankPage from "./Views/RankPage";
+import FriendPage from "./Views/FriendPage";
 import UserSettings from "./Views/UserSettings";
 
 function App() {
