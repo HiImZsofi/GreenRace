@@ -6,10 +6,12 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const app = express();
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 //server port
 const PORT = process.env.PORT || 3001;
@@ -99,7 +101,7 @@ app.post("/register", async (req, res) => {
   const saltRounds = 10; //higher number harder it is to reverse
   var hash = bcrypt.hashSync(password, saltRounds); //hash the given password with salt before inserting
 
-  var sql = `INSERT INTO users (username, password, email, points) VALUES ("${username}", "${hash}", "${email}",0)`;
+  var sql = `INSERT INTO users (username, password, email, points) VALUES ("${username}", "${hash}", "${email}",0)`; //TODO SQL injection????
 
   try {
     await checkEmailInDB(email);
@@ -137,25 +139,34 @@ app.post("/login", async (req, res) => {
     res.send(JSON.stringify({ error: "Invalid email", response: error }));
   });
 
-  const token = jwt.sign(
-    data,
-    secretKey,
-    { expiresIn: "1h" },
-    {
-      algorithm: "HS256",
-      expiresIn: "1h",
-    }
-  );
+  //   const token = jwt.sign(
+  //     data,
+  //     secretKey,
+  //     { expiresIn: "1h" },
+  //     {
+  //       algorithm: "HS256",
+  //       expiresIn: "1h",
+  //     }
+  //   );
+
+  let token;
 
   //Check password againts the one fetched from the database
   if (res.statusCode != 404) {
     bcrypt.compare(password, passwordInDB).then((compareRes, compareErr) => {
       if (compareErr) throw compareErr;
       if (compareRes) {
-        res.statusCode = 200;
-        res.send(token);
+        try {
+          token = jwt.sign({ email: this.email }, secretKey, {
+            expiresIn: "1h",
+          });
+        } catch (e) {
+          throw new Error(e.message);
+        }
+        res.cookie("auth-token", token);
+        res.send("ok");
         console.log("200 OK");
-        console.log(token);
+        console.log(res.cookie.toString());
       } else {
         res.statusCode = 401;
         res.send(JSON.stringify({ error: "Invalid password" }));
@@ -168,6 +179,7 @@ app.post("/login", async (req, res) => {
 const checkToken = (req, res, next) => {
   const header = req.headers["authorization"];
 
+  //make sure if token header is not undefined
   if (typeof header !== undefined) {
     const bearer = header.split(" ");
     const token = bearer[1];
@@ -175,7 +187,21 @@ const checkToken = (req, res, next) => {
     req.token = token;
     next();
   } else {
+    //if undefined return forbidden status code
     res.sendStatus(403);
   }
 };
-//TODO SQL injection????
+
+app.get("/userPage", checkToken, (req, res) => {
+  jwt.verify(req.token, "secretKey", (err, authorizedData) => {
+    if (err) {
+      res.sendStatus(403);
+      console.log("Caught you lacking");
+    } else {
+      res.json({
+        message: "Successful login",
+      });
+      console.log("Successful login");
+    }
+  });
+});
