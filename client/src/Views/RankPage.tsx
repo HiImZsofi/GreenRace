@@ -1,6 +1,6 @@
 import React from "react";
 import "./Pages.css";
-import NavMenu from "../components/NavBar";
+import NavMenu from "../components/navBar";
 import 'bootstrap/dist/css/bootstrap.css';
 
 class RankPage extends React.Component<{}, any> {

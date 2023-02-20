@@ -1,10 +1,9 @@
 import React from "react";
-import { Navbar } from "react-bootstrap";
 import FormSubmitButton from "../components/FormSubmitButton";
 import FormSwitch from "../components/FormSwitch";
 import FormWrapper from "../components/FormWrapper";
 import InputField from "../components/InputField";
-import NavMenu from "../components/NavBar";
+import NavMenu from "../components/navBar";
 import { UserSettingsDto } from "../Interfaces";
 
 class UserSettings extends React.Component<{}, UserSettingsDto> {
