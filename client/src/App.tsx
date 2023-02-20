@@ -4,10 +4,10 @@ import "./App.css";
 import { Navigate, Routes, Route, BrowserRouter } from "react-router-dom";
 import Login from "./Views/Login";
 import Register from "./Views/Register";
+import UserSettings from "./Views/UserSettings";
 import UserPage from "./Views/UserPage";
 import RankPage from "./Views/RankPage";
 import FriendPage from "./Views/FriendPage";
-import UserSettings from "./Views/UserSettings";
 
 function App() {
   return (
