@@ -1,0 +1,40 @@
+.color-nav {
+  background-color: darkgreen;
+}
+
+#profpic{ 
+  border-radius: 50%;
+}
+#profpicbor{
+  margin: 10px;
+}
+#profpicbut{
+  padding: 0;
+  border-radius: 50%;
+  border: darkgreen solid 5px;
+}
+#profpicbut:hover{
+  border: #8cad8d solid 5px;
+}
+#logo {
+  border-radius: 10%
+} 
+#pont {
+  color: darkgreen;
+}
+ul{
+  list-style: none;
+}
+
+.LRlink:link, .LRlink:visited{
+  color: #007133;
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.loginbackground {
+  background: rgb(63, 251, 145);
+  background: radial-gradient(circle, rgba(63, 251, 145, 1) 0%, rgba(46, 125, 50, 1) 41%);
+}
