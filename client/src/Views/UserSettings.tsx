@@ -50,6 +50,7 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 
 	saveHandler() {
 		//TODO add empty check for fields
+		//TODO Fix input fields
 		const requestOptions = {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
