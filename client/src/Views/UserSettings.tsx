@@ -65,7 +65,7 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 		return (
 			//TODO Store dark theme option in a cookie
 			<>
-				<NavMenu />
+			//TODO NavBar with atributes
 				<FormWrapper vhnum="89vh">
 					<InputField
 						type={{
