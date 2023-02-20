@@ -2,12 +2,23 @@ import React, {  } from 'react';
 import './Pages.css';
 import NavMenu from "../components/NavBar";
 import 'bootstrap/dist/css/bootstrap.css';
+import { UserPageDto } from '../Interfaces';
 
-class UserPage extends React.Component<{}, any> {
+class UserPage extends React.Component<{}, UserPageDto> {
+	constructor(props: any) {
+		super(props);
+
+		//Initalize state variables
+		this.state = {
+			username: "",
+			picfilepath: "",
+			points: 0,
+		};
+	}
     render(): React.ReactNode {
 		return (
 			<div key={"userPage"}>
-			<NavMenu />
+			<NavMenu username={this.state.username} picfilepath={this.state.picfilepath}/>
 				<div className='text-center mt-3'>
 					<div>
 						<h1>10000 <span id='pont'>Zöldpont</span>-od van</h1>

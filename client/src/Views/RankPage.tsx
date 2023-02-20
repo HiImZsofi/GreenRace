@@ -7,7 +7,7 @@ class RankPage extends React.Component<{}, any> {
 	render(): React.ReactNode {
 		return (
 			<div key={"rankPage"}>
-				<NavMenu/>
+				<NavMenu username={this.state.username} picfilepath={this.state.picfilepath}/>
 				<div className="text-center mt-3">
 					<div>
 						<h1>Rang Lista:</h1>

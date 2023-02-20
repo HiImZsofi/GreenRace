@@ -16,47 +16,8 @@ let NavMenuPoints: MenuPoints[] = [
   { text: "Barátok", link: "./friendPage", class: "me-auto"},];
 
 //Navbar
-const NavMenu = ()=> {
-  const [id, setId] = React.useState(0);
-  const [username, setUserName] = React.useState("");
-  const [picfilepath, setPicfilepath] = React.useState("");
-  React.useEffect(() => {
-    const fetchData = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      //TODO add fetch source 
-      const res = await fetch("", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization":"Bearer " + token,
-          },
-        });
-        if (res.ok) {
-          const json = await res.json();
-
-          const id = json.id;
-          setId(id);
-          localStorage.setItem("id", id);
-
-          const username = json.username;
-          setUserName(username);
-          localStorage.setItem("username", username);
-
-          const picfilepath = json.picfilepath;
-          setPicfilepath(picfilepath);
-          localStorage.setItem("picfilepath", picfilepath);
-
-        } else {
-          console.log("Invalid token")
-        }
-    } catch (error) {
-      console.log("User adataitt nem sikerült lekérni")
-      console.log(error);
-    }
-  };
-    fetchData();
-  });
+const NavMenu = (props:{username:string;picfilepath:string;})=> {
+ 
   const navigate = useNavigate();
     return (
         <>
@@ -73,7 +34,7 @@ const NavMenu = ()=> {
                 ))}
                 <Navbar.Toggle id="profpicbut" aria-controls={`offcanvasNavbar-expand-${expand}`}>
                   <div className="profpicbor">
-                    <img id="profpic" alt="Profpic" src={picfilepath !== "" ? picfilepath : "npic.png"} width="40vh=" height="40vh="/>
+                    <img id="profpic" alt="Profpic" src={props.picfilepath !== "" ? props.picfilepath : "npic.png"} width="40vh=" height="40vh="/>
                   </div>
                 </Navbar.Toggle>
                 <Navbar.Offcanvas id={`offcanvasNavbar-expand-${expand}`}
@@ -84,8 +45,8 @@ const NavMenu = ()=> {
                     </Offcanvas.Header>
                     <Offcanvas.Body>
                       <Container className='text-center'>
-                        <img id="profpic" alt="Profpic" src={picfilepath !== "" ? picfilepath : "npic.png"} width="90vh=" height="90vh=" className='mb-3'/>
-                        <Row><p>{username !== "" ? username : "username_placeholder"}</p></Row>
+                        <img id="profpic" alt="Profpic" src={props.picfilepath !== "" ? props.picfilepath : "npic.png"} width="90vh=" height="90vh=" className='mb-3'/>
+                        <Row><p>{props.username !== "" ? props.username : "username_placeholder"}</p></Row>
                         <Row><Button variant="success" className="mb-1" onClick={() => navigate("/settings")}>Options</Button></Row>
                         <Row><Button variant="danger" onClick={() => navigate("/login")}>Logout</Button>  </Row>          
                       </Container>	

@@ -22,6 +22,12 @@ export interface UserLoginDto {
 	loginSuccess: boolean;
 }
 
+export interface UserPageDto {
+	username: string;
+	picfilepath: string;
+	points: number;
+}
+
 export interface UserSettingsDto {
 	newUsername: string;
 	newUsernameErr: boolean;
