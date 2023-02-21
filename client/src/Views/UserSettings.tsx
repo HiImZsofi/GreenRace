@@ -29,6 +29,9 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 			currentPasswordErr: "",
 			currentPasswordErrMsg: "",
 			theme: false,
+			username: "",
+			picfilepath: "",
+			points: 0,
 		};
 	}
 
@@ -65,7 +68,7 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 		return (
 			//TODO Store dark theme option in a cookie
 			<>
-			//TODO NavBar with atributes
+			<NavMenu username={this.state.username} picfilepath={this.state.picfilepath}/>
 				<FormWrapper vhnum="89vh">
 					<InputField
 						type={{

@@ -39,6 +39,9 @@ export interface UserSettingsDto {
 	currentPasswordErr: string;
 	currentPasswordErrMsg: string;
 	theme: boolean;
+	username: string;
+	picfilepath: string;
+	points: number;
 }
 
 //Helps handle props when generating input fields
