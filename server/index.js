@@ -135,11 +135,16 @@ app.post("/register", async (req, res) => {
   }
 });
 
+//jwt token sign function
+function generateAccessToken(username) {
+  let secretKey = require("crypto").randomBytes(256).toString("base64");
+  return jwt.sign({ email: this.email }, secretKey, { expiresIn: "1h" });
+}
+
 app.post("/login", async (req, res) => {
   //Store data in from the POST request
   const { email, password } = req.body;
 
-  let secretKey = require("crypto").randomBytes(256).toString("base64");
   let data = {
     time: Date.now(),
     email: req.body.email,
@@ -173,16 +178,13 @@ app.post("/login", async (req, res) => {
       if (compareErr) throw compareErr;
       if (compareRes) {
         try {
-          token = jwt.sign({ email: this.email }, secretKey, {
-            expiresIn: "1h",
-          });
+          token = generateAccessToken(email);
         } catch (e) {
           throw new Error(e.message);
         }
-        res.cookie("auth-token", token);
+        res.cookie("authorization", token);
         res.send("ok");
         console.log("200 OK");
-        console.log(res.cookie.toString());
       } else {
         res.statusCode = 401;
         res.send(JSON.stringify({ error: "Invalid password" }));
