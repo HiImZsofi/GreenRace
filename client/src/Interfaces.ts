@@ -36,7 +36,7 @@ export interface UserSettingsDto {
 	newPasswordErr: boolean;
 	newPasswordErrMsg: string;
 	currentPassword: string;
-	currentPasswordErr: string;
+	currentPasswordErr: boolean;
 	currentPasswordErrMsg: string;
 	theme: boolean;
 }
