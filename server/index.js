@@ -224,6 +224,13 @@ app.get("/userPage", checkToken, (req, res) => {
   });
 });
 
+app.post("/logout", (req, res) => {
+  res.status(200).clearCookie("authorization", {
+    path: "/login",
+  });
+  res.redirect("http://localhost:3000/login");
+});
+
 app.post("/settings", async (req, res) => {
   const { newUsername, newPassword, currentPassword } = req.body;
   if (newUsername !== null) {
