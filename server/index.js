@@ -228,7 +228,8 @@ app.post("/logout", (req, res) => {
   res.status(200).clearCookie("authorization", {
     path: "/login",
   });
-  res.redirect("http://localhost:3000/login");
+  res.statusCode = 200;
+	res.send("Logged out");
 });
 
 app.post("/settings", async (req, res) => {
