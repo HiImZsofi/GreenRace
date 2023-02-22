@@ -235,51 +235,32 @@ app.get("/userPage", (req, res) => {
 
   //make sure if token header is not undefined
   if (header !== undefined) {
-    const bearer = header.split(" ");
-    const token = bearer[1];
+		const bearer = header.split(" ");
+		const token = bearer[1];
 
-    req.token = token;
-  } else {
-    //if undefined return forbidden status code
-    res.sendStatus(403);
-  }
-<<<<<<< HEAD
-  jwt.verify(
-    req.token,
-    "secret",
-    { algorithm: "HS256" },
-    (err, authorizedData) => {
-      if (err) {
-        res.sendStatus(403);
-        console.log("Caught you lacking");
-      } else {
-        res.sendStatus(200);
-        // res.json({
-        //   message: "Successful login",
-        // });
-        console.log("Successful login");
-      }
-    }
-  );
-  res.end();
-=======
-};
-
-app.get("/userPage", async(req, res) => {
-  const data = await getUserDataFromDB(2);//This number is the users id change this to render different user
-  res.send({"userdata": data});
-  // jwt.verify(req.token, "secretKey", (err, authorizedData) => {
-  //   if (err) {
-  //     res.sendStatus(403);
-  //     console.log("Caught you lacking");
-  //   } else {
-  //     res.json({
-  //       message: "Successful login", 
-  //     });
-  //     console.log("Successful login");   
-  //   }
-  // });
->>>>>>> c27f71050e0adf49d2620e5936bac9b9db182ca5
+		req.token = token;
+	} else {
+		//if undefined return forbidden status code
+		res.sendStatus(403);
+	}
+	jwt.verify(
+		req.token,
+		"secret",
+		{ algorithm: "HS256" },
+		(err, authorizedData) => {
+			if (err) {
+				res.sendStatus(403);
+				console.log("Caught you lacking");
+			} else {
+				res.sendStatus(200);
+				// res.json({
+				//   message: "Successful login",
+				// });
+				console.log("Successful login");
+			}
+		}
+	);
+	res.end();
 });
 
 app.post("/logout", (req, res) => {
