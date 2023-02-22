@@ -149,12 +149,17 @@ app.post("/register", async (req, res) => {
 });
 
 //jwt token sign function
-function generateAccessToken(username) {
-  let secretKey = require("crypto").randomBytes(256).toString("base64");
-  return jwt.sign({ email: this.email }, secretKey, {
-    expiresIn: "1h",
-    issuer: "http://localhost:3001",
-  });
+function generateAccessToken(email) {
+  let secretKey = "secret";
+  return jwt.sign(
+    { email: email },
+    secretKey,
+    { algorithm: "HS256" },
+    {
+      expiresIn: "1h",
+      issuer: "http://localhost:3001",
+    }
+  );
 }
 
 app.post("/login", async (req, res) => {
@@ -216,7 +221,7 @@ const checkToken = (req, res, next) => {
 
   //make sure if token header is not undefined
   if (header !== undefined) {
-    const bearer = header.split("=");
+    const bearer = header.split(" ");
     const token = bearer[1];
 
     req.token = token;
@@ -228,17 +233,22 @@ const checkToken = (req, res, next) => {
 };
 
 app.get("/userPage", checkToken, (req, res) => {
-  jwt.verify(req.token, "secretKey", (err, authorizedData) => {
-    if (err) {
-      res.sendStatus(403);
-      console.log("Caught you lacking");
-    } else {
-      res.json({
-        message: "Successful login",
-      });
-      console.log("Successful login");
+  jwt.verify(
+    req.token,
+    "secret",
+    { algorithm: "HS256" },
+    (err, authorizedData) => {
+      if (err) {
+        res.sendStatus(403);
+        console.log("Caught you lacking");
+      } else {
+        res.json({
+          message: "Successful login",
+        });
+        console.log("Successful login");
+      }
     }
-  });
+  );
 });
 
 app.post("/logout", (req, res) => {
