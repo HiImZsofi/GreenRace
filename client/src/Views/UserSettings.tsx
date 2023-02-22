@@ -61,10 +61,12 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 				currentPasswordErr: false,
 				currentPasswordErrMsg: "",
 			});
+			console.log(localStorage.getItem("email"));
 			const requestOptions = {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
+					email: localStorage.getItem("email"),
 					newUsername: this.state.newUsername,
 					newPassword: this.state.newPassword,
 					currentPassword: this.state.currentPassword,
