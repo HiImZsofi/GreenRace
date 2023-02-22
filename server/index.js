@@ -216,7 +216,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-const checkToken = (req, res, next) => {
+app.get("/userPage", (req, res) => {
   const header = req.headers["authorization"];
 
   //make sure if token header is not undefined
@@ -225,14 +225,10 @@ const checkToken = (req, res, next) => {
     const token = bearer[1];
 
     req.token = token;
-    next();
   } else {
     //if undefined return forbidden status code
     res.sendStatus(403);
   }
-};
-
-app.get("/userPage", checkToken, (req, res) => {
   jwt.verify(
     req.token,
     "secret",
@@ -242,13 +238,15 @@ app.get("/userPage", checkToken, (req, res) => {
         res.sendStatus(403);
         console.log("Caught you lacking");
       } else {
-        res.json({
-          message: "Successful login",
-        });
+        res.sendStatus(200);
+        // res.json({
+        //   message: "Successful login",
+        // });
         console.log("Successful login");
       }
     }
   );
+  res.end();
 });
 
 app.post("/logout", (req, res) => {

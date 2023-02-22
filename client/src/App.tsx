@@ -13,18 +13,16 @@ function App() {
   return (
     //Routes in the webapp
     <BrowserRouter>
-      <React.StrictMode>
-        <Routes>
-          <Route path="/" element={<Navigate to="/login" />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />}></Route>
-          <Route path="/register" element={<Register />}></Route>
-          <Route path="/userPage" element={<UserPage />}></Route>
-          <Route path="/rankPage" element={<RankPage />}></Route>
-          <Route path="/friendPage" element={<FriendPage />}></Route>
-          <Route path="/settings" element={<UserSettings />} />
-        </Routes>
-      </React.StrictMode>
+      <Routes>
+        <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />}></Route>
+        <Route path="/register" element={<Register />}></Route>
+        <Route path="/userPage" element={<UserPage />}></Route>
+        <Route path="/rankPage" element={<RankPage />}></Route>
+        <Route path="/friendPage" element={<FriendPage />}></Route>
+        <Route path="/settings" element={<UserSettings />} />
+      </Routes>
     </BrowserRouter>
   );
 }
