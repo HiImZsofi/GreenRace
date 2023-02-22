@@ -16,11 +16,11 @@ class UserPage extends React.Component<{}, UserPageDto> {
 			username: "",
 			picfilepath: "",
 			points: 0,
-			isLoggedIn: false,
+			isLoggedIn: true,
 		};
 	}
 
-	authenticationHandler() {
+	async authenticationHandler() {
 		const token = localStorage.getItem("key");
 		const requestOptions = {
 			method: "GET",
@@ -30,19 +30,17 @@ class UserPage extends React.Component<{}, UserPageDto> {
 			},
 			withCredentials: true,
 		};
-		fetch("http://localhost:3001/userPage", requestOptions)
-			.then(async (response) => {
+		fetch("http://localhost:3001/userPage", requestOptions).then(
+			async (response) => {
 				const isJson = response.headers
 					.get("content-type")
 					?.includes("application/json");
 				const data = isJson && (await response.json());
-				if (response.status === 200) {
-					this.setState({ isLoggedIn: true });
+				if (response.status !== 200) {
+					this.setState({ isLoggedIn: false });
 				}
-			})
-			.catch((error) => {
-				console.error("There was an error!", error);
-			});
+			}
+		);
 	}
 
 	componentDidMount(): void {
