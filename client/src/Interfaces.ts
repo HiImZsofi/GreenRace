@@ -42,6 +42,10 @@ export interface UserSettingsDto {
 	currentPasswordErr: string;
 	currentPasswordErrMsg: string;
 	theme: boolean;
+	username: string;
+	picfilepath: string;
+	points: number;
+	isLoggedIn: boolean;
 }
 
 //Helps handle props when generating input fields
@@ -52,13 +56,4 @@ export interface InputTypeHandler {
 	onChangeHandler?: (e: any) => void;
 }
 
-export interface NavMenuProps {
-	username: string;
-	profilePicturePath: string;
-}
 
-export interface NavMenuState {
-	username: string;
-	profilePicturePath: string;
-	isLoggedIn: boolean;
-}

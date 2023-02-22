@@ -13,6 +13,7 @@ function App() {
   return (
     //Routes in the webapp
     <BrowserRouter>
+<<<<<<< HEAD
       <Routes>
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/register" element={<Register />} />
@@ -23,6 +24,18 @@ function App() {
         <Route path="/friendPage" element={<FriendPage />}></Route>
         <Route path="/settings" element={<UserSettings />} />
       </Routes>
+=======
+        <Routes>
+          <Route path="/" element={<Navigate to="/login" />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />}></Route>
+          <Route path="/register" element={<Register />}></Route>
+          <Route path="/userPage" element={<UserPage />}></Route>
+          <Route path="/rankPage" element={<RankPage />}></Route>
+          <Route path="/friendPage" element={<FriendPage />}></Route>
+          <Route path="/settings" element={<UserSettings />} />
+        </Routes>
+>>>>>>> c27f71050e0adf49d2620e5936bac9b9db182ca5
     </BrowserRouter>
   );
 }

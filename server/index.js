@@ -104,6 +104,20 @@ function getIDFromDB(email) {
   });
 }
 
+//Asking down users data
+function getUserDataFromDB(user_ID) {
+  return new Promise((resolve, rejects) => {
+    connection.query(
+      "SELECT username, picfilepath, points FROM users WHERE user_ID = ?",
+      [user_ID],
+      function (err, result) {
+        if (err || result.length == 0) return rejects(err);
+        return resolve(result[0]);
+      }
+    );
+  });
+}
+
 //start server on given port
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
@@ -229,6 +243,7 @@ app.get("/userPage", (req, res) => {
     //if undefined return forbidden status code
     res.sendStatus(403);
   }
+<<<<<<< HEAD
   jwt.verify(
     req.token,
     "secret",
@@ -247,6 +262,24 @@ app.get("/userPage", (req, res) => {
     }
   );
   res.end();
+=======
+};
+
+app.get("/userPage", async(req, res) => {
+  const data = await getUserDataFromDB(2);//This number is the users id change this to render different user
+  res.send({"userdata": data});
+  // jwt.verify(req.token, "secretKey", (err, authorizedData) => {
+  //   if (err) {
+  //     res.sendStatus(403);
+  //     console.log("Caught you lacking");
+  //   } else {
+  //     res.json({
+  //       message: "Successful login", 
+  //     });
+  //     console.log("Successful login");   
+  //   }
+  // });
+>>>>>>> c27f71050e0adf49d2620e5936bac9b9db182ca5
 });
 
 app.post("/logout", (req, res) => {

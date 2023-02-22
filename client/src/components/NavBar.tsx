@@ -24,7 +24,7 @@ let NavMenuPoints: MenuPoints[] = [
 ];
 
 //Navbar
-const NavMenuLayout = (props: {
+const NavMenu = (props: {
 	username: string;
 	picfilepath: string;
 	logoutHandler: () => void;
@@ -32,7 +32,7 @@ const NavMenuLayout = (props: {
 	const navigate = useNavigate();
 	return (
 		<>
-			{[false].map((expand) => (
+			{[false].map((expand) => (	
 				<Navbar
 					expand={expand}
 					className="color-nav"
@@ -122,4 +122,4 @@ const NavMenuLayout = (props: {
 		</>
 	);
 };
-export default NavMenuLayout;
+export default NavMenu;
