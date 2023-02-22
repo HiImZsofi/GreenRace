@@ -1,10 +1,20 @@
 import React from "react";
 import "./Pages.css";
-import NavMenuLayout from "../components/NavBar";
-import "bootstrap/dist/css/bootstrap.css";
 import NavMenu from "../components/NavBarLogic";
+import 'bootstrap/dist/css/bootstrap.css';
+import { UserPageDto } from "../Interfaces";
 
-class RankPage extends React.Component<{}, any> {
+class RankPage extends React.Component<{}, UserPageDto> {
+	constructor(props: any) {
+		super(props);
+
+		//Initalize state variables
+		this.state = {
+			username: "",
+			picfilepath: "",
+			points: 0,
+		};
+	}
 	render(): React.ReactNode {
 		return (
 			<div key={"rankPage"}>
