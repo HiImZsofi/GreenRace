@@ -1,3 +1,5 @@
+import { BlobOptions } from "buffer";
+
 //Interface used to handle state in the RegisterForm component
 export interface UserRegisterDto {
 	username: string;
@@ -47,4 +49,15 @@ export interface InputTypeHandler {
 	placeholder?: string;
 	value?: string;
 	onChangeHandler?: (e: any) => void;
+}
+
+export interface NavMenuProps {
+	username: string;
+	profilePicturePath: string;
+}
+
+export interface NavMenuState {
+	username: string;
+	profilePicturePath: string;
+	isLoggedIn: boolean;
 }
