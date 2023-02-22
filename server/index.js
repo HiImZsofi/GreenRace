@@ -91,6 +91,7 @@ function getIDFromDB(email) {
   });
 }
 
+//Asking down users data
 function getUserDataFromDB(user_ID) {
   return new Promise((resolve, rejects) => {
     connection.query(
@@ -224,7 +225,7 @@ const checkToken = (req, res, next) => {
 };
 
 app.get("/userPage", async(req, res) => {
-  const data = await getUserDataFromDB(1);
+  const data = await getUserDataFromDB(1);//This number is the users id change this to render different user
   res.send({"userdata": data});
   // jwt.verify(req.token, "secretKey", (err, authorizedData) => {
   //   if (err) {
