@@ -3,7 +3,7 @@ import FormSubmitButton from "../components/FormSubmitButton";
 import FormSwitch from "../components/FormSwitch";
 import FormWrapper from "../components/FormWrapper";
 import InputField from "../components/InputField";
-import NavMenu from "../components/NavBar";
+import NavMenuLayout from "../components/NavBar";
 import { UserSettingsDto } from "../Interfaces";
 
 class UserSettings extends React.Component<{}, UserSettingsDto> {
@@ -29,9 +29,6 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 			currentPasswordErr: "",
 			currentPasswordErrMsg: "",
 			theme: false,
-			username: "",
-			picfilepath: "",
-			points: 0,
 		};
 	}
 
@@ -68,7 +65,7 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 		return (
 			//TODO Store dark theme option in a cookie
 			<>
-			<NavMenu username={this.state.username} picfilepath={this.state.picfilepath}/>
+			//TODO NavBar with atributes
 				<FormWrapper vhnum="89vh">
 					<InputField
 						type={{

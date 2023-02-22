@@ -1,6 +1,6 @@
 import React from "react";
 import "./Pages.css";
-import NavMenu from "../components/NavBar";
+import NavMenu from "../components/NavBarLogic";
 import 'bootstrap/dist/css/bootstrap.css';
 import { UserPageDto } from "../Interfaces";
 
@@ -18,7 +18,7 @@ class RankPage extends React.Component<{}, UserPageDto> {
 	render(): React.ReactNode {
 		return (
 			<div key={"rankPage"}>
-				<NavMenu username={this.state.username} picfilepath={this.state.picfilepath}/>
+				<NavMenu username="" profilePicturePath="" />
 				<div className="text-center mt-3">
 					<div>
 						<h1>Rang Lista:</h1>

@@ -1,3 +1,5 @@
+import { BlobOptions } from "buffer";
+
 //Interface used to handle state in the RegisterForm component
 export interface UserRegisterDto {
 	username: string;
@@ -39,9 +41,6 @@ export interface UserSettingsDto {
 	currentPasswordErr: string;
 	currentPasswordErrMsg: string;
 	theme: boolean;
-	username: string;
-	picfilepath: string;
-	points: number;
 }
 
 //Helps handle props when generating input fields
@@ -50,4 +49,15 @@ export interface InputTypeHandler {
 	placeholder?: string;
 	value?: string;
 	onChangeHandler?: (e: any) => void;
+}
+
+export interface NavMenuProps {
+	username: string;
+	profilePicturePath: string;
+}
+
+export interface NavMenuState {
+	username: string;
+	profilePicturePath: string;
+	isLoggedIn: boolean;
 }
