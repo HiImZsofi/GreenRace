@@ -225,7 +225,7 @@ const checkToken = (req, res, next) => {
 };
 
 app.get("/userPage", async(req, res) => {
-  const data = await getUserDataFromDB(1);//This number is the users id change this to render different user
+  const data = await getUserDataFromDB(2);//This number is the users id change this to render different user
   res.send({"userdata": data});
   // jwt.verify(req.token, "secretKey", (err, authorizedData) => {
   //   if (err) {
