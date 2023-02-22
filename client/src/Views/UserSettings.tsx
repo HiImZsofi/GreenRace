@@ -6,6 +6,8 @@ import InputField from "../components/InputField";
 import NavMenuLayout from "../components/NavBar";
 import { UserSettingsDto } from "../Interfaces";
 import NavMenu from "../components/NavBar";
+import { Navigate } from "react-router-dom";
+
 
 class UserSettings extends React.Component<{}, UserSettingsDto> {
 	constructor(props: any) {
@@ -113,6 +115,9 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 		this.loadInData()
 	}
 	render(): React.ReactNode {
+		if (!this.state.isLoggedIn) {
+			return <Navigate to="/login" replace={true} />;
+		} else {
 		return (
 			//TODO Store dark theme option in a cookie
 			<>
@@ -156,7 +161,7 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 				</FormWrapper>
 			</>
 		);
-	}
+	}}
 }
 
 export default UserSettings;

@@ -3,6 +3,7 @@ import "./Pages.css";
 import NavMenu from "../components/NavBar";
 import 'bootstrap/dist/css/bootstrap.css';
 import { UserPageDto } from "../Interfaces";
+import { Navigate } from "react-router-dom";
 
 class RankPage extends React.Component<{}, UserPageDto> {
 	constructor(props: any) {
@@ -65,6 +66,9 @@ class RankPage extends React.Component<{}, UserPageDto> {
 	}
 	//Rendering Page
 	render(): React.ReactNode {
+		if (!this.state.isLoggedIn) {
+			return <Navigate to="/login" replace={true} />;
+		} else {
 		return (
 			<div key={"rankPage"}>
 				<NavMenu username={this.state.username} picfilepath={this.state.picfilepath} logoutHandler={this.logoutHandler}/>
@@ -87,6 +91,6 @@ class RankPage extends React.Component<{}, UserPageDto> {
 				</div>
 			</div>
 		);
-	}
+	}}
 }
 export default RankPage;
