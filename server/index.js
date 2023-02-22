@@ -13,6 +13,19 @@ app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header(
+    "Access-Control-Allow-Methods",
+    "GET,PUT,POST,DELETE,UPDATE,OPTIONS"
+  );
+  res.header(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept"
+  );
+  next();
+});
+
 //server port
 const PORT = process.env.PORT || 3001;
 
@@ -138,7 +151,10 @@ app.post("/register", async (req, res) => {
 //jwt token sign function
 function generateAccessToken(username) {
   let secretKey = require("crypto").randomBytes(256).toString("base64");
-  return jwt.sign({ email: this.email }, secretKey, { expiresIn: "1h" });
+  return jwt.sign({ email: this.email }, secretKey, {
+    expiresIn: "1h",
+    issuer: "http://localhost:3001",
+  });
 }
 
 app.post("/login", async (req, res) => {
@@ -182,8 +198,9 @@ app.post("/login", async (req, res) => {
         } catch (e) {
           throw new Error(e.message);
         }
-        res.cookie("authorization", token);
-        res.send("ok");
+        // res.cookie("Authorization", token, { path: "/login" });
+        // res.send({ Authorization: token });
+        res.send({ Authorization: token });
         console.log("200 OK");
       } else {
         res.statusCode = 401;
@@ -198,8 +215,8 @@ const checkToken = (req, res, next) => {
   const header = req.headers["authorization"];
 
   //make sure if token header is not undefined
-  if (typeof header !== undefined) {
-    const bearer = header.split(" ");
+  if (header !== undefined) {
+    const bearer = header.split("=");
     const token = bearer[1];
 
     req.token = token;
@@ -229,7 +246,7 @@ app.post("/logout", (req, res) => {
     path: "/login",
   });
   res.statusCode = 200;
-	res.send("Logged out");
+  res.send("Logged out");
 });
 
 app.post("/settings", async (req, res) => {
