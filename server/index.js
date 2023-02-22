@@ -260,7 +260,6 @@ app.get("/userPage", (req, res) => {
 			}
 		}
 	);
-	res.end();
 });
 
 app.post("/logout", (req, res) => {
