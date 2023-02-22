@@ -3,7 +3,7 @@ import FormSubmitButton from "../components/FormSubmitButton";
 import FormSwitch from "../components/FormSwitch";
 import FormWrapper from "../components/FormWrapper";
 import InputField from "../components/InputField";
-import NavMenuLayout from "../components/NavBar";
+import NavMenu from "../components/NavBarLogic";
 import { UserSettingsDto } from "../Interfaces";
 
 class UserSettings extends React.Component<{}, UserSettingsDto> {
@@ -26,7 +26,7 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 			newPasswordErr: false,
 			newPasswordErrMsg: "",
 			currentPassword: "",
-			currentPasswordErr: "",
+			currentPasswordErr: false,
 			currentPasswordErrMsg: "",
 			theme: false,
 		};
@@ -49,23 +49,66 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 	}
 
 	saveHandler() {
+		if (
+			(this.state.currentPassword !== "" && this.state.newUsername !== "") ||
+			this.state.newPassword !== ""
+		) {
+			this.setState({
+				newUsernameErr: false,
+				newUsernameErrMsg: "",
+				newPasswordErr: false,
+				newPasswordErrMsg: "",
+				currentPasswordErr: false,
+				currentPasswordErrMsg: "",
+			});
+			const requestOptions = {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					newUsername: this.state.newUsername,
+					newPassword: this.state.newPassword,
+					currentPassword: this.state.currentPassword,
+				}),
+			};
+			fetch("http://localhost:3001/settings", requestOptions)
+				.then(async (response) => {
+					const isJson = response.headers
+						.get("content-type")
+						?.includes("application/json");
+					const data = isJson && (await response.json());
+
+					//Check for server response
+				})
+				.catch((error) => {
+					console.error("There was an error!", error);
+				});
+		} else {
+			this.setState({
+				currentPasswordErr: true,
+				currentPasswordErrMsg: "This field is required to be filled in",
+			});
+			if (this.state.newUsername === "") {
+				this.setState({
+					newUsernameErr: true,
+					newUsernameErrMsg: "This field is required to be filled in",
+				});
+			}
+			if (this.state.newPassword === "") {
+				this.setState({
+					newPasswordErr: true,
+					newPasswordErrMsg: "This field is required to be filled in",
+				});
+			}
+		}
 		//TODO add empty check for fields
 		//TODO Fix input fields
-		const requestOptions = {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({
-				newUsername: this.state.newUsername,
-				newPassword: this.state.newPassword,
-				currentPassword: this.state.currentPassword,
-			}),
-		};
 	}
 	render(): React.ReactNode {
 		return (
 			//TODO Store dark theme option in a cookie
 			<>
-			//TODO NavBar with atributes
+				//TODO NavBar with atributes
+				<NavMenu username="" profilePicturePath="" />
 				<FormWrapper vhnum="89vh">
 					<InputField
 						type={{
