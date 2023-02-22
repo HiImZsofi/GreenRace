@@ -91,6 +91,19 @@ function getIDFromDB(email) {
   });
 }
 
+function getUserDataFromDB(user_ID) {
+  return new Promise((resolve, rejects) => {
+    connection.query(
+      "SELECT username, picfilepath, points FROM users WHERE user_ID = ?",
+      [user_ID],
+      function (err, result) {
+        if (err || result.length == 0) return rejects(err);
+        return resolve(result[0]);
+      }
+    );
+  });
+}
+
 //start server on given port
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
@@ -210,18 +223,20 @@ const checkToken = (req, res, next) => {
   }
 };
 
-app.get("/userPage", checkToken, (req, res) => {
-  jwt.verify(req.token, "secretKey", (err, authorizedData) => {
-    if (err) {
-      res.sendStatus(403);
-      console.log("Caught you lacking");
-    } else {
-      res.json({
-        message: "Successful login",
-      });
-      console.log("Successful login");
-    }
-  });
+app.get("/userPage", async(req, res) => {
+  const data = await getUserDataFromDB(1);
+  res.send({"userdata": data});
+  // jwt.verify(req.token, "secretKey", (err, authorizedData) => {
+  //   if (err) {
+  //     res.sendStatus(403);
+  //     console.log("Caught you lacking");
+  //   } else {
+  //     res.json({
+  //       message: "Successful login", 
+  //     });
+  //     console.log("Successful login");   
+  //   }
+  // });
 });
 
 app.post("/logout", (req, res) => {

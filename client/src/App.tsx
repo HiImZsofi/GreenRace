@@ -13,7 +13,6 @@ function App() {
   return (
     //Routes in the webapp
     <BrowserRouter>
-      <React.StrictMode>
         <Routes>
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/register" element={<Register />} />
@@ -24,7 +23,6 @@ function App() {
           <Route path="/friendPage" element={<FriendPage />}></Route>
           <Route path="/settings" element={<UserSettings />} />
         </Routes>
-      </React.StrictMode>
     </BrowserRouter>
   );
 }

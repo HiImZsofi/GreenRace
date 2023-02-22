@@ -28,6 +28,7 @@ export interface UserPageDto {
 	username: string;
 	picfilepath: string;
 	points: number;
+	isLoggedIn: boolean;
 }
 
 export interface UserSettingsDto {
@@ -51,13 +52,4 @@ export interface InputTypeHandler {
 	onChangeHandler?: (e: any) => void;
 }
 
-export interface NavMenuProps {
-	username: string;
-	profilePicturePath: string;
-}
 
-export interface NavMenuState {
-	username: string;
-	profilePicturePath: string;
-	isLoggedIn: boolean;
-}
