@@ -100,12 +100,9 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 						});
 					} else if (response.status === 500) {
 						this.setState({
-							newUsernameErr: true,
-							newUsernameErrMsg: "",
-							newPasswordErr: true,
-							newPasswordErrMsg: "",
-							currentPasswordErr: false,
-							currentPasswordErrMsg: "",
+							currentPassword: "",
+							currentPasswordErr: true,
+							currentPasswordErrMsg: "Wrong password",
 						});
 					}
 				})
@@ -165,8 +162,8 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 							value: this.state.currentPassword,
 							onChangeHandler: this.currentPasswordOnChangeHandler,
 						}}
-						error={this.state.newUsernameErr}
-						errorMessage={this.state.newUsernameErrMsg}
+						error={this.state.currentPasswordErr}
+						errorMessage={this.state.currentPasswordErrMsg}
 					/>
 					<FormSwitch
 						label="Dark theme"
