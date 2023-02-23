@@ -56,4 +56,15 @@ export interface InputTypeHandler {
 	onChangeHandler?: (e: any) => void;
 }
 
+export interface NavMenuProps {
+	username: string;
+	profilePicturePath: string;
+}
+
+export interface NavMenuState {
+	username: string;
+	profilePicturePath: string;
+	isLoggedIn: boolean;
+}
+
 
