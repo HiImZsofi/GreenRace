@@ -17,6 +17,7 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 		this.currentPasswordOnChangeHandler =
 			this.currentPasswordOnChangeHandler.bind(this);
 		this.saveHandler = this.saveHandler.bind(this);
+		this.onSwitchClick=this.onSwitchClick.bind(this);
 
 		this.state = {
 			newUsername: "",
@@ -49,6 +50,11 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 		});
 	}
 
+	onSwitchClick() {
+		this.setState({ theme: !this.state.theme });
+		console.log(this.state.theme)
+	}
+
 	saveHandler() {
 		if (
 			(this.state.currentPassword !== "" && this.state.newUsername !== "") ||
@@ -62,7 +68,6 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 				currentPasswordErr: false,
 				currentPasswordErrMsg: "",
 			});
-			console.log(localStorage.getItem("email"));
 			const requestOptions = {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
@@ -79,10 +84,11 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 						.get("content-type")
 						?.includes("application/json");
 					const data = isJson && (await response.json());
-					console.log(data)
+					console.log(data);
 
 					//Check for server response
 					if (response.status === 200) {
+						//localStorage.setItem("darkTheme", this.state.theme);
 						this.setState({
 							newUsernameErr: false,
 							newUsernameErrMsg: "",
@@ -162,7 +168,11 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 						error={this.state.newUsernameErr}
 						errorMessage={this.state.newUsernameErrMsg}
 					/>
-					<FormSwitch label="Dark theme" />
+					<FormSwitch
+						label="Dark theme"
+						value={this.state.theme}
+						onClickHandler={this.onSwitchClick}
+					/>
 					<FormSubmitButton
 						type={{ inputType: "Save" }}
 						onClickHandler={this.saveHandler}
