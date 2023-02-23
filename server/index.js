@@ -290,9 +290,8 @@ app.post("/settings", async (req, res) => {
 				} else {
 					res.statusCode = 500;
 					res.send({
-						error: "UsernamePassword",
-						errorUsername: "Error updating the username",
-						errorPassword: "Error updating the password",
+						error: "Password",
+						result: "Wrong password",
 					});
 				}
 			});
@@ -311,7 +310,7 @@ app.post("/settings", async (req, res) => {
 					} catch (error) {
 						res.statusCode = 500;
 						res.send({
-							error: "Password",
+							error: "NewPassword",
 							result: "Error updating the password",
 						});
 					}
@@ -319,7 +318,7 @@ app.post("/settings", async (req, res) => {
 					res.statusCode = 500;
 					res.send({
 						error: "Password",
-						result: "Error updating the password",
+						result: "Wrong password",
 					});
 				}
 			});
@@ -344,8 +343,8 @@ app.post("/settings", async (req, res) => {
 				} else {
 					res.statusCode = 500;
 					res.send({
-						error: "Username",
-						result: "Error updating the username",
+						error: "Password",
+						result: "Wrong password",
 					});
 				}
 			});

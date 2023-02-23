@@ -1,6 +1,5 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import FormFileUpload from "../components/FormFileUpload";
 import FormSubmitButton from "../components/FormSubmitButton";
 import FormSwitch from "../components/FormSwitch";
 import FormWrapper from "../components/FormWrapper";
@@ -113,11 +112,24 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 							isRedirected: true,
 						});
 					} else if (response.status === 500) {
-						this.setState({
-							currentPassword: "",
-							currentPasswordErr: true,
-							currentPasswordErrMsg: "Wrong password",
-						});
+						if (data.error === "Password") {
+							this.setState({
+								currentPasswordErr: true,
+								currentPasswordErrMsg: data.result,
+							});
+						}
+						if (data.error === "NewPassword") {
+							this.setState({
+								newPasswordErr: true,
+								newPasswordErrMsg: data.result,
+							});
+						}
+						if (data.error === "Username") {
+							this.setState({
+								newUsernameErr: true,
+								newUsernameErrMsg: data.result,
+							});
+						}
 					}
 				})
 				.catch((error) => {
@@ -180,10 +192,6 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 							}}
 							error={this.state.currentPasswordErr}
 							errorMessage={this.state.currentPasswordErrMsg}
-						/>
-						<FormFileUpload
-							path={this.state.profilePicturePath}
-							onInputHandler={this.onFileInputHandler}
 						/>
 						<FormSwitch
 							label="Dark theme"
