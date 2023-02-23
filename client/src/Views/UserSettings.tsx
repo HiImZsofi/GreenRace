@@ -18,9 +18,10 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 			this.newPasswordOnChangeHandler.bind(this);
 		this.currentPasswordOnChangeHandler =
 			this.currentPasswordOnChangeHandler.bind(this);
+		this.onFileInputHandler = this.onFileInputHandler.bind(this);
+		this.onSwitchClick = this.onSwitchClick.bind(this);
 		this.saveHandler = this.saveHandler.bind(this);
 		this.cancelHandler = this.cancelHandler.bind(this);
-		this.onSwitchClick = this.onSwitchClick.bind(this);
 
 		this.state = {
 			newUsername: "",
@@ -32,6 +33,7 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 			currentPassword: "",
 			currentPasswordErr: false,
 			currentPasswordErrMsg: "",
+			profilePicturePath: "",
 			darkTheme: false,
 			isRedirected: false,
 		};
@@ -51,6 +53,10 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 		this.setState({
 			currentPassword: e.currentTarget.value,
 		});
+	}
+
+	onFileInputHandler(e: React.SyntheticEvent<HTMLInputElement>) {
+		this.setState({ profilePicturePath: e.currentTarget.value });
 	}
 
 	onSwitchClick() {
@@ -172,6 +178,10 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 							}}
 							error={this.state.currentPasswordErr}
 							errorMessage={this.state.currentPasswordErrMsg}
+						/>
+						<FormFileUpload
+							path={this.state.profilePicturePath}
+							onInputHandler={this.onFileInputHandler}
 						/>
 						<FormSwitch
 							label="Dark theme"

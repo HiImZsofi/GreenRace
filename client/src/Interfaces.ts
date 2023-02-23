@@ -40,6 +40,7 @@ export interface UserSettingsDto {
 	currentPassword: string;
 	currentPasswordErr: boolean;
 	currentPasswordErrMsg: string;
+	profilePicturePath: string;
 	darkTheme: boolean;
 	isRedirected: boolean;
 }
