@@ -8,6 +8,8 @@ import InputField from "../components/InputField";
 import NavMenu from "../components/NavBarLogic";
 import { UserSettingsDto } from "../Interfaces";
 
+//TODO file input with link
+
 class UserSettings extends React.Component<{}, UserSettingsDto> {
 	constructor(props: any) {
 		super(props);
