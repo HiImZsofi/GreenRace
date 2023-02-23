@@ -259,6 +259,7 @@ app.post("/logout", (req, res) => {
 	res.send("Logged out");
 });
 
+//TODO destructure code
 app.post("/settings", async (req, res) => {
 	const { email, newUsername, newPassword, currentPassword } = req.body;
 	const passwordInDB = await getPassQuery(email).catch((error) => {
