@@ -29,6 +29,7 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 			currentPasswordErr: false,
 			currentPasswordErrMsg: "",
 			theme: false,
+			isRedirected: false,
 		};
 	}
 
@@ -78,10 +79,28 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 						.get("content-type")
 						?.includes("application/json");
 					const data = isJson && (await response.json());
+					console.log(data)
 
 					//Check for server response
-					if(response.status===200){
-
+					if (response.status === 200) {
+						this.setState({
+							newUsernameErr: false,
+							newUsernameErrMsg: "",
+							newPasswordErr: false,
+							newPasswordErrMsg: "",
+							currentPasswordErr: false,
+							currentPasswordErrMsg: "",
+							isRedirected: true,
+						});
+					} else if (response.status === 500) {
+						this.setState({
+							newUsernameErr: true,
+							newUsernameErrMsg: "",
+							newPasswordErr: true,
+							newPasswordErrMsg: "",
+							currentPasswordErr: false,
+							currentPasswordErrMsg: "",
+						});
 					}
 				})
 				.catch((error) => {
