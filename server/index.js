@@ -118,18 +118,6 @@ function getUserDataFromDB(user_ID) {
   });
 }
 
-function getRangListFromDB() {
-  return new Promise((resolve, rejects) => {
-    connection.query(
-      "SELECT username, points FROM users ORDER BY points DESC LIMIT 10",
-      function (err, result) {
-        if (err || result.length == 0) return rejects(err);
-        return resolve(result);
-      }
-    );
-  });
-}
-
 //start server on given port
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
@@ -272,16 +260,6 @@ app.get("/userPage", (req, res) => {
 			}
 		}
 	);
-});
-
-app.get("/rankPage", async (req, res) => {
-  const rankdata = await getRangListFromDB();
-  res.send({"ranking":rankdata});
-});
-
-app.get("/userPage", async(req, res) => {
-  const data = await getUserDataFromDB(1);//This number is the users id change this to render different user
-  res.send({"userdata": data});
 });
 
 app.post("/logout", (req, res) => {

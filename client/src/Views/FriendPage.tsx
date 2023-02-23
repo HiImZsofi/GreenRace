@@ -8,7 +8,7 @@ import { Navigate } from "react-router-dom";
 class FriendPage extends React.Component<{}, UserPageDto> {
     constructor(props: any) {
 		super(props);
-		this.logoutHandler = this.logoutHandler.bind(this);
+
 		//Initalize state variables
 		this.state = {
 			username: "",

@@ -4,15 +4,11 @@ import NavMenu from "../components/NavBar";
 import 'bootstrap/dist/css/bootstrap.css';
 import { UserPageDto } from "../Interfaces";
 import { Navigate } from "react-router-dom";
-interface Ranking {
-	username:string;
-	points:number;		
-}
-const Ranglist: Ranking[] = [];
+
 class RankPage extends React.Component<{}, UserPageDto> {
 	constructor(props: any) {
 		super(props);
-		this.logoutHandler = this.logoutHandler.bind(this);
+
 		//Initalize state variables
 		this.state = {
 			username: "",
@@ -65,30 +61,8 @@ class RankPage extends React.Component<{}, UserPageDto> {
 			console.error("There was an error!", error);
 		});
 	}
-	loadInRankData(){
-		fetch("http://localhost:3001/rankPage")
-		.then(async (response) => {
-			const isJson = response.headers
-				.get("content-type")
-				?.includes("application/json");
-				const rankdata = isJson && (await response.json());
-				console.log(rankdata);
-				for (let i = 0; i < 10; i++){
-					if(rankdata.ranking[i] !== undefined){
-						let username:string = rankdata.ranking[i].username;
-						let points = rankdata.ranking[i].points;
-						let rang:Ranking = {username: username, points: points}
-						Ranglist[i] = rang;
-					}			
-				}			
-		})
-		.catch((error) => {
-			console.error("There was an error!", error);
-		});
-	}
-	componentDidMount(){	
+	componentDidMount(){
 		this.loadInData()
-		this.loadInRankData()
 	}
 	//Rendering Page
 	render(): React.ReactNode {
@@ -102,9 +76,16 @@ class RankPage extends React.Component<{}, UserPageDto> {
 					<div>
 						<h1>Rang Lista:</h1>
 						<ul>
-							{Ranglist.map((Ranking,i) => (
-								<li key={i}>{i+1}. {Ranking.username}:{Ranking.points}p</li>
-							))}
+							<li>USername: 1000pont</li>
+							<li>USername: 1000pont</li>
+							<li>USername: 1000pont</li>
+							<li>USername: 1000pont</li>
+							<li>USername: 1000pont</li>
+							<li>USername: 1000pont</li>
+							<li>USername: 1000pont</li>
+							<li>USername: 1000pont</li>
+							<li>USername: 1000pont</li>
+							<li>USername: 1000pont</li>
 						</ul>
 					</div>
 				</div>
