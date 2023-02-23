@@ -266,6 +266,7 @@ app.post("/settings", async (req, res) => {
 		console.log(404);
 		res.send(JSON.stringify({ error: "Invalid email", response: error }));
 	});
+	//Only runs if both values are changed
 	if (newUsername != "" && newPassword !== "") {
 		bcrypt
 			.compare(currentPassword, passwordInDB)
@@ -280,14 +281,23 @@ app.post("/settings", async (req, res) => {
 						res.send({ result: "Username and password updated" });
 					} catch (error) {
 						res.statusCode = 500;
-						res.send({error: 'UsernamePassword', errorUsername: "Error updating the username", errorPassword:'Error updating the password' });
+						res.send({
+							error: "UsernamePassword",
+							errorUsername: "Error updating the username",
+							errorPassword: "Error updating the password",
+						});
 					}
 				} else {
 					res.statusCode = 500;
-					res.send({error: 'UsernamePassword', errorUsername: "Error updating the username", errorPassword:'Error updating the password' });
+					res.send({
+						error: "UsernamePassword",
+						errorUsername: "Error updating the username",
+						errorPassword: "Error updating the password",
+					});
 				}
 			});
-	} else if (newPassword !== "") {
+	} //Change the password only
+	else if (newPassword !== "") {
 		bcrypt
 			.compare(currentPassword, passwordInDB)
 			.then(async (compareRes, compareErr) => {
@@ -300,14 +310,21 @@ app.post("/settings", async (req, res) => {
 						res.send({ result: "Password updated" });
 					} catch (error) {
 						res.statusCode = 500;
-						res.send({error:'Password', result: "Error updating the password" });
+						res.send({
+							error: "Password",
+							result: "Error updating the password",
+						});
 					}
 				} else {
 					res.statusCode = 500;
-					res.send({error:'Password', result: "Error updating the password" });
+					res.send({
+						error: "Password",
+						result: "Error updating the password",
+					});
 				}
 			});
-	} else if (newUsername !== "") {
+	} //Change username
+	else if (newUsername !== "") {
 		bcrypt
 			.compare(currentPassword, passwordInDB)
 			.then(async (compareRes, compareErr) => {
@@ -319,11 +336,17 @@ app.post("/settings", async (req, res) => {
 						res.send({ result: "Username updated" });
 					} catch (error) {
 						res.statusCode = 500;
-						res.send({error:'Username', result: "Error updating the username" });
+						res.send({
+							error: "Username",
+							result: "Error updating the username",
+						});
 					}
 				} else {
 					res.statusCode = 500;
-					res.send({error:'Username', result: "Error updating the username" });
+					res.send({
+						error: "Username",
+						result: "Error updating the username",
+					});
 				}
 			});
 	}
