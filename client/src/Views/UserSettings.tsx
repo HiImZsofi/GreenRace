@@ -1,6 +1,6 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import FormFileInput from "../components/FormFileInput";
+import FormFileUpload from "../components/FormFileUpload";
 import FormSubmitButton from "../components/FormSubmitButton";
 import FormSwitch from "../components/FormSwitch";
 import FormWrapper from "../components/FormWrapper";
@@ -32,7 +32,7 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 			currentPassword: "",
 			currentPasswordErr: false,
 			currentPasswordErrMsg: "",
-			theme: false,
+			darkTheme: false,
 			isRedirected: false,
 		};
 	}
@@ -54,8 +54,8 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 	}
 
 	onSwitchClick() {
-		this.setState({ theme: !this.state.theme });
-		console.log(this.state.theme);
+		this.setState({ darkTheme: !this.state.darkTheme });
+		console.log(this.state.darkTheme);
 	}
 
 	cancelHandler() {
@@ -94,7 +94,7 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 
 					//Check for server response
 					if (response.status === 200) {
-						//localStorage.setItem("darkTheme", this.state.theme);
+						//TODO Store dark theme option in a cookie
 						this.setState({
 							newUsernameErr: false,
 							newUsernameErrMsg: "",
@@ -139,7 +139,6 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 			return <Navigate to={"/userPage"} replace={true} />;
 		} else {
 			return (
-				//TODO Store dark theme option in a cookie
 				//TODO NavBar with atributes
 				<>
 					<NavMenu username="" profilePicturePath="" />
@@ -176,7 +175,7 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 						/>
 						<FormSwitch
 							label="Dark theme"
-							value={this.state.theme}
+							value={this.state.darkTheme}
 							onClickHandler={this.onSwitchClick}
 						/>
 						<FormSubmitButton
