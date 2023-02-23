@@ -280,11 +280,11 @@ app.post("/settings", async (req, res) => {
 						res.send({ result: "Username and password updated" });
 					} catch (error) {
 						res.statusCode = 500;
-						res.send({ result: "Error updating the username and password" });
+						res.send({error: 'UsernamePassword', errorUsername: "Error updating the username", errorPassword:'Error updating the password' });
 					}
 				} else {
 					res.statusCode = 500;
-					res.send({ result: "Error updating the username and username" });
+					res.send({error: 'UsernamePassword', errorUsername: "Error updating the username", errorPassword:'Error updating the password' });
 				}
 			});
 	} else if (newPassword !== "") {
@@ -300,11 +300,11 @@ app.post("/settings", async (req, res) => {
 						res.send({ result: "Password updated" });
 					} catch (error) {
 						res.statusCode = 500;
-						res.send({ result: "Error updating the password" });
+						res.send({error:'Password', result: "Error updating the password" });
 					}
 				} else {
 					res.statusCode = 500;
-					res.send({ result: "Error updating the username and username" });
+					res.send({error:'Password', result: "Error updating the password" });
 				}
 			});
 	} else if (newUsername !== "") {
@@ -319,11 +319,11 @@ app.post("/settings", async (req, res) => {
 						res.send({ result: "Username updated" });
 					} catch (error) {
 						res.statusCode = 500;
-						res.send({ result: "Error updating the username" });
+						res.send({error:'Username', result: "Error updating the username" });
 					}
 				} else {
 					res.statusCode = 500;
-					res.send({ result: "Error updating the username and username" });
+					res.send({error:'Username', result: "Error updating the username" });
 				}
 			});
 	}
