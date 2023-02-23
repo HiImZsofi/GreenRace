@@ -266,7 +266,28 @@ app.post("/settings", async (req, res) => {
 		console.log(404);
 		res.send(JSON.stringify({ error: "Invalid email", response: error }));
 	});
-	if (newPassword !== "") {
+	if (newUsername != "" && newPassword !== "") {
+		bcrypt
+			.compare(currentPassword, passwordInDB)
+			.then(async (compareRes, compareErr) => {
+				if (compareErr) throw compareErr;
+				if (compareRes) {
+					let newEncryptedPassword = bcrypt.hashSync(newPassword, 10);
+					try {
+						await changeUsername(email, newUsername);
+						await changePassword(email, newEncryptedPassword);
+						res.statusCode = 200;
+						res.send({ result: "Username and password updated" });
+					} catch (error) {
+						res.statusCode = 500;
+						res.send({ result: "Error updating the username and password" });
+					}
+				} else {
+					res.statusCode = 500;
+					res.send({ result: "Error updating the username and username" });
+				}
+			});
+	} else if (newPassword !== "") {
 		bcrypt
 			.compare(currentPassword, passwordInDB)
 			.then(async (compareRes, compareErr) => {
@@ -281,10 +302,12 @@ app.post("/settings", async (req, res) => {
 						res.statusCode = 500;
 						res.send({ result: "Error updating the password" });
 					}
+				} else {
+					res.statusCode = 500;
+					res.send({ result: "Error updating the username and username" });
 				}
 			});
-	} 
-  if(newUsername!=='') {
+	} else if (newUsername !== "") {
 		bcrypt
 			.compare(currentPassword, passwordInDB)
 			.then(async (compareRes, compareErr) => {
@@ -298,6 +321,9 @@ app.post("/settings", async (req, res) => {
 						res.statusCode = 500;
 						res.send({ result: "Error updating the username" });
 					}
+				} else {
+					res.statusCode = 500;
+					res.send({ result: "Error updating the username and username" });
 				}
 			});
 	}
