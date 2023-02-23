@@ -1,4 +1,6 @@
 import React from "react";
+import { Navigate } from "react-router-dom";
+import FormFileInput from "../components/FormFileInput";
 import FormSubmitButton from "../components/FormSubmitButton";
 import FormSwitch from "../components/FormSwitch";
 import FormWrapper from "../components/FormWrapper";
@@ -17,7 +19,8 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 		this.currentPasswordOnChangeHandler =
 			this.currentPasswordOnChangeHandler.bind(this);
 		this.saveHandler = this.saveHandler.bind(this);
-		this.onSwitchClick=this.onSwitchClick.bind(this);
+		this.cancelHandler = this.cancelHandler.bind(this);
+		this.onSwitchClick = this.onSwitchClick.bind(this);
 
 		this.state = {
 			newUsername: "",
@@ -52,7 +55,11 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 
 	onSwitchClick() {
 		this.setState({ theme: !this.state.theme });
-		console.log(this.state.theme)
+		console.log(this.state.theme);
+	}
+
+	cancelHandler() {
+		this.setState({ isRedirected: true });
 	}
 
 	saveHandler() {
@@ -84,7 +91,6 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 						.get("content-type")
 						?.includes("application/json");
 					const data = isJson && (await response.json());
-					console.log(data);
 
 					//Check for server response
 					if (response.status === 200) {
@@ -129,54 +135,62 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 		}
 	}
 	render(): React.ReactNode {
-		return (
-			//TODO Store dark theme option in a cookie
-			//TODO NavBar with atributes
-			<>
-				<NavMenu username="" profilePicturePath="" />
-				<FormWrapper vhnum="89vh">
-					<InputField
-						type={{
-							inputType: "Username",
-							placeholder: "New username",
-							value: this.state.newUsername,
-							onChangeHandler: this.newUsernameOnChangeHandler,
-						}}
-						error={this.state.newUsernameErr}
-						errorMessage={this.state.newUsernameErrMsg}
-					/>
-					<InputField
-						type={{
-							inputType: "Password",
-							placeholder: "New password",
-							value: this.state.newPassword,
-							onChangeHandler: this.newPasswordOnChangeHandler,
-						}}
-						error={this.state.newPasswordErr}
-						errorMessage={this.state.newPasswordErrMsg}
-					/>
-					<InputField
-						type={{
-							inputType: "Password",
-							placeholder: "Current password",
-							value: this.state.currentPassword,
-							onChangeHandler: this.currentPasswordOnChangeHandler,
-						}}
-						error={this.state.currentPasswordErr}
-						errorMessage={this.state.currentPasswordErrMsg}
-					/>
-					<FormSwitch
-						label="Dark theme"
-						value={this.state.theme}
-						onClickHandler={this.onSwitchClick}
-					/>
-					<FormSubmitButton
-						type={{ inputType: "Save" }}
-						onClickHandler={this.saveHandler}
-					/>
-				</FormWrapper>
-			</>
-		);
+		if (this.state.isRedirected) {
+			return <Navigate to={"/userPage"} replace={true} />;
+		} else {
+			return (
+				//TODO Store dark theme option in a cookie
+				//TODO NavBar with atributes
+				<>
+					<NavMenu username="" profilePicturePath="" />
+					<FormWrapper vhnum="89vh">
+						<InputField
+							type={{
+								inputType: "Username",
+								placeholder: "New username",
+								value: this.state.newUsername,
+								onChangeHandler: this.newUsernameOnChangeHandler,
+							}}
+							error={this.state.newUsernameErr}
+							errorMessage={this.state.newUsernameErrMsg}
+						/>
+						<InputField
+							type={{
+								inputType: "Password",
+								placeholder: "New password",
+								value: this.state.newPassword,
+								onChangeHandler: this.newPasswordOnChangeHandler,
+							}}
+							error={this.state.newPasswordErr}
+							errorMessage={this.state.newPasswordErrMsg}
+						/>
+						<InputField
+							type={{
+								inputType: "Password",
+								placeholder: "Current password",
+								value: this.state.currentPassword,
+								onChangeHandler: this.currentPasswordOnChangeHandler,
+							}}
+							error={this.state.currentPasswordErr}
+							errorMessage={this.state.currentPasswordErrMsg}
+						/>
+						<FormSwitch
+							label="Dark theme"
+							value={this.state.theme}
+							onClickHandler={this.onSwitchClick}
+						/>
+						<FormSubmitButton
+							type={{ inputType: "Save" }}
+							onClickHandler={this.saveHandler}
+						/>
+						<FormSubmitButton
+							type={{ inputType: "Cancel" }}
+							onClickHandler={this.cancelHandler}
+						/>
+					</FormWrapper>
+				</>
+			);
+		}
 	}
 }
 
