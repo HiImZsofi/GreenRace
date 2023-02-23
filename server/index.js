@@ -229,7 +229,7 @@ app.get("/userPage", (req, res) => {
     req.token = token;
   } else {
     //if undefined return forbidden status code
-    res.sendStatus(403);
+    res.statusCode = 403;
   }
   jwt.verify(
     req.token,
@@ -245,6 +245,29 @@ app.get("/userPage", (req, res) => {
       }
     }
   );
+});
+
+app.get("/friendPage", (req, res) => {
+  const header = req.headers["authorization"];
+
+  //make sure if token header is not undefined
+  if (header !== undefined) {
+    const bearer = header.split(" "); //separate request token from bearer
+    const token = bearer[1];
+    req.token = token;
+  } else {
+    //if undefined return forbidden status code
+    res.sendStatus(403);
+  }
+  jwt.verify(req.token, "secret", { algorithm: "HS256" }, async (err) => {
+    if (err) {
+      await res.sendStatus(403);
+      console.log("Caught you lacking");
+    } else {
+      res.sendStatus(200);
+      console.log("Successful login");
+    }
+  });
 });
 
 app.post("/logout", (req, res) => {
