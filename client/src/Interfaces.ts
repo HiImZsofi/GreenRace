@@ -41,6 +41,7 @@ export interface UserSettingsDto {
 	currentPasswordErr: boolean;
 	currentPasswordErrMsg: string;
 	theme: boolean;
+	isRedirected: boolean;
 }
 
 //Helps handle props when generating input fields
