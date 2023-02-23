@@ -1,17 +1,12 @@
 //Imports
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
 import React from "react";
 import { Navigate } from "react-router-dom";
 import FormSubmitButton from "../components/FormSubmitButton";
 import InputField from "../components/InputField";
 import { UserLoginDto } from "../Interfaces";
 import "../Views/Pages.css";
-import { Navbar, Container, Nav, Offcanvas } from "react-bootstrap";
-import Card from "@mui/material/Card";
 import FormWrapper from "../components/FormWrapper";
 import FormRedirectLink from "../components/FormRedirectLink";
-import { Console } from "console";
 
 //LoginForm component
 class Login extends React.Component<{}, UserLoginDto> {
@@ -76,7 +71,6 @@ class Login extends React.Component<{}, UserLoginDto> {
             .get("content-type")
             ?.includes("application/json");
           const data = isJson && (await response.json());
-          console.log(data.Authorization);
 
           //Check for server response
           if (response.status == 200) {

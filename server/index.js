@@ -13,6 +13,7 @@ app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+//? middleware options ig
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Credentials", true);
   res.header(
@@ -141,7 +142,7 @@ app.post("/register", async (req, res) => {
   const saltRounds = 10; //higher number harder it is to reverse
   var hash = bcrypt.hashSync(password, saltRounds); //hash the given password with salt before inserting
 
-  var sql = `INSERT INTO users (username, password, email, points) VALUES ("${username}", "${hash}", "${email}",0)`; //TODO SQL injection????
+  var sql = `INSERT INTO users (username, password, email, points) VALUES ("${username}", "${hash}", "${email}",0)`; //! SQL injection????
 
   try {
     await checkEmailInDB(email);
@@ -164,7 +165,7 @@ app.post("/register", async (req, res) => {
 
 //jwt token sign function
 function generateAccessToken(email) {
-  let secretKey = "secret";
+  let secretKey = "secret"; //! move secret keys to dotenv
   return jwt.sign(
     { email: email },
     secretKey,
@@ -185,8 +186,8 @@ app.post("/login", async (req, res) => {
     email: req.body.email,
   };
 
-  //TODO Get id from the database based on the email
-  //put it in user object with the token
+  //! Get id from the database based on the email
+  //! put it in user object with the token
 
   //Store data from SELECT query
   const passwordInDB = await getPassQuery(email).catch((error) => {
@@ -194,16 +195,6 @@ app.post("/login", async (req, res) => {
     console.log(404);
     res.send(JSON.stringify({ error: "Invalid email", response: error }));
   });
-
-  //   const token = jwt.sign(
-  //     data,
-  //     secretKey,
-  //     { expiresIn: "1h" },
-  //     {
-  //       algorithm: "HS256",
-  //       expiresIn: "1h",
-  //     }
-  //   );
 
   let token;
 
@@ -217,8 +208,6 @@ app.post("/login", async (req, res) => {
         } catch (e) {
           throw new Error(e.message);
         }
-        // res.cookie("Authorization", token, { path: "/login" });
-        // res.send({ Authorization: token });
         res.send({ Authorization: token });
         console.log("200 OK");
       } else {
@@ -235,34 +224,31 @@ app.get("/userPage", (req, res) => {
 
   //make sure if token header is not undefined
   if (header !== undefined) {
-		const bearer = header.split(" ");
-		const token = bearer[1];
-
-		req.token = token;
-	} else {
-		//if undefined return forbidden status code
-		res.sendStatus(403);
-	}
-	jwt.verify(
-		req.token,
-		"secret",
-		{ algorithm: "HS256" },
-		(err, authorizedData) => {
-			if (err) {
-				res.sendStatus(403);
-				console.log("Caught you lacking");
-			} else {
-				res.sendStatus(200);
-				// res.json({
-				//   message: "Successful login",
-				// });
-				console.log("Successful login");
-			}
-		}
-	);
+    const bearer = header.split(" "); //separate request token from bearer
+    const token = bearer[1];
+    req.token = token;
+  } else {
+    //if undefined return forbidden status code
+    res.sendStatus(403);
+  }
+  jwt.verify(
+    req.token,
+    "secret",
+    { algorithm: "HS256" },
+    (err, authorizedData) => {
+      if (err) {
+        res.sendStatus(403);
+        console.log("Caught you lacking");
+      } else {
+        res.sendStatus(200);
+        console.log("Successful login");
+      }
+    }
+  );
 });
 
 app.post("/logout", (req, res) => {
+  //throw the cookie if user has logged out
   res.status(200).clearCookie("authorization", {
     path: "/login",
   });
@@ -337,5 +323,3 @@ app.post("/settings", async (req, res) => {
       });
   }
 });
-
-//TODO SQL injection????
