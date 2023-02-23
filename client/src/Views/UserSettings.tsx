@@ -80,6 +80,9 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 					const data = isJson && (await response.json());
 
 					//Check for server response
+					if(response.status===200){
+
+					}
 				})
 				.catch((error) => {
 					console.error("There was an error!", error);
@@ -102,14 +105,12 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 				});
 			}
 		}
-		//TODO add empty check for fields
-		//TODO Fix input fields
 	}
 	render(): React.ReactNode {
 		return (
 			//TODO Store dark theme option in a cookie
+			//TODO NavBar with atributes
 			<>
-				//TODO NavBar with atributes
 				<NavMenu username="" profilePicturePath="" />
 				<FormWrapper vhnum="89vh">
 					<InputField
