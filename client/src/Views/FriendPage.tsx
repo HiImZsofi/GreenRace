@@ -13,6 +13,7 @@ class FriendPage extends React.Component<{}, UserPageDto> {
 			username: "",
 			picfilepath: "",
 			points: 0,
+			isLoggedIn: false,
 		};
 	}
     render(): React.ReactNode {
