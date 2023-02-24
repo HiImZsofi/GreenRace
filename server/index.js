@@ -105,6 +105,31 @@ function changeUsername(email, username) {
 	});
 }
 
+function getUserDataFromDB(user_ID) {
+	return new Promise((resolve, rejects) => {
+		connection.query(
+			"SELECT username, picfilepath, points FROM users WHERE user_ID = ?",
+			[user_ID],
+			function (err, result) {
+				if (err || result.length == 0) return rejects(err);
+				return resolve(result[0]);
+			}
+		);
+	});
+}
+
+function getRangListFromDB() {
+	return new Promise((resolve, rejects) => {
+		connection.query(
+			"SELECT username, points FROM users ORDER BY points DESC LIMIT 10",
+			function (err, result) {
+				if (err || result.length == 0) return rejects(err);
+				return resolve(result);
+			}
+		);
+	});
+}
+
 function getIDFromDB(email) {
 	return new Promise((resolve, rejects) => {
 		connection.query(
@@ -236,6 +261,16 @@ const checkToken = (req, res, next) => {
 		res.sendStatus(403);
 	}
 };
+
+app.get("/rankPage", async (req, res) => {
+	const rankdata = await getRangListFromDB();
+	res.send({ ranking: rankdata });
+});
+
+// app.get("/userPage", async(req, res) => {
+// 	const data = await getUserDataFromDB(1);//This number is the users id change this to render different user
+// 	res.send({"userdata": data});
+//   });
 
 app.get("/userPage", checkToken, (req, res) => {
 	jwt.verify(req.token, "secretKey", (err, authorizedData) => {

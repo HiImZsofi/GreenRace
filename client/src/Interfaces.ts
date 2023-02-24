@@ -28,6 +28,7 @@ export interface UserPageDto {
 	username: string;
 	picfilepath: string;
 	points: number;
+	isLoggedIn: boolean;
 }
 
 export interface UserSettingsDto {

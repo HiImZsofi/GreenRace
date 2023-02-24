@@ -5,6 +5,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import { UserPageDto } from "../Interfaces";
 import NavMenu from "../components/NavBarLogic";
 
+
 class UserPage extends React.Component<{}, UserPageDto> {
 	constructor(props: any) {
 		super(props);
@@ -16,15 +17,33 @@ class UserPage extends React.Component<{}, UserPageDto> {
 			points: 0,
 		};
 	}
-	render(): React.ReactNode {
+	dataLoadIn(){
+		const requestUserData = {
+			method:"GET",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({
+				username: this.state.username,
+				picfilepath: this.state.picfilepath,
+				points: this.state.points,
+			}),
+		};
+		fetch("http://localhost:3001/userpage", requestUserData)
+		.then (async (response) => {
+			const isJson = response.headers
+			.get("content-type")
+			?.includes("application/json");
+			const data = isJson && (await response.json());
+			console.log(data);
+		})
+
+	};
+    render(): React.ReactNode {
 		return (
 			<div key={"userPage"}>
 				<NavMenu username="" profilePicturePath="" />
 				<div className="text-center mt-3">
 					<div>
-						<h1>
-							10000 <span id="pont">Zöldpont</span>-od van
-						</h1>
+						<h1>{this.state.points} <span id='pont'>Zöldpont</span>-od van</h1>
 						<p>Ez 1000 szenyezésnek felel meg</p>
 					</div>
 					<div>
@@ -47,3 +66,7 @@ class UserPage extends React.Component<{}, UserPageDto> {
 	}
 }
 export default UserPage;
+
+function dataLoadIn() {
+	throw new Error('Function not implemented.');
+}
