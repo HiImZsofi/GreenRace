@@ -78,137 +78,172 @@ function getPassQuery(email) {
   });
 }
 
+function getUserDataFromDB(user_ID) {
+	return new Promise((resolve, rejects) => {
+		connection.query(
+			"SELECT username, picfilepath, points FROM users WHERE user_ID = ?",
+			[user_ID],
+			function (err, result) {
+				if (err || result.length == 0) return rejects(err);
+				return resolve(result[0]);
+			}
+		);
+	});
+}
+
+function getRangListFromDB() {
+	return new Promise((resolve, rejects) => {
+		connection.query(
+			"SELECT username, points FROM users ORDER BY points DESC LIMIT 10",
+			function (err, result) {
+				if (err || result.length == 0) return rejects(err);
+				return resolve(result);
+			}
+		);
+	});
+}
+
 function getIDFromDB(email) {
-  return new Promise((resolve, rejects) => {
-    connection.query(
-      "SELECT user_ID FROM users WHERE email = ?",
-      [email],
-      function (err, result) {
-        if (err || result.length == 0) return rejects(err);
-        return resolve(result[0].user_ID);
-      }
-    );
-  });
+	return new Promise((resolve, rejects) => {
+		connection.query(
+			"SELECT user_ID FROM users WHERE email = ?",
+			[email],
+			function (err, result) {
+				if (err || result.length == 0) return rejects(err);
+				return resolve(result[0].user_ID);
+			}
+		);
+	});
 }
 
 //start server on given port
 app.listen(PORT, () => {
-  console.log(`Server listening on ${PORT}`);
+	console.log(`Server listening on ${PORT}`);
 });
 
 //test page route
 app.get("/", (req, res) => {
-  res.send("Main page");
+	res.send("Main page");
 });
 
 //register page route
 app.post("/register", async (req, res) => {
-  //request headers
-  res.set({
-    "Content-Type": "application/json",
-  });
+	//request headers
+	res.set({
+		"Content-Type": "application/json",
+	});
 
-  //request data
-  const { username, password, email } = req.body;
+	//request data
+	const { username, password, email } = req.body;
 
-  const saltRounds = 10; //higher number harder it is to reverse
-  var hash = bcrypt.hashSync(password, saltRounds); //hash the given password with salt before inserting
+	const saltRounds = 10; //higher number harder it is to reverse
+	var hash = bcrypt.hashSync(password, saltRounds); //hash the given password with salt before inserting
 
-  var sql = `INSERT INTO users (username, password, email, points) VALUES ("${username}", "${hash}", "${email}",0)`; //TODO SQL injection????
+	var sql = `INSERT INTO users (username, password, email, points) VALUES ("${username}", "${hash}", "${email}",0)`; //TODO SQL injection????
 
-  try {
-    await checkEmailInDB(email);
-    res.statusCode = 500;
-  } catch (error) {
-    res.statusCode = 100;
-    console.log("code changed to", res.statusCode);
-  }
-  try {
-    await insertNewUser(sql);
-    res.statusCode = 200;
-    console.log("Inserted user", res.statusCode);
-    res.send(JSON.stringify({ result: "Successful registration" }));
-  } catch (error) {
-    res.statusCode = 500;
-    console.log("Server error", res.statusCode);
-    res.json(JSON.stringify({ error: "Duplicate email" }));
-  }
+	try {
+		await checkEmailInDB(email);
+		res.statusCode = 500;
+	} catch (error) {
+		res.statusCode = 100;
+		console.log("code changed to", res.statusCode);
+	}
+	try {
+		await insertNewUser(sql);
+		res.statusCode = 200;
+		console.log("Inserted user", res.statusCode);
+		res.send(JSON.stringify({ result: "Successful registration" }));
+	} catch (error) {
+		res.statusCode = 500;
+		console.log("Server error", res.statusCode);
+		res.json(JSON.stringify({ error: "Duplicate email" }));
+	}
 });
 
 //jwt token sign function
 function generateAccessToken(username) {
-  let secretKey = require("crypto").randomBytes(256).toString("base64");
-  return jwt.sign({ email: this.email }, secretKey, { expiresIn: "1h" });
+	let secretKey = require("crypto").randomBytes(256).toString("base64");
+	return jwt.sign({ email: this.email }, secretKey, { expiresIn: "1h" });
 }
 
 app.post("/login", async (req, res) => {
-  //Store data in from the POST request
-  const { email, password } = req.body;
+	//Store data in from the POST request
+	const { email, password } = req.body;
 
-  let data = {
-    time: Date.now(),
-    email: req.body.email,
-  };
+	let data = {
+		time: Date.now(),
+		email: req.body.email,
+	};
 
-  //TODO Get id from the database based on the email
-  //put it in user object with the token
+	//TODO Get id from the database based on the email
+	//put it in user object with the token
 
-  //Store data from SELECT query
-  const passwordInDB = await getPassQuery(email).catch((error) => {
-    res.statusCode = 404;
-    console.log(404);
-    res.send(JSON.stringify({ error: "Invalid email", response: error }));
-  });
+	//Store data from SELECT query
+	const passwordInDB = await getPassQuery(email).catch((error) => {
+		res.statusCode = 404;
+		console.log(404);
+		res.send(JSON.stringify({ error: "Invalid email", response: error }));
+	});
 
-  //   const token = jwt.sign(
-  //     data,
-  //     secretKey,
-  //     { expiresIn: "1h" },
-  //     {
-  //       algorithm: "HS256",
-  //       expiresIn: "1h",
-  //     }
-  //   );
+	//   const token = jwt.sign(
+	//     data,
+	//     secretKey,
+	//     { expiresIn: "1h" },
+	//     {
+	//       algorithm: "HS256",
+	//       expiresIn: "1h",
+	//     }
+	//   );
 
-  let token;
+	let token;
 
-  //Check password againts the one fetched from the database
-  if (res.statusCode != 404) {
-    bcrypt.compare(password, passwordInDB).then((compareRes, compareErr) => {
-      if (compareErr) throw compareErr;
-      if (compareRes) {
-        try {
-          token = generateAccessToken(email);
-        } catch (e) {
-          throw new Error(e.message);
-        }
-        res.cookie("authorization", token);
-        res.send("ok");
-        console.log("200 OK");
-      } else {
-        res.statusCode = 401;
-        res.send(JSON.stringify({ error: "Invalid password" }));
-        console.log("401 Auth Err");
-      }
-    });
-  }
+	//Check password againts the one fetched from the database
+	if (res.statusCode != 404) {
+		bcrypt.compare(password, passwordInDB).then((compareRes, compareErr) => {
+			if (compareErr) throw compareErr;
+			if (compareRes) {
+				try {
+					token = generateAccessToken(email);
+				} catch (e) {
+					throw new Error(e.message);
+				}
+				res.cookie("authorization", token);
+				res.send("ok");
+				console.log("200 OK");
+			} else {
+				res.statusCode = 401;
+				res.send(JSON.stringify({ error: "Invalid password" }));
+				console.log("401 Auth Err");
+			}
+		});
+	}
 });
 
 const checkToken = (req, res, next) => {
-  const header = req.headers["authorization"];
+	const header = req.headers["authorization"];
 
-  //make sure if token header is not undefined
-  if (typeof header !== undefined) {
-    const bearer = header.split(" ");
-    const token = bearer[1];
+	//make sure if token header is not undefined
+	if (typeof header !== undefined) {
+		const bearer = header.split(" ");
+		const token = bearer[1];
 
-    req.token = token;
-    next();
-  } else {
-    //if undefined return forbidden status code
-    res.sendStatus(403);
-  }
+		req.token = token;
+		next();
+	} else {
+		//if undefined return forbidden status code
+		res.sendStatus(403);
+	}
 };
+
+app.get("/rankPage", async (req, res) => {
+	const rankdata = await getRangListFromDB();
+	res.send({ ranking: rankdata });
+});
+
+// app.get("/userPage", async(req, res) => {
+// 	const data = await getUserDataFromDB(1);//This number is the users id change this to render different user
+// 	res.send({"userdata": data});
+//   });
 
 app.get("/userPage", checkToken, (req, res) => {
   jwt.verify(req.token, "secretKey", (err, authorizedData) => {
