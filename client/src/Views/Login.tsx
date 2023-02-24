@@ -78,6 +78,7 @@ class Login extends React.Component<{}, UserLoginDto> {
 
 					//Check for server response
 					if (response.status == 200) {
+						localStorage.setItem("email", this.state.email);
 						this.setState({
 							emailErr: false,
 							emailErrMsg: "",
