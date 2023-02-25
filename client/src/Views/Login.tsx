@@ -1,72 +1,54 @@
 //Imports
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import React from "react";
-import { Navigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import FormSubmitButton from "../components/FormSubmitButton";
 import InputField from "../components/InputField";
 import { UserLoginDto } from "../Interfaces";
 import "../Views/Pages.css";
-import { Navbar, Container, Nav, Offcanvas } from "react-bootstrap";
-import Card from "@mui/material/Card";
 import FormWrapper from "../components/FormWrapper";
 import FormRedirectLink from "../components/FormRedirectLink";
 
 //LoginForm component
-class Login extends React.Component<{}, UserLoginDto> {
-	constructor(props: any) {
-		super(props);
+const Login = () => {
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const [emailErr, setEmailErr] = useState(false);
+	const [passwordErr, setPasswordErr] = useState(false);
+	const [emailErrMsg, setEmailErrMsg] = useState("");
+	const [passwordErrMsg, setPasswordErrMsg] = useState("");
 
-		//Bind functions to this so they actually work
-		this.emailChangeHandler = this.emailChangeHandler.bind(this);
-		this.passwordChangeHandler = this.passwordChangeHandler.bind(this);
-		this.loginHandler = this.loginHandler.bind(this);
+	const navigate = useNavigate();
 
-		//Initalize state variables
-		this.state = {
-			email: "",
-			password: "",
-			emailErr: false,
-			passwordErr: false,
-			emailErrMsg: "",
-			passwordErrMsg: "",
-			loginSuccess: false,
-		};
-	}
+	const emailChangeHandler = (e: React.SyntheticEvent<HTMLInputElement>) => {
+		setEmail(e.currentTarget.value.trim());
+	};
 
 	//Lifted setState for the username field
-	emailChangeHandler(e: React.SyntheticEvent<HTMLInputElement>) {
-		this.setState({ email: e.currentTarget.value.trim() });
-	}
-
-	//Lifted setState for the username field
-	passwordChangeHandler(e: React.SyntheticEvent<HTMLInputElement>) {
-		this.setState({ password: e.currentTarget.value.trim() });
-	}
+	const passwordChangeHandler = (e: React.SyntheticEvent<HTMLInputElement>) => {
+		setPassword(e.currentTarget.value.trim());
+	};
 
 	//HTTP POST request to backend
-	loginHandler() {
+	const loginHandler = () => {
 		//Check if the input fields are empty or not
 		if (
-			this.state.email.trim() == null ||
-			this.state.email.trim() == "" ||
-			this.state.password.trim() == null ||
-			this.state.password.trim() == ""
+			email.trim() == null ||
+			email.trim() == "" ||
+			password.trim() == null ||
+			password.trim() == ""
 		) {
-			this.setState({ emailErr: true });
-			this.setState({ passwordErr: true });
-			this.setState({
-				emailErrMsg: "Invalid input",
-				passwordErrMsg: "Invalid input",
-			});
+			setEmailErr(true);
+			setPasswordErr(true);
+			setEmailErrMsg("Invalid input");
+			setPasswordErrMsg("Invalid input");
 		} else {
 			//Send POST request to the server
 			const requestOptions = {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
-					email: this.state.email,
-					password: this.state.password,
+					email: email,
+					password: password,
 				}),
 			};
 			fetch("http://localhost:3001/login", requestOptions)
@@ -78,28 +60,22 @@ class Login extends React.Component<{}, UserLoginDto> {
 
 					//Check for server response
 					if (response.status == 200) {
-						localStorage.setItem("email", this.state.email);
-						this.setState({
-							emailErr: false,
-							emailErrMsg: "",
-							passwordErr: false,
-							passwordErrMsg: "",
-							loginSuccess: true,
-						});
+						localStorage.setItem("email", email);
+						setEmailErr(false);
+						setEmailErrMsg("");
+						setPasswordErr(false);
+						setPasswordErrMsg("");
+						navigate("/userPage", { replace: true });
 					} else if (response.status == 404) {
-						this.setState({
-							emailErr: true,
-							emailErrMsg: "Wrong email address",
-							passwordErr: true,
-							passwordErrMsg: "Invalid password",
-						});
+						setEmailErr(true);
+						setEmailErrMsg("Wrong email address");
+						setPasswordErr(true);
+						setPasswordErrMsg("Invalid password");
 					} else if (response.status == 401) {
-						this.setState({
-							emailErr: false,
-							emailErrMsg: "",
-							passwordErr: true,
-							passwordErrMsg: "Invalid password",
-						});
+						setEmailErr(false);
+						setEmailErrMsg("");
+						setPasswordErr(true);
+						setPasswordErrMsg("Invalid password");
 					} else {
 						// get error message from body or default to response status
 						const error = (data && data.message) || response.status;
@@ -110,48 +86,40 @@ class Login extends React.Component<{}, UserLoginDto> {
 					console.error("There was an error!", error);
 				});
 		}
-	}
-
-	render(): React.ReactNode {
-		//Redirect to the home page
-		if (this.state.loginSuccess) {
-			return <Navigate to="/userPage" replace={true} />;
-		} else {
-			return (
-				<FormWrapper vhnum="100vh">
-					<InputField
-						type={{
-							inputType: "Email",
-							placeholder: "Email",
-							value: this.state.email,
-							onChangeHandler: this.emailChangeHandler,
-						}}
-						error={this.state.emailErr}
-						errorMessage={this.state.emailErrMsg}
-					/>
-					<InputField
-						type={{
-							inputType: "Password",
-							placeholder: "Password",
-							value: this.state.password,
-							onChangeHandler: this.passwordChangeHandler,
-						}}
-						error={this.state.passwordErr}
-						errorMessage={this.state.passwordErrMsg}
-					/>
-					<FormSubmitButton
-						type={{ inputType: "Login" }}
-						onClickHandler={this.loginHandler}
-					/>
-					<FormRedirectLink
-						url="/register"
-						classname="LRlink"
-						text="Még nincs fiókom"
-					/>
-				</FormWrapper>
-			);
-		}
-	}
-}
+	};
+	return (
+		<FormWrapper vhnum="100vh">
+			<InputField
+				type={{
+					inputType: "Email",
+					placeholder: "Email",
+					value: email,
+					onChangeHandler: emailChangeHandler,
+				}}
+				error={emailErr}
+				errorMessage={emailErrMsg}
+			/>
+			<InputField
+				type={{
+					inputType: "Password",
+					placeholder: "Password",
+					value: password,
+					onChangeHandler: passwordChangeHandler,
+				}}
+				error={passwordErr}
+				errorMessage={passwordErrMsg}
+			/>
+			<FormSubmitButton
+				type={{ inputType: "Login" }}
+				onClickHandler={loginHandler}
+			/>
+			<FormRedirectLink
+				url="/register"
+				classname="LRlink"
+				text="Még nincs fiókom"
+			/>
+		</FormWrapper>
+	);
+};
 
 export default Login;

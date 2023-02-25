@@ -1,5 +1,3 @@
-import { BlobOptions } from "buffer";
-
 //Interface used to handle state in the RegisterForm component
 export interface UserRegisterDto {
 	username: string;
