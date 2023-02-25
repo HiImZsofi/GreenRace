@@ -1,95 +1,65 @@
-import React from "react";
-import { Navigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import FormSubmitButton from "../components/FormSubmitButton";
 import FormSwitch from "../components/FormSwitch";
 import FormWrapper from "../components/FormWrapper";
 import InputField from "../components/InputField";
 import NavMenu from "../components/NavBarLogic";
-import { UserSettingsDto } from "../Interfaces";
 
-//TODO file input with link
+const UserSettings = () => {
+	const [newUsername, setNewUsername] = useState("");
+	const [newUsernameErr, setNewUsernameErr] = useState(false);
+	const [newUsernameErrMsg, setNewUsernameErrMsg] = useState("");
+	const [newPassword, setNewPassword] = useState("");
+	const [newPasswordErr, setNewPasswordErr] = useState(false);
+	const [newPasswordErrMsg, setNewPasswordErrMsg] = useState("");
+	const [currentPassword, setCurrentPassword] = useState("");
+	const [currentPasswordErr, setCurrentPasswordErr] = useState(false);
+	const [currentPasswordErrMsg, setCurrentPasswordErrMsg] = useState("");
+	const [darkTheme, setDarkTheme] = useState(false);
 
-class UserSettings extends React.Component<{}, UserSettingsDto> {
-	constructor(props: any) {
-		super(props);
+	const navigate = useNavigate();
 
-		this.newUsernameOnChangeHandler =
-			this.newUsernameOnChangeHandler.bind(this);
-		this.newPasswordOnChangeHandler =
-			this.newPasswordOnChangeHandler.bind(this);
-		this.currentPasswordOnChangeHandler =
-			this.currentPasswordOnChangeHandler.bind(this);
-		this.onFileInputHandler = this.onFileInputHandler.bind(this);
-		this.onSwitchClick = this.onSwitchClick.bind(this);
-		this.saveHandler = this.saveHandler.bind(this);
-		this.cancelHandler = this.cancelHandler.bind(this);
+	const newUsernameOnChangeHandler = (
+		e: React.SyntheticEvent<HTMLInputElement>
+	) => {
+		setNewUsername(e.currentTarget.value);
+	};
+	const newPasswordOnChangeHandler = (
+		e: React.SyntheticEvent<HTMLInputElement>
+	) => {
+		setNewPassword(e.currentTarget.value);
+	};
+	const currentPasswordOnChangeHandler = (
+		e: React.SyntheticEvent<HTMLInputElement>
+	) => {
+		setCurrentPassword(e.currentTarget.value);
+	};
 
-		this.state = {
-			newUsername: "",
-			newUsernameErr: false,
-			newUsernameErrMsg: "",
-			newPassword: "",
-			newPasswordErr: false,
-			newPasswordErrMsg: "",
-			currentPassword: "",
-			currentPasswordErr: false,
-			currentPasswordErrMsg: "",
-			profilePicturePath: "",
-			darkTheme: false,
-			isRedirected: false,
-		};
-	}
+	const onSwitchClick = () => {
+		setDarkTheme(!darkTheme);
+	};
 
-	newUsernameOnChangeHandler(e: React.SyntheticEvent<HTMLInputElement>) {
-		this.setState({
-			newUsername: e.currentTarget.value,
-		});
-	}
-	newPasswordOnChangeHandler(e: React.SyntheticEvent<HTMLInputElement>) {
-		this.setState({
-			newPassword: e.currentTarget.value,
-		});
-	}
-	currentPasswordOnChangeHandler(e: React.SyntheticEvent<HTMLInputElement>) {
-		this.setState({
-			currentPassword: e.currentTarget.value,
-		});
-	}
+	const cancelHandler = () => {
+		navigate("/userPage", { replace: true });
+	};
 
-	onFileInputHandler(e: React.SyntheticEvent<HTMLInputElement>) {
-		this.setState({ profilePicturePath: e.currentTarget.value });
-	}
-
-	onSwitchClick() {
-		this.setState({ darkTheme: !this.state.darkTheme });
-		console.log(this.state.darkTheme);
-	}
-
-	cancelHandler() {
-		this.setState({ isRedirected: true });
-	}
-
-	saveHandler() {
-		if (
-			(this.state.currentPassword !== "" && this.state.newUsername !== "") ||
-			this.state.newPassword !== ""
-		) {
-			this.setState({
-				newUsernameErr: false,
-				newUsernameErrMsg: "",
-				newPasswordErr: false,
-				newPasswordErrMsg: "",
-				currentPasswordErr: false,
-				currentPasswordErrMsg: "",
-			});
+	const saveHandler = () => {
+		if ((currentPassword !== "" && newUsername !== "") || newPassword !== "") {
+			setNewUsernameErr(false);
+			setNewUsernameErrMsg("");
+			setNewPasswordErr(false);
+			setNewPasswordErrMsg("");
+			setCurrentPasswordErr(false);
+			setCurrentPasswordErrMsg("");
 			const requestOptions = {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
 					email: localStorage.getItem("email"),
-					newUsername: this.state.newUsername,
-					newPassword: this.state.newPassword,
-					currentPassword: this.state.currentPassword,
+					newUsername: newUsername,
+					newPassword: newPassword,
+					currentPassword: currentPassword,
 				}),
 			};
 			fetch("http://localhost:3001/settings", requestOptions)
@@ -102,33 +72,25 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 					//Check for server response
 					if (response.status === 200) {
 						//TODO Store dark theme option in a cookie
-						this.setState({
-							newUsernameErr: false,
-							newUsernameErrMsg: "",
-							newPasswordErr: false,
-							newPasswordErrMsg: "",
-							currentPasswordErr: false,
-							currentPasswordErrMsg: "",
-							isRedirected: true,
-						});
+						setNewUsernameErr(false);
+						setNewUsernameErrMsg("");
+						setNewPasswordErr(false);
+						setNewPasswordErrMsg("");
+						setCurrentPasswordErr(false);
+						setCurrentPasswordErrMsg("");
+						navigate("/userPage", { replace: true });
 					} else if (response.status === 500) {
 						if (data.error === "Password") {
-							this.setState({
-								currentPasswordErr: true,
-								currentPasswordErrMsg: data.result,
-							});
+							setCurrentPasswordErr(true);
+							setCurrentPasswordErrMsg(data.result);
 						}
 						if (data.error === "NewPassword") {
-							this.setState({
-								newPasswordErr: true,
-								newPasswordErrMsg: data.result,
-							});
+							setNewPasswordErr(true);
+							setNewPasswordErrMsg(data.result);
 						}
 						if (data.error === "Username") {
-							this.setState({
-								newUsernameErr: true,
-								newUsernameErrMsg: data.result,
-							});
+							setNewUsernameErr(true);
+							setNewUsernameErrMsg(data.result);
 						}
 					}
 				})
@@ -136,81 +98,69 @@ class UserSettings extends React.Component<{}, UserSettingsDto> {
 					console.error("There was an error!", error);
 				});
 		} else {
-			this.setState({
-				currentPasswordErr: true,
-				currentPasswordErrMsg: "This field is required to be filled in",
-			});
-			if (this.state.newUsername === "") {
-				this.setState({
-					newUsernameErr: true,
-					newUsernameErrMsg: "This field is required to be filled in",
-				});
+			setCurrentPasswordErr(true);
+			setCurrentPasswordErrMsg("This field is required to be filled in");
+			if (newUsername === "") {
+				setNewUsernameErr(true);
+				setNewUsernameErrMsg("This field is required to be filled in");
 			}
-			if (this.state.newPassword === "") {
-				this.setState({
-					newPasswordErr: true,
-					newPasswordErrMsg: "This field is required to be filled in",
-				});
+			if (newPassword === "") {
+				setNewPasswordErr(true);
+				setNewPasswordErrMsg("This field is required to be filled in");
 			}
 		}
-	}
-	render(): React.ReactNode {
-		if (this.state.isRedirected) {
-			return <Navigate to={"/userPage"} replace={true} />;
-		} else {
-			return (
-				//TODO NavBar with atributes
-				<>
-					<NavMenu username="" profilePicturePath="" />
-					<FormWrapper vhnum="89vh">
-						<InputField
-							type={{
-								inputType: "Username",
-								placeholder: "New username",
-								value: this.state.newUsername,
-								onChangeHandler: this.newUsernameOnChangeHandler,
-							}}
-							error={this.state.newUsernameErr}
-							errorMessage={this.state.newUsernameErrMsg}
-						/>
-						<InputField
-							type={{
-								inputType: "Password",
-								placeholder: "New password",
-								value: this.state.newPassword,
-								onChangeHandler: this.newPasswordOnChangeHandler,
-							}}
-							error={this.state.newPasswordErr}
-							errorMessage={this.state.newPasswordErrMsg}
-						/>
-						<InputField
-							type={{
-								inputType: "Password",
-								placeholder: "Current password",
-								value: this.state.currentPassword,
-								onChangeHandler: this.currentPasswordOnChangeHandler,
-							}}
-							error={this.state.currentPasswordErr}
-							errorMessage={this.state.currentPasswordErrMsg}
-						/>
-						<FormSwitch
-							label="Dark theme"
-							value={this.state.darkTheme}
-							onClickHandler={this.onSwitchClick}
-						/>
-						<FormSubmitButton
-							type={{ inputType: "Save" }}
-							onClickHandler={this.saveHandler}
-						/>
-						<FormSubmitButton
-							type={{ inputType: "Cancel" }}
-							onClickHandler={this.cancelHandler}
-						/>
-					</FormWrapper>
-				</>
-			);
-		}
-	}
-}
+	};
+	return (
+		//TODO NavBar with atributes
+		<>
+			<NavMenu username="" profilePicturePath="" />
+			<FormWrapper vhnum="89vh">
+				<InputField
+					type={{
+						inputType: "Username",
+						placeholder: "New username",
+						value: newUsername,
+						onChangeHandler: newUsernameOnChangeHandler,
+					}}
+					error={newUsernameErr}
+					errorMessage={newUsernameErrMsg}
+				/>
+				<InputField
+					type={{
+						inputType: "Password",
+						placeholder: "New password",
+						value: newPassword,
+						onChangeHandler: newPasswordOnChangeHandler,
+					}}
+					error={newPasswordErr}
+					errorMessage={newPasswordErrMsg}
+				/>
+				<InputField
+					type={{
+						inputType: "Password",
+						placeholder: "Current password",
+						value: currentPassword,
+						onChangeHandler: currentPasswordOnChangeHandler,
+					}}
+					error={currentPasswordErr}
+					errorMessage={currentPasswordErrMsg}
+				/>
+				<FormSwitch
+					label="Dark theme"
+					value={darkTheme}
+					onClickHandler={onSwitchClick}
+				/>
+				<FormSubmitButton
+					type={{ inputType: "Save" }}
+					onClickHandler={saveHandler}
+				/>
+				<FormSubmitButton
+					type={{ inputType: "Cancel" }}
+					onClickHandler={cancelHandler}
+				/>
+			</FormWrapper>
+		</>
+	);
+};
 
 export default UserSettings;
