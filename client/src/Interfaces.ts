@@ -62,3 +62,5 @@ export interface NavMenuState {
 	profilePicturePath: string;
 	isLoggedIn: boolean;
 }
+
+
