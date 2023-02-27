@@ -332,7 +332,7 @@ app.get("/rankPage", (req, res) => {
     req.token = token;
   } else {
     //if undefined return forbidden status code
-    res.sendStatus(403);
+    res.statusCode = 403;
   }
   jwt.verify(req.token, "secret", { algorithm: "HS256" }, async (err) => {
     if (err) {
