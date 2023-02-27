@@ -1,5 +1,3 @@
-import { BlobOptions } from "buffer";
-
 //Interface used to handle state in the RegisterForm component
 export interface UserRegisterDto {
 	username: string;
@@ -39,13 +37,11 @@ export interface UserSettingsDto {
 	newPasswordErr: boolean;
 	newPasswordErrMsg: string;
 	currentPassword: string;
-	currentPasswordErr: string;
+	currentPasswordErr: boolean;
 	currentPasswordErrMsg: string;
-	theme: boolean;
-	username: string;
-	picfilepath: string;
-	points: number;
-	isLoggedIn: boolean;
+	profilePicturePath: string;
+	darkTheme: boolean;
+	isRedirected: boolean;
 }
 
 //Helps handle props when generating input fields
