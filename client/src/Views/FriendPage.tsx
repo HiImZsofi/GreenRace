@@ -1,13 +1,43 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Pages.css";
 import NavMenu from "../components/NavBarLogic";
 import "bootstrap/dist/css/bootstrap.css";
+import { useNavigate } from "react-router-dom";
 
 const FriendPage = () => {
   const [username, setUsername] = useState("");
   const [picFilePath, setPicFilePath] = useState("");
   const [point, setPoint] = useState(0);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const navigate = useNavigate();
+
+  const authenticationHandler = async () => {
+    const token = localStorage.getItem("key");
+    const requestOptions = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+      withCredentials: true,
+    };
+    fetch("http://localhost:3001/userPage", requestOptions).then(
+      async (response) => {
+        const isJson = response.headers
+          .get("content-type")
+          ?.includes("application/json");
+        const data = isJson && (await response.json());
+        if (response.status !== 200) {
+          navigate("/login", { replace: true });
+        }
+      }
+    );
+  };
+
+  useEffect(() => {
+    authenticationHandler();
+  });
 
   return (
     <div key={"friendPage"}>

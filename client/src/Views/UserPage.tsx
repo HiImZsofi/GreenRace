@@ -4,12 +4,38 @@ import NavMenuLayout from "../components/NavBar";
 import "bootstrap/dist/css/bootstrap.css";
 import { UserPageDto } from "../Interfaces";
 import NavMenu from "../components/NavBarLogic";
+import { useNavigate } from "react-router-dom";
 
 const UserPage = () => {
   const [username, setUsername] = useState("");
   const [picfilepath, setPicfilepath] = useState("");
   const [points, setPoints] = useState(0);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+
+  const navigate = useNavigate();
+
+  const authenticationHandler = async () => {
+    const token = localStorage.getItem("key");
+    const requestOptions = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+      withCredentials: true,
+    };
+    fetch("http://localhost:3001/userPage", requestOptions).then(
+      async (response) => {
+        const isJson = response.headers
+          .get("content-type")
+          ?.includes("application/json");
+        const data = isJson && (await response.json());
+        if (response.status !== 200) {
+          navigate("/login", { replace: true });
+        }
+      }
+    );
+  };
 
   const dataLoadIn = () => {
     const requestUserData = {
@@ -34,6 +60,7 @@ const UserPage = () => {
   };
 
   useEffect(() => {
+    authenticationHandler();
     dataLoadIn();
   });
 

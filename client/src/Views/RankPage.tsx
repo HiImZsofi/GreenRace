@@ -3,7 +3,7 @@ import "./Pages.css";
 import NavMenu from "../components/NavBar";
 import "bootstrap/dist/css/bootstrap.css";
 import { UserPageDto } from "../Interfaces";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 interface Ranking {
   username: string;
   points: number;
@@ -14,6 +14,32 @@ const RankPage = () => {
   const [picFilePath, setPicFilePath] = useState("");
   const [points, setPoints] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const navigate = useNavigate();
+
+  const authenticationHandler = async () => {
+    const token = localStorage.getItem("key");
+    const requestOptions = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+      withCredentials: true,
+    };
+    fetch("http://localhost:3001/userPage", requestOptions).then(
+      async (response) => {
+        const isJson = response.headers
+          .get("content-type")
+          ?.includes("application/json");
+        const data = isJson && (await response.json());
+        if (response.status !== 200) {
+          navigate("/login", { replace: true });
+        }
+      }
+    );
+  };
+
   const logoutHandler = () => {
     const requestOptions = {
       method: "POST",
@@ -75,6 +101,7 @@ const RankPage = () => {
       });
   };
   useEffect(() => {
+    authenticationHandler();
     loadInData();
     loadInRankData();
   });
