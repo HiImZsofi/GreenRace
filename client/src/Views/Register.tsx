@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import FormWrapper from "../components/FormWrapper";
 import FormRedirectLink from "../components/FormRedirectLink";
 
+//RegisterForm component
 const Register = () => {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
@@ -16,7 +17,6 @@ const Register = () => {
 	const [usernameErrMsg, setUsernameErrMsg] = useState("");
 	const [passwordErrMsg, setPasswordErrMsg] = useState("");
 	const [emailErrMsg, setEmailErrMsg] = useState("");
-
 	const navigate = useNavigate();
 
 	const usernameChangeHandler = (e: React.SyntheticEvent<HTMLInputElement>) => {
@@ -31,7 +31,9 @@ const Register = () => {
 		setEmail(e.currentTarget.value);
 	};
 
+	//HTTP POST request to backend
 	const submitHandler = () => {
+		//Check if the input fields are empty or not
 		if (
 			username.trim() == null ||
 			username.trim() == "" ||
@@ -47,6 +49,7 @@ const Register = () => {
 			setUsernameErrMsg("Invalid input");
 			setPasswordErrMsg("Invalid input");
 		} else {
+			//Send POST request to the server
 			const requestOptions = {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
@@ -79,7 +82,7 @@ const Register = () => {
 				});
 		}
 	};
-
+	//Page Visual Part
 	return (
 		<FormWrapper vhnum="100vh">
 			<InputField

@@ -1,17 +1,20 @@
+//Imports
 import React, { useEffect, useState } from "react";
 import "./Pages.css";
 import NavMenu from "../components/NavBarLogic";
 import "bootstrap/dist/css/bootstrap.css";
 import { useNavigate } from "react-router-dom";
 
+//FriendPage main code
+//TODO: Not functional yet
 const FriendPage = () => {
   const [username, setUsername] = useState("");
   const [picFilePath, setPicFilePath] = useState("");
   const [point, setPoint] = useState(0);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   const navigate = useNavigate();
 
+  //Getting data form Server
   const authenticationHandler = async () => {
     const token = localStorage.getItem("key");
     const requestOptions = {
@@ -34,11 +37,12 @@ const FriendPage = () => {
       }
     );
   };
-
   useEffect(() => {
     authenticationHandler();
   });
 
+  //Page Visual Part
+  //TODO: Only Placeholder
   return (
     <div key={"friendPage"}>
       <NavMenu username={username} profilePicturePath={picFilePath} />
