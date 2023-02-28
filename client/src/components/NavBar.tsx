@@ -71,6 +71,7 @@ const NavMenu = (props: {
 								/>
 							</div>
 						</Navbar.Toggle>
+						{/*Navbar Offscreen part*/}
 						<Navbar.Offcanvas
 							id={`offcanvasNavbar-expand-${expand}`}
 							aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}

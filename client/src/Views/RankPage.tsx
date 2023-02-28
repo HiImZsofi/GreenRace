@@ -1,22 +1,27 @@
+//Imports
 import React, { useState, useEffect } from "react";
 import "./Pages.css";
 import NavMenu from "../components/NavBar";
 import "bootstrap/dist/css/bootstrap.css";
 import { UserPageDto } from "../Interfaces";
 import { Navigate, useNavigate } from "react-router-dom";
+
+//Creating variables
 interface Ranking {
   username: string;
   points: number;
 }
 const Ranglist: Ranking[] = [];
+
+//RankPage main code
 const RankPage = () => {
   const [username, setUsername] = useState("");
   const [picFilePath, setPicFilePath] = useState("");
   const [points, setPoints] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   const navigate = useNavigate();
 
+  //Getting data form Server
   const authenticationHandler = async () => {
     const token = localStorage.getItem("key");
     const requestOptions = {
@@ -38,8 +43,25 @@ const RankPage = () => {
         }
       }
     );
+    fetch("http://localhost:3001/rankPage").then(
+      async (response) => {
+        const isJson = response.headers
+          .get("content-type")
+          ?.includes("application/json");
+        const rankdata = isJson && (await response.json());
+        console.log(rankdata);
+        for (let i = 0; i < 10; i++) {
+          if (rankdata.ranking[i] !== undefined) {
+            let username: string = rankdata.ranking[i].username;
+            let points = rankdata.ranking[i].points;
+            let rang: Ranking = { username: username, points: points };
+            Ranglist[i] = rang;
+          }
+        }
+      });
   };
 
+  //TODO: this needs testing after server fixed probably needed in other pages
   const logoutHandler = () => {
     const requestOptions = {
       method: "POST",
@@ -63,48 +85,11 @@ const RankPage = () => {
         console.error("There was an error!", error);
       });
   };
-  const loadInData = () => {
-    fetch("http://localhost:3001/userPage")
-      .then(async (response) => {
-        const isJson = response.headers
-          .get("content-type")
-          ?.includes("application/json");
-        const data = isJson && (await response.json());
-        console.log(data);
-        setUsername(data.userdata.username);
-        setPicFilePath(data.userdata.picfilepath);
-        setPoints(data.userdata.points);
-      })
-      .catch((error) => {
-        console.error("There was an error!", error);
-      });
-  };
-  const loadInRankData = () => {
-    fetch("http://localhost:3001/rankPage")
-      .then(async (response) => {
-        const isJson = response.headers
-          .get("content-type")
-          ?.includes("application/json");
-        const rankdata = isJson && (await response.json());
-        console.log(rankdata);
-        for (let i = 0; i < 10; i++) {
-          if (rankdata.ranking[i] !== undefined) {
-            let username: string = rankdata.ranking[i].username;
-            let points = rankdata.ranking[i].points;
-            let rang: Ranking = { username: username, points: points };
-            Ranglist[i] = rang;
-          }
-        }
-      })
-      .catch((error) => {
-        console.error("There was an error!", error);
-      });
-  };
   useEffect(() => {
     authenticationHandler();
-    loadInData();
-    loadInRankData();
   });
+
+  //Page Visual Part
   if (isLoggedIn) {
     return <Navigate to="/login" replace={true} />;
   } else {
@@ -131,5 +116,4 @@ const RankPage = () => {
     );
   }
 };
-
 export default RankPage;

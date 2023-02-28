@@ -16,7 +16,6 @@ const Login = () => {
   const [passwordErr, setPasswordErr] = useState(false);
   const [emailErrMsg, setEmailErrMsg] = useState("");
   const [passwordErrMsg, setPasswordErrMsg] = useState("");
-
   const navigate = useNavigate();
 
   const emailChangeHandler = (e: React.SyntheticEvent<HTMLInputElement>) => {
@@ -87,6 +86,7 @@ const Login = () => {
         });
     }
   };
+  //Page Visual Part
   return (
     <FormWrapper vhnum="100vh">
       <InputField
@@ -121,5 +121,4 @@ const Login = () => {
     </FormWrapper>
   );
 };
-
 export default Login;

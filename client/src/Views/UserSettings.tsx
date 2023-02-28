@@ -1,3 +1,4 @@
+//Imports
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import FormSubmitButton from "../components/FormSubmitButton";
@@ -6,6 +7,7 @@ import FormWrapper from "../components/FormWrapper";
 import InputField from "../components/InputField";
 import NavMenu from "../components/NavBarLogic";
 
+//SettingsPage main code
 const UserSettings = () => {
   const [newUsername, setNewUsername] = useState("");
   const [newUsernameErr, setNewUsernameErr] = useState(false);
@@ -17,13 +19,11 @@ const UserSettings = () => {
   const [currentPasswordErr, setCurrentPasswordErr] = useState(false);
   const [currentPasswordErrMsg, setCurrentPasswordErrMsg] = useState("");
   const [darkTheme, setDarkTheme] = useState(false);
-
+  const [username, setUsername] = useState("");
+  const [picFilePath, setPicFilePath] = useState("");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    authenticationHandler();
-  });
-
+  //Getting data form Server
   const authenticationHandler = async () => {
     const token = localStorage.getItem("key");
     const requestOptions = {
@@ -137,10 +137,14 @@ const UserSettings = () => {
       }
     }
   };
+  useEffect(() => {
+    authenticationHandler();
+  });
+  
+  //Page Visual Part
   return (
-    //TODO NavBar with atributes
     <>
-      <NavMenu username="" profilePicturePath="" />
+      <NavMenu username={username} profilePicturePath={picFilePath} />
       <FormWrapper vhnum="89vh">
         <InputField
           type={{

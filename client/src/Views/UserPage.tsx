@@ -1,3 +1,4 @@
+//Imports
 import React, { useEffect, useState } from "react";
 import "./Pages.css";
 import NavMenuLayout from "../components/NavBar";
@@ -6,14 +7,16 @@ import { UserPageDto } from "../Interfaces";
 import NavMenu from "../components/NavBarLogic";
 import { useNavigate } from "react-router-dom";
 
+//UserPage main code
 const UserPage = () => {
   const [username, setUsername] = useState("");
   const [picfilepath, setPicfilepath] = useState("");
   const [points, setPoints] = useState(0);
   const [isLoggedIn, setIsLoggedIn] = useState(true);
-
   const navigate = useNavigate();
 
+  //Getting data form Server
+  //TODO: this doens't work getting data just ask down if loged in new fetch probably required
   const authenticationHandler = async () => {
     const token = localStorage.getItem("key");
     const requestOptions = {
@@ -37,6 +40,7 @@ const UserPage = () => {
     );
   };
 
+  //TODO this should be done in the fetch before this but that one doesn't have point component making new fetch probably required
   const dataLoadIn = () => {
     const requestUserData = {
       method: "GET",
@@ -58,12 +62,11 @@ const UserPage = () => {
       }
     );
   };
-
   useEffect(() => {
     authenticationHandler();
-    dataLoadIn();
   });
 
+  //Page Visual Part
   return (
     <div key={"userPage"}>
       <NavMenu username={username} profilePicturePath={picfilepath} />
@@ -92,5 +95,4 @@ const UserPage = () => {
     </div>
   );
 };
-
 export default UserPage;
