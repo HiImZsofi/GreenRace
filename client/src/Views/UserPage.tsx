@@ -60,9 +60,10 @@ const UserPage = () => {
   };
 
   useEffect(() => {
-    authenticationHandler();
-    dataLoadIn();
-  });
+		authenticationHandler();
+		//!Fix fetch options
+		//dataLoadIn();
+	});
 
   return (
     <div key={"userPage"}>
