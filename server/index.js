@@ -2,10 +2,8 @@
 import {
 	checkEmailInDB,
 	getIDFromDB,
-	getUserDataFromDB,
 	insertNewUser,
 	getPassQuery,
-	getRangListFromDB,
 } from "./queries.js";
 import {
 	usernameAndPasswordChangeHandler,
@@ -13,13 +11,11 @@ import {
 	onlyUsernameChangeHandler,
 } from "./callbackHandlers.js";
 import express from "express";
-import mysql from "mysql2";
 import bodyParser from "body-parser";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import { resolve } from "path";
 
 //server port
 const PORT = process.env.PORT || 3001;
@@ -44,12 +40,6 @@ app.use((req, res, next) => {
 	);
 	next();
 });
-
-// create application/json parser
-var jsonParser = bodyParser.json();
-
-// create application/x-www-form-urlencoded parser
-var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 //start server on given port
 app.listen(PORT, () => {
@@ -113,11 +103,6 @@ function generateAccessToken(user_ID, email) {
 app.post("/login", async (req, res) => {
 	//Store data in from the POST request
 	const { email, password } = req.body;
-
-	let data = {
-		time: Date.now(),
-		email: req.body.email,
-	};
 
 	//Store data from SELECT query
 	const passwordInDB = await getPassQuery(email).catch((error) => {
@@ -183,7 +168,7 @@ function authorizeUserGetRequest(req, res) {
 				console.log("403 Forbidden request");
 			} else {
 				res.sendStatus(200);
-				console.log("200 Successful login");
+				console.log("200 Successful request");
 			}
 		}
 	);
