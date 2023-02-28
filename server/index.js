@@ -1,13 +1,27 @@
 //imports
-const express = require("express");
-const mysql = require("mysql2");
-var bodyParser = require("body-parser");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+import {
+	changePassword,
+	changeUsername,
+	checkEmailInDB,
+	getIDFromDB,
+	getUserDataFromDB,
+	insertNewUser,
+	getPassQuery,
+	getRangListFromDB,
+} from "./queries.js";
+import express from "express";
+import mysql from "mysql2";
+import bodyParser from "body-parser";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import { resolve } from "path";
+
+//server port
+const PORT = process.env.PORT || 3001;
+//Express setup
 const app = express();
-const cors = require("cors");
-const cookieParser = require("cookie-parser");
-const { resolve } = require("path");
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
@@ -16,20 +30,17 @@ app.use(cookieParser());
 
 //? middleware options ig
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Credentials", true);
-  res.header(
-    "Access-Control-Allow-Methods",
-    "GET,PUT,POST,DELETE,UPDATE,OPTIONS"
-  );
-  res.header(
-    "Access-Control-Allow-Headers",
-    "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept"
-  );
-  next();
+	res.header("Access-Control-Allow-Credentials", true);
+	res.header(
+		"Access-Control-Allow-Methods",
+		"GET,PUT,POST,DELETE,UPDATE,OPTIONS"
+	);
+	res.header(
+		"Access-Control-Allow-Headers",
+		"X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept"
+	);
+	next();
 });
-
-//server port
-const PORT = process.env.PORT || 3001;
 
 // create application/json parser
 var jsonParser = bodyParser.json();
@@ -39,137 +50,17 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 //Connect to database
 const connection = mysql.createConnection({
-  host: "127.0.0.1",
-  user: "root",
-  database: "greenRace",
-  port: "3306",
+	host: "127.0.0.1",
+	user: "root",
+	database: "greenRace",
+	port: "3306",
 });
 
 //check if mysql server is ok
 connection.connect((err) => {
-  if (err) throw err;
-  console.log("Mysql Connected...");
+	if (err) throw err;
+	console.log("Mysql Connected...");
 });
-
-//checks if email already exists in database
-function checkEmailInDB(email) {
-  return new Promise((resolve, reject) => {
-    connection.query(
-      "SELECT email FROM users WHERE email = ?",
-      [email],
-      function (err, result) {
-        if (err || result.length === 0) {
-          return reject(err); //if not then the query automatically moves on
-        }
-        return resolve(result[0].email); //if it exists then return the same email
-      }
-    );
-  });
-}
-
-//own promise for sql query so async will not mess it up
-function insertNewUser(sql) {
-  return new Promise((resolve, reject) => {
-    connection.query(sql, function (err, result) {
-      if (err) {
-        return reject(err);
-      }
-      return resolve(200); //status code is 200 if insert was successful
-    });
-  });
-}
-
-//Query password from the users table in the database
-function getPassQuery(email) {
-  return new Promise((resolve, rejects) => {
-    connection.query(
-      "SELECT password FROM users WHERE email = ?",
-      [email],
-      function (err, result) {
-        if (err || result.length == 0) return rejects(err);
-        return resolve(result[0].password);
-      }
-    );
-  });
-}
-
-function changePassword(email, password) {
-  return new Promise((resolve, rejects) => {
-    connection.query(
-      "UPDATE users SET password = ? WHERE email = ?",
-      [password, email],
-      function (err, result) {
-        if (err || result.length == 0) return rejects(err);
-        return resolve(result);
-      }
-    );
-  });
-}
-
-function changeUsername(email, username) {
-  return new Promise((resolve, rejects) => {
-    connection.query(
-      "UPDATE users SET username = ? WHERE email = ?",
-      [username, email],
-      function (err, result) {
-        if (err || result.length == 0) return rejects(err);
-        return resolve(result);
-      }
-    );
-  });
-}
-
-function getUserDataFromDB(user_ID) {
-  return new Promise((resolve, rejects) => {
-    connection.query(
-      "SELECT username, picfilepath, points FROM users WHERE user_ID = ?",
-      [user_ID],
-      function (err, result) {
-        if (err || result.length == 0) return rejects(err);
-        return resolve(result[0]);
-      }
-    );
-  });
-}
-
-function getRangListFromDB() {
-  return new Promise((resolve, rejects) => {
-    connection.query(
-      "SELECT username, points FROM users ORDER BY points DESC LIMIT 10",
-      function (err, result) {
-        if (err || result.length == 0) return rejects(err);
-        return resolve(result);
-      }
-    );
-  });
-}
-
-function getIDFromDB(email) {
-  return new Promise((resolve, rejects) => {
-    connection.query(
-      "SELECT user_ID FROM users WHERE email = ?",
-      [email],
-      function (err, result) {
-        if (err || result.length == 0) return rejects(err);
-        return resolve(result[0].user_ID);
-      }
-    );
-  });
-}
-
-//Asking down users data
-function getUserDataFromDB(user_ID) {
-  return new Promise((resolve, rejects) => {
-    connection.query(
-      "SELECT username, picfilepath, points FROM users WHERE user_ID = ?",
-      [user_ID],
-      function (err, result) {
-        if (err || result.length == 0) return rejects(err);
-        return resolve(result[0]);
-      }
-    );
-  });
-}
 
 //start server on given port
 app.listen(PORT, () => {
