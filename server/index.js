@@ -154,78 +154,48 @@ app.post("/login", async (req, res) => {
 	}
 });
 
-app.get("/userPage", (req, res) => {
+//User authorization
+//Can be called in the callback of a route with the req and res params 
+function authorizeUserGetRequest(req, res){
   const header = req.headers["authorization"];
 
-  //make sure if token header is not undefined
-  if (header !== undefined) {
-    const bearer = header.split(" "); //separate request token from bearer
-    const token = bearer[1];
-    req.token = token;
-  } else {
-    //if undefined return forbidden status code
-    res.statusCode = 403;
-  }
-  jwt.verify(
-    req.token,
-    "secret",
-    { algorithm: "HS256" },
-    (err, authorizedData) => {
-      if (err) {
-        res.sendStatus(403);
-        console.log("403 Forbidden request");
-      } else {
-        res.sendStatus(200);
-        console.log("200 Successful login");
-      }
-    }
-  );
+	//make sure if token header is not undefined
+	if (header !== undefined) {
+		const bearer = header.split(" "); //separate request token from bearer
+		const token = bearer[1];
+		req.token = token;
+	} else {
+		//if undefined return forbidden status code
+		res.statusCode = 403;
+	}
+	//TODO use .decode to get the payload from the token
+	//TODO so the id won't have to be sent to the frontend separately
+	jwt.verify(
+		req.token,
+		"secret",
+		{ algorithm: "HS256" },
+		(err, authorizedData) => {
+			if (err) {
+				res.sendStatus(403);
+				console.log("403 Forbidden request");
+			} else {
+				res.sendStatus(200);
+				console.log("200 Successful login");
+			}
+		}
+	);
+}
+
+app.get("/userPage", (req, res) => {
+	authorizeUserGetRequest(req,res)
 });
 
 app.get("/friendPage", (req, res) => {
-  const header = req.headers["authorization"];
-
-  //make sure if token header is not undefined
-  if (header !== undefined) {
-    const bearer = header.split(" "); //separate request token from bearer
-    const token = bearer[1];
-    req.token = token;
-  } else {
-    //if undefined return forbidden status code
-    res.sendStatus(403);
-  }
-  jwt.verify(req.token, "secret", { algorithm: "HS256" }, async (err) => {
-    if (err) {
-      res.sendStatus(403);
-      console.log("Caught you lacking");
-    } else {
-      res.sendStatus(200);
-      console.log("Successful login");
-    }
-  });
+  authorizeUserGetRequest(req,res)
 });
 
 app.get("/rankPage", (req, res) => {
-  const header = req.headers["authorization"];
-
-  //make sure if token header is not undefined
-  if (header !== undefined) {
-    const bearer = header.split(" "); //separate request token from bearer
-    const token = bearer[1];
-    req.token = token;
-  } else {
-    //if undefined return forbidden status code
-    res.statusCode = 403;
-  }
-  jwt.verify(req.token, "secret", { algorithm: "HS256" }, async (err) => {
-    if (err) {
-      await res.sendStatus(403);
-      console.log("Caught you lacking");
-    } else {
-      res.sendStatus(200);
-      console.log("Successful login");
-    }
-  });
+  authorizeUserGetRequest(req,res)
 });
 
 app.post("/logout", (req, res) => {
