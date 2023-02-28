@@ -48,20 +48,6 @@ var jsonParser = bodyParser.json();
 // create application/x-www-form-urlencoded parser
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
-//Connect to database
-const connection = mysql.createConnection({
-	host: "127.0.0.1",
-	user: "root",
-	database: "greenRace",
-	port: "3306",
-});
-
-//check if mysql server is ok
-connection.connect((err) => {
-	if (err) throw err;
-	console.log("Mysql Connected...");
-});
-
 //start server on given port
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);

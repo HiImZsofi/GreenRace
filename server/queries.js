@@ -1,3 +1,19 @@
+import mysql from "mysql2";
+
+//Connect to database
+const connection = mysql.createConnection({
+	host: "127.0.0.1",
+	user: "root",
+	database: "greenRace",
+	port: "3306",
+});
+
+//check if mysql server is ok
+connection.connect((err) => {
+	if (err) throw err;
+	console.log("Mysql Connected...");
+});
+
 //checks if email already exists in database
 export function checkEmailInDB(email) {
 	return new Promise((resolve, reject) => {
