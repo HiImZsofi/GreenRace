@@ -60,6 +60,7 @@ const UserPage = () => {
   };
 
   useEffect(() => {
+		//TODO Make this into one fetch for better performance
 		authenticationHandler();
 		//!Fix fetch options
 		//dataLoadIn();
