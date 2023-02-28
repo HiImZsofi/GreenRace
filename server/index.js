@@ -66,6 +66,8 @@ app.post("/register", async (req, res) => {
 
 	var sql = `INSERT INTO users (username, password, email, points) VALUES ("${username}", "${hash}", "${email}",0)`; //! SQL injection????
 
+  //Check for duplicate email
+  //If it "succeeds" then it sets the status code to 500 
 	try {
 		await checkEmailInDB(email);
 		res.statusCode = 500;
@@ -73,15 +75,17 @@ app.post("/register", async (req, res) => {
 		res.statusCode = 100;
 		console.log("code changed to", res.statusCode);
 	}
+
+  //Insert user into database
 	try {
 		await insertNewUser(sql);
 		res.statusCode = 200;
 		console.log("Inserted user", res.statusCode);
-		res.send(JSON.stringify({ result: "Successful registration" }));
+		res.send({ result: "Successful registration" });
 	} catch (error) {
 		res.statusCode = 500;
 		console.log("Server error", res.statusCode);
-		res.json(JSON.stringify({ error: "Duplicate email" }));
+		res.send({ error: "Duplicate email" });
 	}
 });
 
@@ -174,18 +178,28 @@ function authorizeUserGetRequest(req, res) {
 	);
 }
 
+//User page route
+//Authorize user
+//TODO Send back appropriate user data
 app.get("/userPage", (req, res) => {
 	authorizeUserGetRequest(req, res);
 });
 
+//Friend page route
+//Authorize user
+//TODO Send back appropriate user data
 app.get("/friendPage", (req, res) => {
 	authorizeUserGetRequest(req, res);
 });
 
+//Rank page route
+//Authorize user
+//TODO Send back appropriate user data
 app.get("/rankPage", (req, res) => {
 	authorizeUserGetRequest(req, res);
 });
 
+//Logout route POST request
 app.post("/logout", (req, res) => {
 	//throw the cookie if user has logged out
 	res.status(200).clearCookie("authorization", {
@@ -195,6 +209,7 @@ app.post("/logout", (req, res) => {
 	res.send("Logged out");
 });
 
+//Settings route POST request
 app.post("/settings", async (req, res) => {
 	const { email, newUsername, newPassword, currentPassword } = req.body;
 	const passwordInDB = await getPassQuery(email).catch((error) => {
