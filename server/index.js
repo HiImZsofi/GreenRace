@@ -106,6 +106,7 @@ function generateAccessToken(email) {
   );
 }
 
+//Login POST request handling
 app.post("/login", async (req, res) => {
   //Store data in from the POST request
   const { email, password } = req.body;
@@ -121,8 +122,8 @@ app.post("/login", async (req, res) => {
   //Store data from SELECT query
   const passwordInDB = await getPassQuery(email).catch((error) => {
     res.statusCode = 404;
-    console.log(404);
-    res.send(JSON.stringify({ error: "Invalid email", response: error }));
+    console.log('404 User not found');
+    res.send({ error: "Invalid email", response: error });
   });
 
   let token;
@@ -137,12 +138,14 @@ app.post("/login", async (req, res) => {
         } catch (e) {
           throw new Error(e.message);
         }
+        //Send token if the passwords matches
         res.send({ Authorization: token });
-        console.log("200 OK");
+        console.log("200 Logged In");
       } else {
+        //Send error if the passwords don't match
         res.statusCode = 401;
-        res.send(JSON.stringify({ error: "Invalid password" }));
-        console.log("401 Auth Err");
+        res.send({ error: "Invalid password" });
+        console.log("401 Login Authorization Err");
       }
     });
   }
@@ -167,10 +170,10 @@ app.get("/userPage", (req, res) => {
     (err, authorizedData) => {
       if (err) {
         res.sendStatus(403);
-        console.log("Caught you lacking");
+        console.log("403 Forbidden request");
       } else {
         res.sendStatus(200);
-        console.log("Successful login");
+        console.log("200 Successful login");
       }
     }
   );
@@ -190,7 +193,7 @@ app.get("/friendPage", (req, res) => {
   }
   jwt.verify(req.token, "secret", { algorithm: "HS256" }, async (err) => {
     if (err) {
-      await res.sendStatus(403);
+      res.sendStatus(403);
       console.log("Caught you lacking");
     } else {
       res.sendStatus(200);
