@@ -1,6 +1,8 @@
 //Imports
 import React, { useState, useEffect } from "react";
+import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import CheckboxDark from "../components/Checkbox";
 import FormSubmitButton from "../components/FormSubmitButton";
 import FormSwitch from "../components/FormSwitch";
 import FormWrapper from "../components/FormWrapper";
@@ -175,20 +177,23 @@ const UserSettings = () => {
           }}
           error={currentPasswordErr}
           errorMessage={currentPasswordErrMsg}
-        />
-        <FormSwitch
+        /> 
+        <CheckboxDark/>
+        {/*<FormSwitch
           label="Dark theme"
           value={darkTheme}
           onClickHandler={onSwitchClick}
-        />
-        <FormSubmitButton
-          type={{ inputType: "Save" }}
-          onClickHandler={saveHandler}
-        />
-        <FormSubmitButton
-          type={{ inputType: "Cancel" }}
-          onClickHandler={cancelHandler}
-        />
+        />*/}
+        <Button
+          variant="success"
+          className="px-4 me-4"
+          onClick={saveHandler}
+        >Save</Button>
+        <Button
+          variant="outline-success"
+          className="px-3"
+          onClick={cancelHandler}
+        >Cancel</Button>
       </FormWrapper>
     </>
   );
