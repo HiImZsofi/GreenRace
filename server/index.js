@@ -1,7 +1,5 @@
 //imports
 import {
-	changePassword,
-	changeUsername,
 	checkEmailInDB,
 	getIDFromDB,
 	getUserDataFromDB,
@@ -9,6 +7,11 @@ import {
 	getPassQuery,
 	getRangListFromDB,
 } from "./queries.js";
+import {
+	usernameAndPasswordChangeHandler,
+	onlyPasswordChangeHandler,
+	onlyUsernameChangeHandler,
+} from "./callbackHandlers.js";
 import express from "express";
 import mysql from "mysql2";
 import bodyParser from "body-parser";
@@ -155,9 +158,9 @@ app.post("/login", async (req, res) => {
 });
 
 //User authorization
-//Can be called in the callback of a route with the req and res params 
-function authorizeUserGetRequest(req, res){
-  const header = req.headers["authorization"];
+//Can be called in the callback of a route with the req and res params
+function authorizeUserGetRequest(req, res) {
+	const header = req.headers["authorization"];
 
 	//make sure if token header is not undefined
 	if (header !== undefined) {
@@ -187,114 +190,50 @@ function authorizeUserGetRequest(req, res){
 }
 
 app.get("/userPage", (req, res) => {
-	authorizeUserGetRequest(req,res)
+	authorizeUserGetRequest(req, res);
 });
 
 app.get("/friendPage", (req, res) => {
-  authorizeUserGetRequest(req,res)
+	authorizeUserGetRequest(req, res);
 });
 
 app.get("/rankPage", (req, res) => {
-  authorizeUserGetRequest(req,res)
+	authorizeUserGetRequest(req, res);
 });
 
 app.post("/logout", (req, res) => {
-  //throw the cookie if user has logged out
-  res.status(200).clearCookie("authorization", {
-    path: "/login",
-  });
-  res.statusCode = 200;
-  res.send("Logged out");
+	//throw the cookie if user has logged out
+	res.status(200).clearCookie("authorization", {
+		path: "/login",
+	});
+	res.statusCode = 200;
+	res.send("Logged out");
 });
 
 app.post("/settings", async (req, res) => {
-  const { email, newUsername, newPassword, currentPassword } = req.body;
-  const passwordInDB = await getPassQuery(email).catch((error) => {
-    res.statusCode = 404;
-    console.log(404);
-    res.send(JSON.stringify({ error: "Invalid email", response: error }));
-  });
-  //Only runs if both values are changed
-  if (newUsername != "" && newPassword !== "") {
-    bcrypt
-      .compare(currentPassword, passwordInDB)
-      .then(async (compareRes, compareErr) => {
-        if (compareErr) throw compareErr;
-        if (compareRes) {
-          let newEncryptedPassword = bcrypt.hashSync(newPassword, 10);
-          try {
-            await changeUsername(email, newUsername);
-            await changePassword(email, newEncryptedPassword);
-            res.statusCode = 200;
-            res.send({ result: "Username and password updated" });
-          } catch (error) {
-            res.statusCode = 500;
-            res.send({
-              error: "UsernamePassword",
-              errorUsername: "Error updating the username",
-              errorPassword: "Error updating the password",
-            });
-          }
-        } else {
-          res.statusCode = 500;
-          res.send({
-            error: "Password",
-            result: "Wrong password",
-          });
-        }
-      });
-  } //Change the password only
-  else if (newPassword !== "") {
-    bcrypt
-      .compare(currentPassword, passwordInDB)
-      .then(async (compareRes, compareErr) => {
-        if (compareErr) throw compareErr;
-        if (compareRes) {
-          let newEncryptedPassword = bcrypt.hashSync(newPassword, 10);
-          try {
-            await changePassword(email, newEncryptedPassword);
-            res.statusCode = 200;
-            res.send({ result: "Password updated" });
-          } catch (error) {
-            res.statusCode = 500;
-            res.send({
-              error: "NewPassword",
-              result: "Error updating the password",
-            });
-          }
-        } else {
-          res.statusCode = 500;
-          res.send({
-            error: "Password",
-            result: "Wrong password",
-          });
-        }
-      });
-  } //Change username
-  else if (newUsername !== "") {
-    bcrypt
-      .compare(currentPassword, passwordInDB)
-      .then(async (compareRes, compareErr) => {
-        if (compareErr) throw compareErr;
-        if (compareRes) {
-          try {
-            await changeUsername(email, newUsername);
-            res.statusCode = 200;
-            res.send({ result: "Username updated" });
-          } catch (error) {
-            res.statusCode = 500;
-            res.send({
-              error: "Username",
-              result: "Error updating the username",
-            });
-          }
-        } else {
-          res.statusCode = 500;
-          res.send({
-            error: "Password",
-            result: "Wrong password",
-          });
-        }
-      });
-  }
+	const { email, newUsername, newPassword, currentPassword } = req.body;
+	const passwordInDB = await getPassQuery(email).catch((error) => {
+		res.statusCode = 404;
+		console.log(404);
+		res.send(JSON.stringify({ error: "Invalid email", response: error }));
+	});
+	//Only runs if both values are changed
+	if (newUsername != "" && newPassword !== "") {
+		bcrypt
+			.compare(currentPassword, passwordInDB)
+			.then(
+				usernameAndPasswordChangeHandler(newPassword, email, newUsername, res)
+			);
+	} //Change the password only
+	else if (newPassword !== "") {
+		bcrypt
+			.compare(currentPassword, passwordInDB)
+			.then(onlyPasswordChangeHandler(newPassword, email, res));
+	} //Change username
+	else if (newUsername !== "") {
+		bcrypt
+			.compare(currentPassword, passwordInDB)
+			.then(onlyUsernameChangeHandler(email, newUsername, res));
+	}
 });
+
