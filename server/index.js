@@ -50,105 +50,108 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 //start server on given port
 app.listen(PORT, () => {
-  console.log(`Server listening on ${PORT}`);
+	console.log(`Server listening on ${PORT}`);
 });
 
 //test page route
 app.get("/", (req, res) => {
-  res.send("Main page");
+	res.send("Main page");
 });
 
 //register page route
 app.post("/register", async (req, res) => {
-  //request headers
-  res.set({
-    "Content-Type": "application/json",
-  });
+	//request headers
+	res.set({
+		"Content-Type": "application/json",
+	});
 
-  //request data
-  const { username, password, email } = req.body;
+	//request data
+	const { username, password, email } = req.body;
 
-  const saltRounds = 10; //higher number harder it is to reverse
-  var hash = bcrypt.hashSync(password, saltRounds); //hash the given password with salt before inserting
+	const saltRounds = 10; //higher number harder it is to reverse
+	var hash = bcrypt.hashSync(password, saltRounds); //hash the given password with salt before inserting
 
-  var sql = `INSERT INTO users (username, password, email, points) VALUES ("${username}", "${hash}", "${email}",0)`; //! SQL injection????
+	var sql = `INSERT INTO users (username, password, email, points) VALUES ("${username}", "${hash}", "${email}",0)`; //! SQL injection????
 
-  try {
-    await checkEmailInDB(email);
-    res.statusCode = 500;
-  } catch (error) {
-    res.statusCode = 100;
-    console.log("code changed to", res.statusCode);
-  }
-  try {
-    await insertNewUser(sql);
-    res.statusCode = 200;
-    console.log("Inserted user", res.statusCode);
-    res.send(JSON.stringify({ result: "Successful registration" }));
-  } catch (error) {
-    res.statusCode = 500;
-    console.log("Server error", res.statusCode);
-    res.json(JSON.stringify({ error: "Duplicate email" }));
-  }
+	try {
+		await checkEmailInDB(email);
+		res.statusCode = 500;
+	} catch (error) {
+		res.statusCode = 100;
+		console.log("code changed to", res.statusCode);
+	}
+	try {
+		await insertNewUser(sql);
+		res.statusCode = 200;
+		console.log("Inserted user", res.statusCode);
+		res.send(JSON.stringify({ result: "Successful registration" }));
+	} catch (error) {
+		res.statusCode = 500;
+		console.log("Server error", res.statusCode);
+		res.json(JSON.stringify({ error: "Duplicate email" }));
+	}
 });
 
 //jwt token sign function
-function generateAccessToken(email) {
-  let secretKey = "secret"; //! move secret keys to dotenv
-  return jwt.sign(
-    { email: email },
-    secretKey,
-    { algorithm: "HS256" },
-    {
-      expiresIn: "1h",
-      issuer: "http://localhost:3001",
-    }
-  );
+function generateAccessToken(user_ID, email) {
+	let secretKey = "secret"; //! move secret keys to dotenv
+	return jwt.sign(
+		{ user_id: user_ID, email: email },
+		secretKey,
+		{ algorithm: "HS256" },
+		{
+			expiresIn: "1h",
+			issuer: "http://localhost:3001",
+		}
+	);
 }
 
 //Login POST request handling
 app.post("/login", async (req, res) => {
-  //Store data in from the POST request
-  const { email, password } = req.body;
+	//Store data in from the POST request
+	const { email, password } = req.body;
 
-  let data = {
-    time: Date.now(),
-    email: req.body.email,
-  };
+	let data = {
+		time: Date.now(),
+		email: req.body.email,
+	};
 
-  //! Get id from the database based on the email
-  //! put it in user object with the token
+	//Store data from SELECT query
+	const passwordInDB = await getPassQuery(email).catch((error) => {
+		res.statusCode = 404;
+		console.log("404 User not found");
+		res.send({ error: "Invalid email", response: error });
+	});
 
-  //Store data from SELECT query
-  const passwordInDB = await getPassQuery(email).catch((error) => {
-    res.statusCode = 404;
-    console.log('404 User not found');
-    res.send({ error: "Invalid email", response: error });
-  });
+	//Get user_id from the database
+	const user_ID = await getIDFromDB(email).catch((error) => {
+		throw error;
+	});
 
-  let token;
+	let token;
 
-  //Check password againts the one fetched from the database
-  if (res.statusCode != 404) {
-    bcrypt.compare(password, passwordInDB).then((compareRes, compareErr) => {
-      if (compareErr) throw compareErr;
-      if (compareRes) {
-        try {
-          token = generateAccessToken(email);
-        } catch (e) {
-          throw new Error(e.message);
-        }
-        //Send token if the passwords matches
-        res.send({ Authorization: token });
-        console.log("200 Logged In");
-      } else {
-        //Send error if the passwords don't match
-        res.statusCode = 401;
-        res.send({ error: "Invalid password" });
-        console.log("401 Login Authorization Err");
-      }
-    });
-  }
+	//Check password againts the one fetched from the database
+	if (res.statusCode != 404) {
+		bcrypt.compare(password, passwordInDB).then((compareRes, compareErr) => {
+			if (compareErr) throw compareErr;
+			if (compareRes) {
+				//Generate token
+				try {
+					token = generateAccessToken(user_ID, email);
+				} catch (e) {
+					throw new Error(e.message);
+				}
+				//Send token if the passwords matches
+				res.send({ Authorization: token, id: user_ID });
+				console.log("200 Logged In");
+			} else {
+				//Send error if the passwords don't match
+				res.statusCode = 401;
+				res.send({ error: "Invalid password" });
+				console.log("401 Login Authorization Err");
+			}
+		});
+	}
 });
 
 app.get("/userPage", (req, res) => {
