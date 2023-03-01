@@ -1,5 +1,10 @@
 //Imports
-import { changePassword, changeUsername } from "./queries.js";
+import {
+	changePassword,
+	changeUsername,
+	getUserDataFromDB,
+	getRankListFromDB,
+} from "./queries.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -19,7 +24,7 @@ export function generateAccessToken(user_ID, email) {
 
 //User authorization
 //Can be called in the callback of a route with the req and res params
-export function authorizeUserGetRequest(req, res) {
+export function authorizeUserGetRequest(req, res, type) {
 	const header = req.headers["authorization"];
 
 	//make sure if token header is not undefined
@@ -37,12 +42,29 @@ export function authorizeUserGetRequest(req, res) {
 		req.token,
 		"secret",
 		{ algorithm: "HS256" },
-		(err, authorizedData) => {
+		async (err, authorizedData) => {
 			if (err) {
 				res.sendStatus(403);
 				console.log("403 Forbidden request");
 			} else {
-				res.sendStatus(200);
+				switch (type) {
+					case "user":
+						authorizedData = await getUserDataFromDB(
+							jwt.decode(req.token).user_id
+						);
+						break;
+					case "rank":
+						authorizedData = await getRankListFromDB(
+							jwt.decode(req.token).user_id
+						);
+						break;
+					//TODO add friend case
+					default:
+						authorizedData = { error: "Wrong type" };
+						break;
+				}
+				res.statusCode = 200;
+				res.send(authorizedData);
 				console.log("200 Successful request");
 			}
 		}

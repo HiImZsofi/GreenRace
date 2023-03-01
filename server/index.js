@@ -135,7 +135,7 @@ app.post("/login", async (req, res) => {
 //Authorize user
 //TODO Send back appropriate user data
 app.get("/userPage", (req, res) => {
-	authorizeUserGetRequest(req, res);
+	authorizeUserGetRequest(req, res, "user");
 });
 
 //Friend page route
@@ -149,7 +149,7 @@ app.get("/friendPage", (req, res) => {
 //Authorize user
 //TODO Send back appropriate user data
 app.get("/rankPage", (req, res) => {
-	authorizeUserGetRequest(req, res);
+	authorizeUserGetRequest(req, res, "rank");
 });
 
 //Logout route POST request
