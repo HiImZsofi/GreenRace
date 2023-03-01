@@ -6,6 +6,8 @@ import {
 	getPassQuery,
 } from "./queries.js";
 import {
+	generateAccessToken,
+	authorizeUserGetRequest,
 	usernameAndPasswordChangeHandler,
 	onlyPasswordChangeHandler,
 	onlyUsernameChangeHandler,
@@ -87,20 +89,6 @@ app.post("/register", async (req, res) => {
 	}
 });
 
-//jwt token sign function
-function generateAccessToken(user_ID, email) {
-	let secretKey = "secret"; //! move secret keys to dotenv
-	return jwt.sign(
-		{ user_id: user_ID, email: email },
-		secretKey,
-		{ algorithm: "HS256" },
-		{
-			expiresIn: "1h",
-			issuer: "http://localhost:3001",
-		}
-	);
-}
-
 //Login POST request handling
 app.post("/login", async (req, res) => {
 	//Store data in from the POST request
@@ -132,7 +120,7 @@ app.post("/login", async (req, res) => {
 					throw new Error(e.message);
 				}
 				//Send token if the passwords matches
-				res.send({ Authorization: token, id: user_ID });
+				res.send({ Authorization: token });
 				console.log("200 Logged In");
 			} else {
 				//Send error if the passwords don't match
@@ -143,38 +131,6 @@ app.post("/login", async (req, res) => {
 		});
 	}
 });
-
-//User authorization
-//Can be called in the callback of a route with the req and res params
-function authorizeUserGetRequest(req, res) {
-	const header = req.headers["authorization"];
-
-	//make sure if token header is not undefined
-	if (header !== undefined) {
-		const bearer = header.split(" "); //separate request token from bearer
-		const token = bearer[1];
-		req.token = token;
-	} else {
-		//if undefined return forbidden status code
-		res.statusCode = 403;
-	}
-	//TODO use .decode to get the payload from the token
-	//TODO so the id won't have to be sent to the frontend separately
-	jwt.verify(
-		req.token,
-		"secret",
-		{ algorithm: "HS256" },
-		(err, authorizedData) => {
-			if (err) {
-				res.sendStatus(403);
-				console.log("403 Forbidden request");
-			} else {
-				res.sendStatus(200);
-				console.log("200 Successful request");
-			}
-		}
-	);
-}
 
 //User page route
 //Authorize user
