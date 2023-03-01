@@ -31,14 +31,18 @@ export function checkEmailInDB(email) {
 }
 
 //own promise for sql query so async will not mess it up
-export function insertNewUser(sql) {
+export function insertNewUser(username, hashedPassword, email) {
 	return new Promise((resolve, reject) => {
-		connection.query(sql, function (err, result) {
-			if (err) {
-				return reject(err);
+		connection.query(
+			"INSERT INTO users (username, password, email, points) VALUES (?, ?, ?,0)",
+			[username, hashedPassword, email],
+			function (err, result) {
+				if (err) {
+					return reject(err);
+				}
+				return resolve(200); //status code is 200 if insert was successful
 			}
-			return resolve(200); //status code is 200 if insert was successful
-		});
+		);
 	});
 }
 
