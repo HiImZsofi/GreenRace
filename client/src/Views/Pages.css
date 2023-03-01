@@ -4,13 +4,14 @@
 }
 .body-dark{
   background-color: #303136;
+  color: 	#dbedff;
 }
 
 .color-nav-light {
   background-color: darkgreen;
 }
 .color-nav-dark {
-  background-color: #8cad8d;
+  background-color: #423f75;
 }
 
 #profpic{ 
@@ -30,10 +31,10 @@
 #profpicbut-dark{
   padding: 0;
   border-radius: 50%;
-  border: #8cad8d solid 5px;
+  border: #423f75 solid 5px;
 }
 #profpicbut-dark:hover{
-  border: darkgreen solid 5px;
+  border: #6b65db solid 5px;
 }
 
 #logo {
@@ -58,14 +59,15 @@ ul{
 }
 
 .loginbackground-light {
-  background: #3ffb91;
   background: radial-gradient(circle, #3ffb91 0%,  #2e7d32 41%);
 }
 .loginbackground-dark {
-  background: #3ffb91;
-  background: radial-gradient(circle, #2e7d32 0%,  #3ffb91 41%);
+  background: radial-gradient(circle, #a3dafb 0%,  #303136 41%);
 }
-
+.offcanvas-dark{
+  background-color: #303136;
+  color: #dbedff;
+}
 /*checkbox*/
   .checkbox-wrapper-54 input[type="checkbox"] {
     visibility: hidden;
@@ -115,7 +117,7 @@ ul{
     left: var(--slider-offset,0.3em);
     top: 50%;
     transform: translateY(-50%);
-    background: linear-gradient(40deg,#ff0080,#ff8c00 70%);
+    background: linear-gradient(40deg,#007133,#8cad8d 70%);
     ;
    transition: .4s;
   }

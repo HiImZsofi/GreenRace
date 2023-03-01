@@ -181,7 +181,7 @@ const UserSettings = () => {
           error={currentPasswordErr}
           errorMessage={currentPasswordErrMsg}
         /> 
-        <CheckboxDark darkTheme={darkTheme} onSwitchHandler={onSwitchClick}/>
+        <CheckboxDark onSwitchHandler={onSwitchClick}/>
         <Button
           variant="success"
           className="px-4 me-4"

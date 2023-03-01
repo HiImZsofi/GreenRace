@@ -1,13 +1,13 @@
 function CheckboxDark(props: {
-    darkTheme:boolean;
     onSwitchHandler: () => void;
 }){
+    let dark = localStorage.getItem('darkmode');
     return (
         <>
             <p className="mb-1">Darkmode:</p>
             <div className="checkbox-wrapper-54">
             <label className="switch">
-            <input type="checkbox" checked={props.darkTheme} onChange={props.onSwitchHandler}/>
+            <input type="checkbox" checked={dark == "false" ? true : false} onChange={props.onSwitchHandler}/>
             <span className="slider"></span>
             </label>
             </div>

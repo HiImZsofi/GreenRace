@@ -81,10 +81,10 @@ const NavMenuLayout = (props: {
 							placement="end"
 							className="w-auto"
 						>
-							<Offcanvas.Header closeButton>
+							<Offcanvas.Header closeButton className={dark == "false" ? "offcanvas-dark" : ""}>
 								<Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`} />
 							</Offcanvas.Header>
-							<Offcanvas.Body>
+							<Offcanvas.Body className={dark == "false" ? "offcanvas-dark" : ""}>
 								<Container className="text-center">
 									<img
 										id="profpic"
