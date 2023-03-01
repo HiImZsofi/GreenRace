@@ -84,7 +84,7 @@ const Register = () => {
 	};
 	//Page Visual Part
 	return (
-		<FormWrapper vhnum="100vh">
+		<FormWrapper vhnum="100vh" background="loginbackground-light">
 			<InputField
 				type={{
 					inputType: "Username",

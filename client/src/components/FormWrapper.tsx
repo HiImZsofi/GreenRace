@@ -3,6 +3,7 @@ import { PropsWithChildren } from "react";
 
 interface Props {
 	vhnum:string
+	background:string
 }
 function FormWrapper(props: PropsWithChildren<Props>) {
 	return (
@@ -13,7 +14,7 @@ function FormWrapper(props: PropsWithChildren<Props>) {
 			alignItems="center"
 			justifyContent="center"
 			style={{ minHeight: props.vhnum }}
-			className="loginbackground"
+			className={props.background}
 		>
 			<Grid item xs={3}>
 				<Box

@@ -3,8 +3,6 @@ import React, { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import CheckboxDark from "../components/Checkbox";
-import FormSubmitButton from "../components/FormSubmitButton";
-import FormSwitch from "../components/FormSwitch";
 import FormWrapper from "../components/FormWrapper";
 import InputField from "../components/InputField";
 import NavMenu from "../components/NavBarLogic";
@@ -23,6 +21,7 @@ const UserSettings = () => {
   const [darkTheme, setDarkTheme] = useState(false);
   const [username, setUsername] = useState("");
   const [picFilePath, setPicFilePath] = useState("");
+  let dark = localStorage.getItem('darkmode');
   const navigate = useNavigate();
 
   //Getting data form Server
@@ -47,7 +46,6 @@ const UserSettings = () => {
         } else {
           setUsername(data.username);
           setPicFilePath(data.picfilepath);
-          setPoints(data.points);
         }
       }
     );
@@ -152,7 +150,7 @@ const UserSettings = () => {
   return (
     <>
       <NavMenu username={username} profilePicturePath={picFilePath} />
-      <FormWrapper vhnum="89vh">
+      <FormWrapper vhnum="89vh" background={dark == "false" ? "loginbackground-dark": "loginbackground-light"}>
         <InputField
           type={{
             inputType: "Username",

@@ -1,9 +1,7 @@
 //Imports
 import React, { useEffect, useState } from "react";
 import "./Pages.css";
-import NavMenuLayout from "../components/NavBar";
 import "bootstrap/dist/css/bootstrap.css";
-import { UserPageDto } from "../Interfaces";
 import NavMenu from "../components/NavBarLogic";
 import { useNavigate } from "react-router-dom";
 
@@ -12,12 +10,10 @@ const UserPage = () => {
   const [username, setUsername] = useState("");
   const [picfilepath, setPicfilepath] = useState("");
   const [points, setPoints] = useState(0);
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
   let dark = localStorage.getItem('darkmode');
   const navigate = useNavigate();
 
   //Getting data form Server
-  //TODO: this doens't work getting data just ask down if loged in new fetch probably required
   const authenticationHandler = async () => {
     const token = localStorage.getItem("key");
     const requestOptions = {
@@ -47,6 +43,11 @@ const UserPage = () => {
 
   useEffect(() => {
 		authenticationHandler();
+    if (dark == "false"){
+      document.body.className = "body-dark";
+    } else {
+      document.body.className = "body-light";
+    }
 	});
 
   //Page Visual Part

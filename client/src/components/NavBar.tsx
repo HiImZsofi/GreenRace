@@ -18,13 +18,13 @@ interface MenuPoints {
 	class: string;
 }
 let NavMenuPoints: MenuPoints[] = [
-	{ text: "Pontjaim", link: "./userPage", class: "me-2" },
-	{ text: "Rangsor", link: "./rankPage", class: "me-2" },
-	{ text: "Barátok", link: "./friendPage", class: "me-auto" },
+	{ text: "Pontjaim", link: "/userPage", class: "me-2" },
+	{ text: "Rangsor", link: "/rankPage", class: "me-2" },
+	{ text: "Barátok", link: "/friendPage", class: "me-auto" },
 ];
 
 //Navbar
-const NavMenu = (props: {
+const NavMenuLayout = (props: {
 	username: string;
 	picfilepath: string;
 	logoutHandler: () => void;
@@ -53,8 +53,10 @@ const NavMenu = (props: {
 						</Navbar.Brand>
 						{NavMenuPoints.map((mp, i) => (
 							<Nav className={mp.class} key={i}>
-								<Nav.Link href={mp.link}>{mp.text}</Nav.Link>
-							</Nav>
+							<Nav.Link as={Link} to={mp.link} replace>
+								{mp.text}
+							</Nav.Link>
+							</Nav> 
 						))}
 						<Navbar.Toggle
 							id={dark == "false" ? "profpicbut-dark": "profpicbut-light"}
@@ -124,4 +126,4 @@ const NavMenu = (props: {
 		</>
 	);
 };
-export default NavMenu;
+export default NavMenuLayout;

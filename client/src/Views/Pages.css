@@ -1,4 +1,11 @@
 /* All the Pages CSS code set here*/
+.body-light{
+  background-color: white;
+}
+.body-dark{
+  background-color: #303136;
+}
+
 .color-nav-light {
   background-color: darkgreen;
 }
@@ -50,9 +57,13 @@ ul{
   display: inline-block;
 }
 
-.loginbackground {
-  background: rgb(63, 251, 145);
-  background: radial-gradient(circle, rgba(63, 251, 145, 1) 0%, rgba(46, 125, 50, 1) 41%);
+.loginbackground-light {
+  background: #3ffb91;
+  background: radial-gradient(circle, #3ffb91 0%,  #2e7d32 41%);
+}
+.loginbackground-dark {
+  background: #3ffb91;
+  background: radial-gradient(circle, #2e7d32 0%,  #3ffb91 41%);
 }
 
 /*checkbox*/

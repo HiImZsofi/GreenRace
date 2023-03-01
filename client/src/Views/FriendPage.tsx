@@ -10,8 +10,7 @@ import { useNavigate } from "react-router-dom";
 const FriendPage = () => {
   const [username, setUsername] = useState("");
   const [picFilePath, setPicFilePath] = useState("");
-  const [point, setPoint] = useState(0);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  let dark = localStorage.getItem('darkmode');
   const navigate = useNavigate();
 
   //Getting data form Server
@@ -36,13 +35,17 @@ const FriendPage = () => {
         } else {
           setUsername(data.username);
           setPicFilePath(data.picfilepath);
-          setPoint(data.points);
         }
       }
     );
   };
   useEffect(() => {
     authenticationHandler();
+    if (dark == "false"){
+      document.body.className = "body-dark";
+    } else {
+      document.body.className = "body-light";
+    }
   });
 
   //Page Visual Part
