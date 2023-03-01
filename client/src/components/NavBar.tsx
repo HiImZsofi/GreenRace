@@ -1,5 +1,5 @@
 //Imports
-import { NavLink, Navigate, useNavigate } from "react-router-dom";
+import { NavLink, Navigate, useNavigate, Link } from "react-router-dom";
 import {
 	Navbar,
 	Container,
@@ -18,24 +18,25 @@ interface MenuPoints {
 	class: string;
 }
 let NavMenuPoints: MenuPoints[] = [
-	{ text: "Pontjaim", link: "./userPage", class: "me-2" },
-	{ text: "Rangsor", link: "./rankPage", class: "me-2" },
-	{ text: "Barátok", link: "./friendPage", class: "me-auto" },
+	{ text: "Pontjaim", link: "/userPage", class: "me-2" },
+	{ text: "Rangsor", link: "/rankPage", class: "me-2" },
+	{ text: "Barátok", link: "/friendPage", class: "me-auto" },
 ];
 
 //Navbar
-const NavMenu = (props: {
+const NavMenuLayout = (props: {
 	username: string;
 	picfilepath: string;
 	logoutHandler: () => void;
 }) => {
+	let dark = localStorage.getItem('darkmode');
 	const navigate = useNavigate();
 	return (
 		<>
 			{[false].map((expand) => (	
 				<Navbar
 					expand={expand}
-					className="color-nav"
+					className={dark == "false" ? "color-nav-dark" : "color-nav-light"}
 					variant="dark"
 					key={"navbar"}
 					style={{ minHeight: "11vh" }}
@@ -52,11 +53,13 @@ const NavMenu = (props: {
 						</Navbar.Brand>
 						{NavMenuPoints.map((mp, i) => (
 							<Nav className={mp.class} key={i}>
-								<Nav.Link href={mp.link}>{mp.text}</Nav.Link>
-							</Nav>
+							<Nav.Link as={Link} to={mp.link} replace>
+								{mp.text}
+							</Nav.Link>
+							</Nav> 
 						))}
 						<Navbar.Toggle
-							id="profpicbut"
+							id={dark == "false" ? "profpicbut-dark": "profpicbut-light"}
 							aria-controls={`offcanvasNavbar-expand-${expand}`}
 						>
 							<div className="profpicbor">
@@ -64,13 +67,14 @@ const NavMenu = (props: {
 									id="profpic"
 									alt="Profpic"
 									src={
-										props.picfilepath !== "" ? props.picfilepath : "npic.png"
+										props.picfilepath !== null ? props.picfilepath : "npic.png"
 									}
 									width="40vh="
 									height="40vh="
 								/>
 							</div>
 						</Navbar.Toggle>
+						{/*Navbar Offscreen part*/}
 						<Navbar.Offcanvas
 							id={`offcanvasNavbar-expand-${expand}`}
 							aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
@@ -86,7 +90,7 @@ const NavMenu = (props: {
 										id="profpic"
 										alt="Profpic"
 										src={
-											props.picfilepath !== "" ? props.picfilepath : "npic.png"
+											props.picfilepath !== null ? props.picfilepath : "npic.png"
 										}
 										width="90vh="
 										height="90vh="
@@ -122,4 +126,4 @@ const NavMenu = (props: {
 		</>
 	);
 };
-export default NavMenu;
+export default NavMenuLayout;

@@ -1,22 +1,25 @@
+//Imports
 import React, { useState, useEffect } from "react";
 import "./Pages.css";
-import NavMenu from "../components/NavBar";
 import "bootstrap/dist/css/bootstrap.css";
-import { UserPageDto } from "../Interfaces";
 import { Navigate, useNavigate } from "react-router-dom";
+import NavMenu from "../components/NavBarLogic";
+
+//Creating variables
 interface Ranking {
   username: string;
   points: number;
 }
 const Ranglist: Ranking[] = [];
+
+//RankPage main code
 const RankPage = () => {
   const [username, setUsername] = useState("");
   const [picFilePath, setPicFilePath] = useState("");
-  const [points, setPoints] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+  let dark = localStorage.getItem('darkmode');
   const navigate = useNavigate();
 
+  //Getting data form Server
   const authenticationHandler = async () => {
     const token = localStorage.getItem("key");
     const requestOptions = {
@@ -35,85 +38,44 @@ const RankPage = () => {
         const data = isJson && (await response.json());
         if (response.status !== 200) {
           navigate("/login", { replace: true });
+        } else {
+          setUsername(data.username);
+          setPicFilePath(data.picfilepath);
         }
       }
     );
-  };
-
-  const logoutHandler = () => {
-    const requestOptions = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      withCredentials: true,
-    };
-    fetch("http://localhost:3001/logout", requestOptions)
-      .then(async (response) => {
-        const isJson = response.headers
-          .get("content-type")
-          ?.includes("application/json");
-        const data = isJson && (await response.json());
-        if (response.status == 200) {
-          setIsLoggedIn(!isLoggedIn);
-        }
-      })
-
-      .catch((error) => {
-        console.error("There was an error!", error);
-      });
-  };
-  const loadInData = () => {
-    fetch("http://localhost:3001/userPage")
-      .then(async (response) => {
-        const isJson = response.headers
-          .get("content-type")
-          ?.includes("application/json");
-        const data = isJson && (await response.json());
-        console.log(data);
-        setUsername(data.userdata.username);
-        setPicFilePath(data.userdata.picfilepath);
-        setPoints(data.userdata.points);
-      })
-      .catch((error) => {
-        console.error("There was an error!", error);
-      });
-  };
-  const loadInRankData = () => {
-    fetch("http://localhost:3001/rankPage")
-      .then(async (response) => {
+    fetch("http://localhost:3001/rankPage", requestOptions).then(
+      async (response) => {
         const isJson = response.headers
           .get("content-type")
           ?.includes("application/json");
         const rankdata = isJson && (await response.json());
-        console.log(rankdata);
-        for (let i = 0; i < 10; i++) {
-          if (rankdata.ranking[i] !== undefined) {
-            let username: string = rankdata.ranking[i].username;
-            let points = rankdata.ranking[i].points;
+        for (let i = 0; i < rankdata.length; i++) {
+          if (rankdata[i] !== undefined) {
+            let username: string = rankdata[i].username;
+            let points = rankdata[i].points;
             let rang: Ranking = { username: username, points: points };
             Ranglist[i] = rang;
           }
         }
-      })
-      .catch((error) => {
-        console.error("There was an error!", error);
       });
   };
+
   useEffect(() => {
     authenticationHandler();
-    loadInData();
-    loadInRankData();
+    if (dark == "false"){
+      document.body.className = "body-dark";
+    } else {
+      document.body.className = "body-light";
+    }
   });
-  if (isLoggedIn) {
-    return <Navigate to="/login" replace={true} />;
-  } else {
+
+  //Page Visual Part
     return (
       <div key={"rankPage"}>
         <NavMenu
           username={username}
-          picfilepath={picFilePath}
-          logoutHandler={logoutHandler}
+          profilePicturePath={picFilePath}
         />
         <div className="text-center mt-3">
           <div>
@@ -129,7 +91,5 @@ const RankPage = () => {
         </div>
       </div>
     );
-  }
 };
-
 export default RankPage;

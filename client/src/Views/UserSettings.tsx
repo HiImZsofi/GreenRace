@@ -1,11 +1,13 @@
+//Imports
 import React, { useState, useEffect } from "react";
+import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import FormSubmitButton from "../components/FormSubmitButton";
-import FormSwitch from "../components/FormSwitch";
+import CheckboxDark from "../components/Checkbox";
 import FormWrapper from "../components/FormWrapper";
 import InputField from "../components/InputField";
 import NavMenu from "../components/NavBarLogic";
 
+//SettingsPage main code
 const UserSettings = () => {
   const [newUsername, setNewUsername] = useState("");
   const [newUsernameErr, setNewUsernameErr] = useState(false);
@@ -17,13 +19,12 @@ const UserSettings = () => {
   const [currentPasswordErr, setCurrentPasswordErr] = useState(false);
   const [currentPasswordErrMsg, setCurrentPasswordErrMsg] = useState("");
   const [darkTheme, setDarkTheme] = useState(false);
-
+  const [username, setUsername] = useState("");
+  const [picFilePath, setPicFilePath] = useState("");
+  let dark = localStorage.getItem('darkmode');
   const navigate = useNavigate();
 
-  useEffect(() => {
-    authenticationHandler();
-  });
-
+  //Getting data form Server
   const authenticationHandler = async () => {
     const token = localStorage.getItem("key");
     const requestOptions = {
@@ -42,6 +43,9 @@ const UserSettings = () => {
         const data = isJson && (await response.json());
         if (response.status !== 200) {
           navigate("/login", { replace: true });
+        } else {
+          setUsername(data.username);
+          setPicFilePath(data.picfilepath);
         }
       }
     );
@@ -65,6 +69,8 @@ const UserSettings = () => {
 
   const onSwitchClick = () => {
     setDarkTheme(!darkTheme);
+    let dark = JSON.stringify({darkTheme}.darkTheme);
+    localStorage.setItem('darkmode',dark);
   };
 
   const cancelHandler = () => {
@@ -98,7 +104,6 @@ const UserSettings = () => {
 
           //Check for server response
           if (response.status === 200) {
-            //TODO Store dark theme option in a cookie
             setNewUsernameErr(false);
             setNewUsernameErrMsg("");
             setNewPasswordErr(false);
@@ -137,11 +142,15 @@ const UserSettings = () => {
       }
     }
   };
+  useEffect(() => {
+    authenticationHandler();
+  });
+  
+  //Page Visual Part
   return (
-    //TODO NavBar with atributes
     <>
-      <NavMenu username="" profilePicturePath="" />
-      <FormWrapper vhnum="89vh">
+      <NavMenu username={username} profilePicturePath={picFilePath} />
+      <FormWrapper vhnum="89vh" background={dark == "false" ? "loginbackground-dark": "loginbackground-light"}>
         <InputField
           type={{
             inputType: "Username",
@@ -171,23 +180,25 @@ const UserSettings = () => {
           }}
           error={currentPasswordErr}
           errorMessage={currentPasswordErrMsg}
-        />
-        <FormSwitch
-          label="Dark theme"
-          value={darkTheme}
-          onClickHandler={onSwitchClick}
-        />
-        <FormSubmitButton
-          type={{ inputType: "Save" }}
-          onClickHandler={saveHandler}
-        />
-        <FormSubmitButton
-          type={{ inputType: "Cancel" }}
-          onClickHandler={cancelHandler}
-        />
+        /> 
+        <CheckboxDark darkTheme={darkTheme} onSwitchHandler={onSwitchClick}/>
+        <Button
+          variant="success"
+          className="px-4 me-4"
+          onClick={saveHandler}
+        >Save</Button>
+        <Button
+          variant="outline-success"
+          className="px-3"
+          onClick={cancelHandler}
+        >Cancel</Button>
       </FormWrapper>
     </>
   );
 };
 
 export default UserSettings;
+function setPoints(points: any) {
+  throw new Error("Function not implemented.");
+}
+

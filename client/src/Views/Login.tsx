@@ -16,7 +16,6 @@ const Login = () => {
   const [passwordErr, setPasswordErr] = useState(false);
   const [emailErrMsg, setEmailErrMsg] = useState("");
   const [passwordErrMsg, setPasswordErrMsg] = useState("");
-
   const navigate = useNavigate();
 
   const emailChangeHandler = (e: React.SyntheticEvent<HTMLInputElement>) => {
@@ -53,42 +52,43 @@ const Login = () => {
       };
       fetch("http://localhost:3001/login", requestOptions)
         .then(async (response) => {
-          const isJson = response.headers
-            .get("content-type")
-            ?.includes("application/json");
-          const data = isJson && (await response.json());
+					const isJson = response.headers
+						.get("content-type")
+						?.includes("application/json");
+					const data = isJson && (await response.json());
 
-          //Check for server response
-          if (response.status == 200) {
-            localStorage.setItem("email", email);
-            setEmailErr(false);
-            setEmailErrMsg("");
-            setPasswordErr(false);
-            setPasswordErrMsg("");
-            navigate("/userPage", { replace: true });
-          } else if (response.status == 404) {
-            setEmailErr(true);
-            setEmailErrMsg("Wrong email address");
-            setPasswordErr(true);
-            setPasswordErrMsg("Invalid password");
-          } else if (response.status == 401) {
-            setEmailErr(false);
-            setEmailErrMsg("");
-            setPasswordErr(true);
-            setPasswordErrMsg("Invalid password");
-          } else {
-            // get error message from body or default to response status
-            const error = (data && data.message) || response.status;
-            return Promise.reject(error);
-          }
-        })
+					//Check for server response
+					if (response.status == 200) {
+						localStorage.setItem("key", data.Authorization);
+						setEmailErr(false);
+						setEmailErrMsg("");
+						setPasswordErr(false);
+						setPasswordErrMsg("");
+						navigate("/userPage", { replace: true });
+					} else if (response.status == 404) {
+						setEmailErr(true);
+						setEmailErrMsg("Wrong email address");
+						setPasswordErr(true);
+						setPasswordErrMsg("Invalid password");
+					} else if (response.status == 401) {
+						setEmailErr(false);
+						setEmailErrMsg("");
+						setPasswordErr(true);
+						setPasswordErrMsg("Invalid password");
+					} else {
+						// get error message from body or default to response status
+						const error = (data && data.message) || response.status;
+						return Promise.reject(error);
+					}
+				})
         .catch((error) => {
           console.error("There was an error!", error);
         });
     }
   };
+  //Page Visual Part
   return (
-    <FormWrapper vhnum="100vh">
+    <FormWrapper vhnum="100vh" background="loginbackground-light">
       <InputField
         type={{
           inputType: "Email",
@@ -121,5 +121,4 @@ const Login = () => {
     </FormWrapper>
   );
 };
-
 export default Login;

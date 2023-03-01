@@ -1,19 +1,19 @@
+//Imports
 import React, { useEffect, useState } from "react";
 import "./Pages.css";
-import NavMenuLayout from "../components/NavBar";
 import "bootstrap/dist/css/bootstrap.css";
-import { UserPageDto } from "../Interfaces";
 import NavMenu from "../components/NavBarLogic";
 import { useNavigate } from "react-router-dom";
 
+//UserPage main code
 const UserPage = () => {
   const [username, setUsername] = useState("");
   const [picfilepath, setPicfilepath] = useState("");
   const [points, setPoints] = useState(0);
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
-
+  let dark = localStorage.getItem('darkmode');
   const navigate = useNavigate();
 
+  //Getting data form Server
   const authenticationHandler = async () => {
     const token = localStorage.getItem("key");
     const requestOptions = {
@@ -32,45 +32,32 @@ const UserPage = () => {
         const data = isJson && (await response.json());
         if (response.status !== 200) {
           navigate("/login", { replace: true });
+        } else {
+          setUsername(data.username);
+          setPicfilepath(data.picfilepath);
+          setPoints(data.points);
         }
       }
     );
   };
 
-  const dataLoadIn = () => {
-    const requestUserData = {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        username: username,
-        picfilepath: picfilepath,
-        points: points,
-      }),
-    };
-    fetch("http://localhost:3001/userpage", requestUserData).then(
-      async (response) => {
-        const isJson = response.headers
-          .get("content-type")
-          ?.includes("application/json");
-        const data = isJson && (await response.json());
-        console.log(data);
-        //TODO set state values
-      }
-    );
-  };
-
   useEffect(() => {
-    authenticationHandler();
-    dataLoadIn();
-  });
+		authenticationHandler();
+    if (dark == "false"){
+      document.body.className = "body-dark";
+    } else {
+      document.body.className = "body-light";
+    }
+	});
 
+  //Page Visual Part
   return (
     <div key={"userPage"}>
       <NavMenu username={username} profilePicturePath={picfilepath} />
       <div className="text-center mt-3">
         <div>
           <h1>
-            {points} <span id="pont">Zöldpont</span>-od van
+            {points} <span id={dark == "false" ? "pont-dark": "pont-light"}>Zöldpont</span>-od van
           </h1>
           <p>Ez 1000 szenyezésnek felel meg</p>
         </div>
@@ -92,5 +79,4 @@ const UserPage = () => {
     </div>
   );
 };
-
 export default UserPage;
