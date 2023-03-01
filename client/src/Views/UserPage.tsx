@@ -13,6 +13,7 @@ const UserPage = () => {
   const [picfilepath, setPicfilepath] = useState("");
   const [points, setPoints] = useState(0);
   const [isLoggedIn, setIsLoggedIn] = useState(true);
+  let dark = localStorage.getItem('darkmode');
   const navigate = useNavigate();
 
   //Getting data form Server
@@ -35,38 +36,17 @@ const UserPage = () => {
         const data = isJson && (await response.json());
         if (response.status !== 200) {
           navigate("/login", { replace: true });
+        } else {
+          setUsername(data.username);
+          setPicfilepath(data.picfilepath);
+          setPoints(data.points);
         }
       }
     );
   };
 
-  //TODO this should be done in the fetch before this but that one doesn't have point component making new fetch probably required
-  const dataLoadIn = () => {
-    const requestUserData = {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        username: username,
-        picfilepath: picfilepath,
-        points: points,
-      }),
-    };
-    fetch("http://localhost:3001/userpage", requestUserData).then(
-      async (response) => {
-        const isJson = response.headers
-          .get("content-type")
-          ?.includes("application/json");
-        const data = isJson && (await response.json());
-        console.log(data);
-        //TODO set state values
-      }
-    );
-  };
   useEffect(() => {
-		//TODO Make this into one fetch for better performance
 		authenticationHandler();
-		//!Fix fetch options
-		//dataLoadIn();
 	});
 
   //Page Visual Part
@@ -76,7 +56,7 @@ const UserPage = () => {
       <div className="text-center mt-3">
         <div>
           <h1>
-            {points} <span id="pont">Zöldpont</span>-od van
+            {points} <span id={dark == "false" ? "pont-dark": "pont-light"}>Zöldpont</span>-od van
           </h1>
           <p>Ez 1000 szenyezésnek felel meg</p>
         </div>

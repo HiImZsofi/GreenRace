@@ -40,20 +40,23 @@ const RankPage = () => {
         const data = isJson && (await response.json());
         if (response.status !== 200) {
           navigate("/login", { replace: true });
+        } else {
+          setUsername(data.username);
+          setPicFilePath(data.picfilepath);
+          setPoints(data.points);
         }
       }
     );
-    fetch("http://localhost:3001/rankPage").then(
+    fetch("http://localhost:3001/rankPage", requestOptions).then(
       async (response) => {
         const isJson = response.headers
           .get("content-type")
           ?.includes("application/json");
         const rankdata = isJson && (await response.json());
-        console.log(rankdata);
         for (let i = 0; i < 10; i++) {
-          if (rankdata.ranking[i] !== undefined) {
-            let username: string = rankdata.ranking[i].username;
-            let points = rankdata.ranking[i].points;
+          if (rankdata[i] !== undefined) {
+            let username: string = rankdata[i].username;
+            let points = rankdata[i].points;
             let rang: Ranking = { username: username, points: points };
             Ranglist[i] = rang;
           }

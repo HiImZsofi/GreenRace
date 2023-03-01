@@ -1,6 +1,9 @@
 /* All the Pages CSS code set here*/
-.color-nav {
+.color-nav-light {
   background-color: darkgreen;
+}
+.color-nav-dark {
+  background-color: #8cad8d;
 }
 
 #profpic{ 
@@ -9,19 +12,31 @@
 #profpicbor{
   margin: 10px;
 }
-#profpicbut{
+#profpicbut-light{
   padding: 0;
   border-radius: 50%;
   border: darkgreen solid 5px;
 }
-#profpicbut:hover{
+#profpicbut-light:hover{
   border: #8cad8d solid 5px;
 }
+#profpicbut-dark{
+  padding: 0;
+  border-radius: 50%;
+  border: #8cad8d solid 5px;
+}
+#profpicbut-dark:hover{
+  border: darkgreen solid 5px;
+}
+
 #logo {
   border-radius: 10%
 } 
-#pont {
+#pont-light {
   color: darkgreen;
+}
+#pont-dark {
+  color: #8cad8d;
 }
 ul{
   list-style: none;

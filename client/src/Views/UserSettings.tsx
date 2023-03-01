@@ -44,6 +44,10 @@ const UserSettings = () => {
         const data = isJson && (await response.json());
         if (response.status !== 200) {
           navigate("/login", { replace: true });
+        } else {
+          setUsername(data.username);
+          setPicFilePath(data.picfilepath);
+          setPoints(data.points);
         }
       }
     );
@@ -67,6 +71,8 @@ const UserSettings = () => {
 
   const onSwitchClick = () => {
     setDarkTheme(!darkTheme);
+    let dark = JSON.stringify({darkTheme}.darkTheme);
+    localStorage.setItem('darkmode',dark);
   };
 
   const cancelHandler = () => {
@@ -100,7 +106,6 @@ const UserSettings = () => {
 
           //Check for server response
           if (response.status === 200) {
-            //TODO Store dark theme option in a cookie
             setNewUsernameErr(false);
             setNewUsernameErrMsg("");
             setNewPasswordErr(false);
@@ -178,12 +183,7 @@ const UserSettings = () => {
           error={currentPasswordErr}
           errorMessage={currentPasswordErrMsg}
         /> 
-        <CheckboxDark/>
-        {/*<FormSwitch
-          label="Dark theme"
-          value={darkTheme}
-          onClickHandler={onSwitchClick}
-        />*/}
+        <CheckboxDark darkTheme={darkTheme} onSwitchHandler={onSwitchClick}/>
         <Button
           variant="success"
           className="px-4 me-4"
@@ -200,3 +200,7 @@ const UserSettings = () => {
 };
 
 export default UserSettings;
+function setPoints(points: any) {
+  throw new Error("Function not implemented.");
+}
+

@@ -33,6 +33,10 @@ const FriendPage = () => {
         const data = isJson && (await response.json());
         if (response.status !== 200) {
           navigate("/login", { replace: true });
+        } else {
+          setUsername(data.username);
+          setPicFilePath(data.picfilepath);
+          setPoint(data.points);
         }
       }
     );

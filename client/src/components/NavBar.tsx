@@ -1,5 +1,5 @@
 //Imports
-import { NavLink, Navigate, useNavigate } from "react-router-dom";
+import { NavLink, Navigate, useNavigate, Link } from "react-router-dom";
 import {
 	Navbar,
 	Container,
@@ -29,13 +29,14 @@ const NavMenu = (props: {
 	picfilepath: string;
 	logoutHandler: () => void;
 }) => {
+	let dark = localStorage.getItem('darkmode');
 	const navigate = useNavigate();
 	return (
 		<>
 			{[false].map((expand) => (	
 				<Navbar
 					expand={expand}
-					className="color-nav"
+					className={dark == "false" ? "color-nav-dark" : "color-nav-light"}
 					variant="dark"
 					key={"navbar"}
 					style={{ minHeight: "11vh" }}
@@ -56,7 +57,7 @@ const NavMenu = (props: {
 							</Nav>
 						))}
 						<Navbar.Toggle
-							id="profpicbut"
+							id={dark == "false" ? "profpicbut-dark": "profpicbut-light"}
 							aria-controls={`offcanvasNavbar-expand-${expand}`}
 						>
 							<div className="profpicbor">
@@ -64,7 +65,7 @@ const NavMenu = (props: {
 									id="profpic"
 									alt="Profpic"
 									src={
-										props.picfilepath !== "" ? props.picfilepath : "npic.png"
+										props.picfilepath !== null ? props.picfilepath : "npic.png"
 									}
 									width="40vh="
 									height="40vh="
@@ -87,7 +88,7 @@ const NavMenu = (props: {
 										id="profpic"
 										alt="Profpic"
 										src={
-											props.picfilepath !== "" ? props.picfilepath : "npic.png"
+											props.picfilepath !== null ? props.picfilepath : "npic.png"
 										}
 										width="90vh="
 										height="90vh="
