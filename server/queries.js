@@ -35,7 +35,7 @@ export function checkEmailInDB(email) {
 export function insertNewUser(username, hashedPassword, email) {
 	return new Promise((resolve, reject) => {
 		connection.query(
-			"INSERT INTO users (username, password, email, points) VALUES (?, ?, ?,0)",
+			"INSERT INTO users (username, password, email, points, picfilepath) VALUES (?, ?, ?,0, '')",
 			[username, hashedPassword, email],
 			function (err, result) {
 				if (err) {
