@@ -1,3 +1,4 @@
+//Imports
 import { changePassword, changeUsername } from "./queries.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";

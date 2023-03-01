@@ -1,3 +1,4 @@
+//Imports
 import mysql from "mysql2";
 
 //Connect to database

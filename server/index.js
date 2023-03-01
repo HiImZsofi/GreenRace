@@ -15,7 +15,6 @@ import {
 import express from "express";
 import bodyParser from "body-parser";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
