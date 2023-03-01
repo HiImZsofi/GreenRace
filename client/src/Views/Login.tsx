@@ -60,7 +60,6 @@ const Login = () => {
 					//Check for server response
 					if (response.status == 200) {
 						localStorage.setItem("key", data.Authorization);
-						localStorage.setItem("email", email);
 						setEmailErr(false);
 						setEmailErrMsg("");
 						setPasswordErr(false);
