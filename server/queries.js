@@ -100,7 +100,7 @@ export function getUserDataFromDB(user_ID) {
 	});
 }
 
-export function getRangListFromDB() {
+export function getRankListFromDB() {
 	return new Promise((resolve, rejects) => {
 		connection.query(
 			"SELECT username, points FROM users ORDER BY points DESC LIMIT 10",
