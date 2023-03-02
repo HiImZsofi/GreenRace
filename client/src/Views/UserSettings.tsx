@@ -85,16 +85,19 @@ const UserSettings = () => {
       setNewPasswordErrMsg("");
       setCurrentPasswordErr(false);
       setCurrentPasswordErrMsg("");
-      const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: localStorage.getItem("email"),
-          newUsername: newUsername,
-          newPassword: newPassword,
-          currentPassword: currentPassword,
-        }),
-      };
+      const token = localStorage.getItem("key");
+			const requestOptions = {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: "Bearer " + token,
+				},
+				body: JSON.stringify({
+					newUsername: newUsername,
+					newPassword: newPassword,
+					currentPassword: currentPassword,
+				}),
+			};
       fetch("http://localhost:3001/settings", requestOptions)
         .then(async (response) => {
           const isJson = response.headers
