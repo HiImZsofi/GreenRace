@@ -80,13 +80,17 @@ const RankPage = () => {
         <div className="text-center mt-3">
           <div>
             <h1>Rang Lista:</h1>
-            <ul>
+            <table className="mx-auto">
+              <tbody>
               {Ranglist.map((Ranking, i) => (
-                <li key={i}>
-                  {i + 1}. {Ranking.username}:{Ranking.points}p
-                </li>
+                <tr key={i}>
+                  <td>{i + 1}.</td>
+                  <td>{Ranking.username}</td>
+                  <td>{Ranking.points}p</td>
+                </tr>
               ))}
-            </ul>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

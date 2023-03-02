@@ -1,6 +1,7 @@
 /* All the Pages CSS code set here*/
 .body-light{
   background-color: white;
+  color: black;
 }
 .body-dark{
   background-color: #303136;
@@ -45,9 +46,6 @@
 }
 #pont-dark {
   color: #8cad8d;
-}
-ul{
-  list-style: none;
 }
 
 .LRlink:link, .LRlink:visited{
