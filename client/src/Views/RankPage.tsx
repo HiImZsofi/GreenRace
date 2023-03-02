@@ -84,9 +84,9 @@ const RankPage = () => {
               <tbody>
               {Ranglist.map((Ranking, i) => (
                 <tr key={i}>
-                  <td>{i + 1}.</td>
-                  <td>{Ranking.username}</td>
-                  <td>{Ranking.points}p</td>
+                  <td className="px-2">{i + 1}.</td>
+                  <td className="px-2">{Ranking.username}</td>
+                  <td className="px-2">{Ranking.points}p</td>
                 </tr>
               ))}
               </tbody>

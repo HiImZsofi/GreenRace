@@ -56,18 +56,20 @@ const FriendPage = () => {
       <div className="text-center mt-3">
         <div>
           <h1>Barátok:</h1>
-          <ul>
-            <li>USername: 1000pont</li>
-            <li>USername: 1000pont</li>
-            <li>USername: 1000pont</li>
-            <li>USername: 1000pont</li>
-            <li>USername: 1000pont</li>
-            <li>USername: 1000pont</li>
-            <li>USername: 1000pont</li>
-            <li>USername: 1000pont</li>
-            <li>USername: 1000pont</li>
-            <li>USername: 1000pont</li>
-          </ul>
+          <table className="mx-auto">
+            <tbody>
+            <tr>USername: 1000pont</tr>
+            <tr>USername: 1000pont</tr>
+            <tr>USername: 1000pont</tr>
+            <tr>USername: 1000pont</tr>
+            <tr>USername: 1000pont</tr>
+            <tr>USername: 1000pont</tr>
+            <tr>USername: 1000pont</tr>
+            <tr>USername: 1000pont</tr>
+            <tr>USername: 1000pont</tr>
+            <tr>USername: 1000pont</tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
