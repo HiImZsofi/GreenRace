@@ -3,6 +3,7 @@ import {
 	checkEmailInDB,
 	getIDFromDB,
 	insertNewUser,
+	getPassQuery,
 	getPassWithIDQuery,
 } from "./queries.js";
 import {
@@ -15,6 +16,7 @@ import {
 import express from "express";
 import bodyParser from "body-parser";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
@@ -94,7 +96,7 @@ app.post("/login", async (req, res) => {
 	const { email, password } = req.body;
 
 	//Store data from SELECT query
-	const passwordInDB = await getPassWithIDQuery(email).catch((error) => {
+	const passwordInDB = await getPassQuery(email).catch((error) => {
 		res.statusCode = 404;
 		console.log("404 User not found");
 		res.send({ error: "Invalid email", response: error });
@@ -164,29 +166,66 @@ app.post("/logout", (req, res) => {
 
 //Settings route POST request
 app.post("/settings", async (req, res) => {
-	const { email, newUsername, newPassword, currentPassword } = req.body;
-	const passwordInDB = await getPassWithIDQuery(email).catch((error) => {
-		res.statusCode = 404;
-		console.log(404);
-		res.send(JSON.stringify({ error: "Invalid email", response: error }));
-	});
-	//Only runs if both values are changed
-	if (newUsername != "" && newPassword !== "") {
-		bcrypt
-			.compare(currentPassword, passwordInDB)
-			.then(
-				usernameAndPasswordChangeHandler(newPassword, email, newUsername, res)
-			);
-	} //Change the password only
-	else if (newPassword !== "") {
-		bcrypt
-			.compare(currentPassword, passwordInDB)
-			.then(onlyPasswordChangeHandler(newPassword, email, res));
-	} //Change username
-	else if (newUsername !== "") {
-		bcrypt
-			.compare(currentPassword, passwordInDB)
-			.then(onlyUsernameChangeHandler(email, newUsername, res));
+	const { newUsername, newPassword, currentPassword } = req.body;
+	const header = req.headers["authorization"];
+	//make sure if token header is not undefined
+	if (header !== undefined) {
+		const bearer = header.split(" "); //separate request token from bearer
+		const token = bearer[1];
+		req.token = token;
+	} else {
+		//if undefined return forbidden status code
+		res.statusCode = 403;
 	}
+
+	jwt.verify(req.token, "secret", { algorithm: "HS256" }, async (err) => {
+		if (err) {
+			res.sendStatus(403);
+			console.log("403 Forbidden request");
+		} else {
+			const passwordInDB = await getPassWithIDQuery(
+				jwt.decode(req.token).user_id
+			).catch((error) => {
+				res.statusCode = 404;
+				console.log(404);
+				res.send(JSON.stringify({ error: "Invalid email", response: error }));
+			});
+			//Only runs if both values are changed
+			if (newUsername != "" && newPassword !== "") {
+				bcrypt
+					.compare(currentPassword, passwordInDB)
+					.then(
+						usernameAndPasswordChangeHandler(
+							jwt.decode(req.token).user_id,
+							newPassword,
+							newUsername,
+							res
+						)
+					);
+			} //Change the password only
+			else if (newPassword !== "") {
+				bcrypt
+					.compare(currentPassword, passwordInDB)
+					.then(
+						onlyPasswordChangeHandler(
+							jwt.decode(req.token).user_id,
+							newPassword,
+							res
+						)
+					);
+			} //Change username
+			else if (newUsername !== "") {
+				bcrypt
+					.compare(currentPassword, passwordInDB)
+					.then(
+						onlyUsernameChangeHandler(
+							jwt.decode(req.token).user_id,
+							newUsername,
+							res
+						)
+					);
+			}
+		}
+	});
 });
 

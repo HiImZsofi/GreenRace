@@ -72,12 +72,12 @@ export function authorizeUserGetRequest(req, res, type) {
 }
 
 //Used when only the new username field is filled in
-export function onlyUsernameChangeHandler(email, newUsername, res) {
+export function onlyUsernameChangeHandler(id, newUsername, res) {
 	return async (compareRes, compareErr) => {
 		if (compareErr) throw compareErr;
 		if (compareRes) {
 			try {
-				await changeUsername(email, newUsername);
+				await changeUsername(id, newUsername);
 				res.statusCode = 200;
 				res.send({ result: "Username updated" });
 			} catch (error) {
@@ -98,13 +98,13 @@ export function onlyUsernameChangeHandler(email, newUsername, res) {
 }
 
 //Used only when the new password field is filled
-export function onlyPasswordChangeHandler(newPassword, email, res) {
+export function onlyPasswordChangeHandler(id, newPassword, res) {
 	return async (compareRes, compareErr) => {
 		if (compareErr) throw compareErr;
 		if (compareRes) {
 			let newEncryptedPassword = bcrypt.hashSync(newPassword, 10);
 			try {
-				await changePassword(email, newEncryptedPassword);
+				await changePassword(id, newEncryptedPassword);
 				res.statusCode = 200;
 				res.send({ result: "Password updated" });
 			} catch (error) {
@@ -126,8 +126,8 @@ export function onlyPasswordChangeHandler(newPassword, email, res) {
 
 //Used when both the new username and password fields are filled
 export function usernameAndPasswordChangeHandler(
+	id,
 	newPassword,
-	email,
 	newUsername,
 	res
 ) {
@@ -136,8 +136,8 @@ export function usernameAndPasswordChangeHandler(
 		if (compareRes) {
 			let newEncryptedPassword = bcrypt.hashSync(newPassword, 10);
 			try {
-				await changeUsername(email, newUsername);
-				await changePassword(email, newEncryptedPassword);
+				await changeUsername(id, newUsername);
+				await changePassword(id, newEncryptedPassword);
 				res.statusCode = 200;
 				res.send({ result: "Username and password updated" });
 			} catch (error) {

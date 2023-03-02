@@ -48,7 +48,7 @@ export function insertNewUser(username, hashedPassword, email) {
 }
 
 //Query password from the users table in the database
-export function getPassWithIDQuery(email) {
+export function getPassQuery(email) {
 	return new Promise((resolve, rejects) => {
 		connection.query(
 			"SELECT password FROM users WHERE email = ?",
@@ -74,11 +74,11 @@ export function getPassWithIDQuery(id) {
 	});
 }
 
-export function changePassword(email, password) {
+export function changePassword(id, password) {
 	return new Promise((resolve, rejects) => {
 		connection.query(
-			"UPDATE users SET password = ? WHERE email = ?",
-			[password, email],
+			"UPDATE users SET password = ? WHERE user_ID = ?",
+			[password, id],
 			function (err, result) {
 				if (err || result.length == 0) return rejects(err);
 				return resolve(result);
@@ -87,11 +87,11 @@ export function changePassword(email, password) {
 	});
 }
 
-export function changeUsername(email, username) {
+export function changeUsername(id, username) {
 	return new Promise((resolve, rejects) => {
 		connection.query(
-			"UPDATE users SET username = ? WHERE email = ?",
-			[username, email],
+			"UPDATE users SET username = ? WHERE user_ID = ?",
+			[username, id],
 			function (err, result) {
 				if (err || result.length == 0) return rejects(err);
 				return resolve(result);
