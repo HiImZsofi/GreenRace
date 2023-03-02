@@ -8,6 +8,7 @@ import UserSettings from "./Views/UserSettings";
 import UserPage from "./Views/UserPage";
 import RankPage from "./Views/RankPage";
 import FriendPage from "./Views/FriendPage";
+import ProfilePicSetter from "./Views/ProfilePicSetter";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
 			<React.StrictMode>
 				<Routes>
 					<Route path="/" element={<Navigate to="/login" />} />
+					<Route path="/profpicsetter" element={<ProfilePicSetter/>} />
 					<Route path="/register" element={<Register />} />
 					<Route path="/login" element={<Login />}></Route>
 					<Route path="/userPage" element={<UserPage />} />

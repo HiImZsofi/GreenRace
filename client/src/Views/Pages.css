@@ -21,23 +21,63 @@
 #profpicbor{
   margin: 10px;
 }
-#profpicbut-light{
+#profpictoggle-light{
   padding: 0;
   border-radius: 50%;
   border: darkgreen solid 5px;
 }
-#profpicbut-light:hover{
+#profpictoggle-light:hover{
   border: #8cad8d solid 5px;
 }
-#profpicbut-dark{
+#profpictoggle-dark{
   padding: 0;
   border-radius: 50%;
   border: #423f75 solid 5px;
 }
-#profpicbut-dark:hover{
+#profpictoggle-dark:hover{
   border: #6b65db solid 5px;
 }
-
+#profpictoggle-light{
+  padding: 0;
+  border-radius: 50%;
+  border: darkgreen solid 5px;
+}
+#profpictoggle-light:hover{
+  border: #8cad8d solid 5px;
+}
+#profpictoggle-dark{
+  padding: 0;
+  border-radius: 50%;
+  border: #423f75 solid 5px;
+}
+#profpictoggle-dark:hover{
+  border: #6b65db solid 5px;
+}
+#profpicbut-light{
+  padding: 0;
+  border-radius: 50%;
+  border: white solid 10px;
+}
+#profpicbut-light:hover{
+  border: #8cad8d solid 10px;
+}
+#profpicbut-dark{
+  padding: 0;
+  border-radius: 50%;
+  border: #303136 solid 10px;
+}
+#profpicbut-dark:hover{
+  border: #6b65db solid 10px;
+}
+.editicon{
+  opacity: 0;
+  position: absolute;
+  left: 28%;
+  top: 11.5%;
+}
+.editicon:hover{
+  opacity: 1;
+}
 #logo {
   border-radius: 10%
 } 

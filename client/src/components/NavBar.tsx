@@ -59,7 +59,7 @@ const NavMenuLayout = (props: {
 							</Nav> 
 						))}
 						<Navbar.Toggle
-							id={dark == "false" ? "profpicbut-dark": "profpicbut-light"}
+							id={dark == "false" ? "profpictoggle-dark": "profpictoggle-light"}
 							aria-controls={`offcanvasNavbar-expand-${expand}`}
 						>
 							<div className="profpicbor">
@@ -86,7 +86,14 @@ const NavMenuLayout = (props: {
 							</Offcanvas.Header>
 							<Offcanvas.Body className={dark == "false" ? "offcanvas-dark" : ""}>
 								<Container className="text-center">
-									<img
+									<button
+											className="mb-3"
+											id={dark == "false" ? "profpicbut-dark": "profpicbut-light"}
+											onClick={() => navigate("/profpicsetter")}
+										>
+										<div>
+										<img src="edit.png" width="80vh=" height="80vh=" className="editicon"/>
+										<img
 										id="profpic"
 										alt="Profpic"
 										src={
@@ -94,8 +101,8 @@ const NavMenuLayout = (props: {
 										}
 										width="90vh="
 										height="90vh="
-										className="mb-3"
-									/>
+									/></div>
+									</button>
 									<Row>
 										<p>
 											{props.username !== ""
