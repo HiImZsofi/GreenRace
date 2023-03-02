@@ -61,6 +61,19 @@ export function getPassQuery(email) {
 	});
 }
 
+export function getPassQuery(id) {
+	return new Promise((resolve, rejects) => {
+		connection.query(
+			"SELECT password FROM users WHERE user_id = ?",
+			[id],
+			function (err, result) {
+				if (err || result.length == 0) return rejects(err);
+				return resolve(result[0].password);
+			}
+		);
+	});
+}
+
 export function changePassword(email, password) {
 	return new Promise((resolve, rejects) => {
 		connection.query(
