@@ -48,7 +48,7 @@ export function insertNewUser(username, hashedPassword, email) {
 }
 
 //Query password from the users table in the database
-export function getPassQuery(email) {
+export function getPassWithIDQuery(email) {
 	return new Promise((resolve, rejects) => {
 		connection.query(
 			"SELECT password FROM users WHERE email = ?",
@@ -61,7 +61,7 @@ export function getPassQuery(email) {
 	});
 }
 
-export function getPassQuery(id) {
+export function getPassWithIDQuery(id) {
 	return new Promise((resolve, rejects) => {
 		connection.query(
 			"SELECT password FROM users WHERE user_id = ?",

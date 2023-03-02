@@ -3,7 +3,7 @@ import {
 	checkEmailInDB,
 	getIDFromDB,
 	insertNewUser,
-	getPassQuery,
+	getPassWithIDQuery,
 } from "./queries.js";
 import {
 	generateAccessToken,
@@ -94,7 +94,7 @@ app.post("/login", async (req, res) => {
 	const { email, password } = req.body;
 
 	//Store data from SELECT query
-	const passwordInDB = await getPassQuery(email).catch((error) => {
+	const passwordInDB = await getPassWithIDQuery(email).catch((error) => {
 		res.statusCode = 404;
 		console.log("404 User not found");
 		res.send({ error: "Invalid email", response: error });
@@ -165,7 +165,7 @@ app.post("/logout", (req, res) => {
 //Settings route POST request
 app.post("/settings", async (req, res) => {
 	const { email, newUsername, newPassword, currentPassword } = req.body;
-	const passwordInDB = await getPassQuery(email).catch((error) => {
+	const passwordInDB = await getPassWithIDQuery(email).catch((error) => {
 		res.statusCode = 404;
 		console.log(404);
 		res.send(JSON.stringify({ error: "Invalid email", response: error }));
