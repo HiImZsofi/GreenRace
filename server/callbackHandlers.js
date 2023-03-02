@@ -4,6 +4,7 @@ import {
 	changeUsername,
 	getUserDataFromDB,
 	getRankListFromDB,
+	getPassWithIDQuery,
 } from "./queries.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -69,6 +70,71 @@ export function authorizeUserGetRequest(req, res, type) {
 			}
 		}
 	);
+}
+
+//Used when the save button is clicked on the settings page
+export function saveSettings(req, res) {
+	const { newUsername, newPassword, currentPassword } = req.body;
+	const header = req.headers["authorization"];
+	//make sure if token header is not undefined
+	if (header !== undefined) {
+		const bearer = header.split(" "); //separate request token from bearer
+		const token = bearer[1];
+		req.token = token;
+	} else {
+		//if undefined return forbidden status code
+		res.statusCode = 403;
+	}
+
+	jwt.verify(req.token, "secret", { algorithm: "HS256" }, async (err) => {
+		if (err) {
+			res.sendStatus(403);
+			console.log("403 Forbidden request");
+		} else {
+			const passwordInDB = await getPassWithIDQuery(
+				jwt.decode(req.token).user_id
+			).catch((error) => {
+				res.statusCode = 404;
+				console.log(404);
+				res.send(JSON.stringify({ error: "Invalid email", response: error }));
+			});
+			//Only runs if both values are changed
+			if (newUsername != "" && newPassword !== "") {
+				bcrypt
+					.compare(currentPassword, passwordInDB)
+					.then(
+						usernameAndPasswordChangeHandler(
+							jwt.decode(req.token).user_id,
+							newPassword,
+							newUsername,
+							res
+						)
+					);
+			} //Change the password only
+			else if (newPassword !== "") {
+				bcrypt
+					.compare(currentPassword, passwordInDB)
+					.then(
+						onlyPasswordChangeHandler(
+							jwt.decode(req.token).user_id,
+							newPassword,
+							res
+						)
+					);
+			} //Change username
+			else if (newUsername !== "") {
+				bcrypt
+					.compare(currentPassword, passwordInDB)
+					.then(
+						onlyUsernameChangeHandler(
+							jwt.decode(req.token).user_id,
+							newUsername,
+							res
+						)
+					);
+			}
+		}
+	});
 }
 
 //Used when only the new username field is filled in

@@ -4,14 +4,11 @@ import {
 	getIDFromDB,
 	insertNewUser,
 	getPassQuery,
-	getPassWithIDQuery,
 } from "./queries.js";
 import {
 	generateAccessToken,
 	authorizeUserGetRequest,
-	usernameAndPasswordChangeHandler,
-	onlyPasswordChangeHandler,
-	onlyUsernameChangeHandler,
+	saveSettings,
 } from "./callbackHandlers.js";
 import express from "express";
 import bodyParser from "body-parser";
@@ -166,66 +163,5 @@ app.post("/logout", (req, res) => {
 
 //Settings route POST request
 app.post("/settings", async (req, res) => {
-	const { newUsername, newPassword, currentPassword } = req.body;
-	const header = req.headers["authorization"];
-	//make sure if token header is not undefined
-	if (header !== undefined) {
-		const bearer = header.split(" "); //separate request token from bearer
-		const token = bearer[1];
-		req.token = token;
-	} else {
-		//if undefined return forbidden status code
-		res.statusCode = 403;
-	}
-
-	jwt.verify(req.token, "secret", { algorithm: "HS256" }, async (err) => {
-		if (err) {
-			res.sendStatus(403);
-			console.log("403 Forbidden request");
-		} else {
-			const passwordInDB = await getPassWithIDQuery(
-				jwt.decode(req.token).user_id
-			).catch((error) => {
-				res.statusCode = 404;
-				console.log(404);
-				res.send(JSON.stringify({ error: "Invalid email", response: error }));
-			});
-			//Only runs if both values are changed
-			if (newUsername != "" && newPassword !== "") {
-				bcrypt
-					.compare(currentPassword, passwordInDB)
-					.then(
-						usernameAndPasswordChangeHandler(
-							jwt.decode(req.token).user_id,
-							newPassword,
-							newUsername,
-							res
-						)
-					);
-			} //Change the password only
-			else if (newPassword !== "") {
-				bcrypt
-					.compare(currentPassword, passwordInDB)
-					.then(
-						onlyPasswordChangeHandler(
-							jwt.decode(req.token).user_id,
-							newPassword,
-							res
-						)
-					);
-			} //Change username
-			else if (newUsername !== "") {
-				bcrypt
-					.compare(currentPassword, passwordInDB)
-					.then(
-						onlyUsernameChangeHandler(
-							jwt.decode(req.token).user_id,
-							newUsername,
-							res
-						)
-					);
-			}
-		}
-	});
+	saveSettings(req, res);
 });
-
