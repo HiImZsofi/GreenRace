@@ -1,12 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/registrationHeader"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="JÓ"
-        />
+        android:layout_marginTop="30dp"
+        android:gravity="center_horizontal"
+        android:padding="5dp"
+        android:text="Regisztráció"
+        android:textAlignment="center"
+        android:textColor="@color/green_700"
+        android:textSize="18sp" />
+
+    <!--edit text for user name-->
+    <EditText
+        android:id="@+id/registrationUserName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/registrationHeader"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="10dp"
+        android:hint="Enter UserName"
+        android:inputType="textEmailAddress" />
+
+    <!--edit text for user password-->
+    <EditText
+        android:id="@+id/registrationPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/registrationUserName"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        android:hint="Enter Password"
+        android:inputType="textPassword" />
+
+    <!--button to register our new user-->
+    <Button
+        android:id="@+id/registrationConfirmButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/registrationPassword"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        android:text="Register User"
+        android:textAllCaps="false"
+        android:backgroundTint="@color/green_700"/>
+
 
 </RelativeLayout>
