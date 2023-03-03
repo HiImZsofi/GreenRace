@@ -100,6 +100,19 @@ export function changeUsername(id, username) {
 	});
 }
 
+export function changeProfpic(id, picfilepath) {
+	return new Promise((resolve, rejects) => {
+		connection.query(
+			"UPDATE users SET picfilepath = ? WHERE user_ID = ?",
+			[picfilepath, id],
+			function (err, result) {
+				if (err || result.length == 0) return rejects(err);
+				return resolve(result);
+			}
+		);
+	});
+}
+
 export function getUserDataFromDB(user_ID) {
 	return new Promise((resolve, rejects) => {
 		connection.query(

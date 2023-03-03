@@ -5,6 +5,7 @@ import {
 	getUserDataFromDB,
 	getRankListFromDB,
 	getPassWithIDQuery,
+	changeProfpic
 } from "./queries.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -161,6 +162,48 @@ export function onlyUsernameChangeHandler(id, newUsername, res) {
 			});
 		}
 	};
+}
+
+
+export function saveProfpic(req, res) {
+	const { picfilepath } = req.body;
+	const header = req.headers["authorization"];
+	//make sure if token header is not undefined
+	if (header !== undefined) {
+		const bearer = header.split(" "); //separate request token from bearer
+		const token = bearer[1];
+		req.token = token;
+	} else {
+		//if undefined return forbidden status code
+		res.statusCode = 403;
+	}
+	jwt.verify(req.token, "secret", { algorithm: "HS256" }, async (err) => {
+		if (err) {
+			res.sendStatus(403);
+			console.log("403 Forbidden request");
+		} else {
+			const passwordInDB = await getPassWithIDQuery(
+				jwt.decode(req.token).user_id
+			).catch((error) => {
+				res.statusCode = 404;
+				console.log(404);
+				res.send(JSON.stringify({ error: "Invalid email", response: error }));
+			});
+			if (picfilepath !== "") {
+				try {
+					await changeProfpic(jwt.decode(req.token).user_id, picfilepath);
+					res.statusCode = 200;
+					res.send({ result: "Profile picture updated" });
+				} catch (error) {
+					res.statusCode = 500;
+					res.send({
+						error: "Profile picture",
+						result: "Error updating the Profile picture",
+					});
+				}
+			}
+		}
+	});
 }
 
 //Used only when the new password field is filled

@@ -9,6 +9,7 @@ import {
 	generateAccessToken,
 	authorizeUserGetRequest,
 	saveSettings,
+	saveProfpic,
 } from "./callbackHandlers.js";
 import express from "express";
 import bodyParser from "body-parser";
@@ -164,4 +165,9 @@ app.post("/logout", (req, res) => {
 //Settings route POST request
 app.post("/settings", async (req, res) => {
 	saveSettings(req, res);
+});
+
+//ProfpicSetter route POST request
+app.post("/profpicset", async (req, res) => {
+	saveProfpic(req,res);
 });
