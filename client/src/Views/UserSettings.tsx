@@ -157,7 +157,7 @@ const UserSettings = () => {
         <InputField
           type={{
             inputType: "Username",
-            placeholder: "New username",
+            placeholder: "Új felhasználónév",
             value: newUsername,
             onChangeHandler: newUsernameOnChangeHandler,
           }}
@@ -167,7 +167,7 @@ const UserSettings = () => {
         <InputField
           type={{
             inputType: "Password",
-            placeholder: "New password",
+            placeholder: "Új jelszó",
             value: newPassword,
             onChangeHandler: newPasswordOnChangeHandler,
           }}
@@ -177,7 +177,7 @@ const UserSettings = () => {
         <InputField
           type={{
             inputType: "Password",
-            placeholder: "Current password",
+            placeholder: "Jelenlegi jelszó:",
             value: currentPassword,
             onChangeHandler: currentPasswordOnChangeHandler,
           }}
@@ -189,12 +189,12 @@ const UserSettings = () => {
           variant="success"
           className="px-4 me-4"
           onClick={saveHandler}
-        >Save</Button>
+        >Mentés</Button>
         <Button
           variant="outline-success"
           className="px-3"
           onClick={cancelHandler}
-        >Cancel</Button>
+        >Vissza</Button>
       </FormWrapper>
     </>
   );

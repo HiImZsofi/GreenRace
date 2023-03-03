@@ -72,8 +72,8 @@
 .editicon{
   opacity: 0;
   position: absolute;
-  left: 28%;
-  top: 11.5%;
+  left: 26%;
+  top: 85px;
 }
 .editicon:hover{
   opacity: 1;
@@ -101,6 +101,10 @@
 }
 .loginbackground-dark {
   background: radial-gradient(circle, #a3dafb 0%,  #303136 41%);
+}
+.offcanvas-light{
+  background-color: white;
+  color: black;
 }
 .offcanvas-dark{
   background-color: #303136;

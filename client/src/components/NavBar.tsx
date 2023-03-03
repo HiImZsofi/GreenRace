@@ -81,34 +81,34 @@ const NavMenuLayout = (props: {
 							placement="end"
 							className="w-auto"
 						>
-							<Offcanvas.Header closeButton className={dark == "false" ? "offcanvas-dark" : ""}>
+							<Offcanvas.Header closeButton className={dark == "false" ? "offcanvas-dark" : "offcanvas-light"}>
 								<Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`} />
 							</Offcanvas.Header>
 							<Offcanvas.Body className={dark == "false" ? "offcanvas-dark" : ""}>
 								<Container className="text-center">
 									<button
-											className="mb-3"
+											className="mb-2"
 											id={dark == "false" ? "profpicbut-dark": "profpicbut-light"}
 											onClick={() => navigate("/profpicsetter")}
 										>
 										<div>
-										<img src="edit.png" width="80vh=" height="80vh=" className="editicon"/>
+										<img src="edit.png" width="90vh=" height="90vh=" className="editicon"/>
 										<img
 										id="profpic"
 										alt="Profpic"
 										src={
 											props.picfilepath !== null ? props.picfilepath : "npic.png"
 										}
-										width="90vh="
-										height="90vh="
+										width="100vh="
+										height="100vh="
 									/></div>
 									</button>
 									<Row>
-										<p>
+										<h4 className="mb-3">
 											{props.username !== ""
 												? props.username
 												: "username_placeholder"}
-										</p>
+										</h4>
 									</Row>
 									<Row>
 										<Button
@@ -116,12 +116,12 @@ const NavMenuLayout = (props: {
 											className="mb-1"
 											onClick={() => navigate("/settings")}
 										>
-											Options
+											Beállítások
 										</Button>
 									</Row>
 									<Row>
 										<Button variant="danger" onClick={props.logoutHandler}>
-											Logout
+											Kijelentkezés
 										</Button>{" "}
 									</Row>
 								</Container>

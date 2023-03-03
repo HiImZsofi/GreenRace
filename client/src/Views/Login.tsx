@@ -102,7 +102,7 @@ const Login = () => {
       <InputField
         type={{
           inputType: "Password",
-          placeholder: "Password",
+          placeholder: "Jelszó",
           value: password,
           onChangeHandler: passwordChangeHandler,
         }}
@@ -110,7 +110,7 @@ const Login = () => {
         errorMessage={passwordErrMsg}
       />
       <FormSubmitButton
-        type={{ inputType: "Login" }}
+        type={{ inputType: "Bejelentkezés" }}
         onClickHandler={loginHandler}
       />
       <FormRedirectLink
