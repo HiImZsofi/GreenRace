@@ -7,7 +7,9 @@
   background-color: #303136;
   color: 	#dbedff;
 }
-
+.body-zoom{
+  zoom: 150%
+}
 .color-nav-light {
   background-color: darkgreen;
 }
@@ -97,10 +99,10 @@
 }
 
 .loginbackground-light {
-  background: radial-gradient(circle, #3ffb91 0%,  #2e7d32 41%);
+  background: radial-gradient(circle, #3ffb91 0%,  #2e7d32 50%);
 }
 .loginbackground-dark {
-  background: radial-gradient(circle, #a3dafb 0%,  #303136 41%);
+  background: radial-gradient(circle, #a3dafb 0%,  #303136 50%);
 }
 .offcanvas-light{
   background-color: white;

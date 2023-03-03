@@ -7,7 +7,7 @@ function FormSubmitButton(props: {
 	onClickHandler: () => void;
 }) {
 	return (
-		<div>
+		<div className="mt-2">
 			<Button
 				variant="contained"
 				color="success"

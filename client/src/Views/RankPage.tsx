@@ -64,9 +64,9 @@ const RankPage = () => {
   useEffect(() => {
     authenticationHandler();
     if (dark == "false"){
-      document.body.className = "body-dark";
+      document.body.className = "body-dark body-zoom";
     } else {
-      document.body.className = "body-light";
+      document.body.className = "body-light body-zoom";
     }
   });
 

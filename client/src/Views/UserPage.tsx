@@ -44,9 +44,9 @@ const UserPage = () => {
   useEffect(() => {
 		authenticationHandler();
     if (dark == "false"){
-      document.body.className = "body-dark";
+      document.body.className = "body-dark body-zoom";
     } else {
-      document.body.className = "body-light";
+      document.body.className = "body-light body-zoom";
     }
 	});
 
@@ -54,7 +54,7 @@ const UserPage = () => {
   return (
     <div key={"userPage"}>
       <NavMenu username={username} profilePicturePath={picfilepath} />
-      <div className="text-center mt-3">
+      <div className="text-center overflow-auto" style={{maxHeight:"55.7vh"}}>
         <div>
           <h1>
             {points} <span id={dark == "false" ? "pont-dark": "pont-light"}>Zöldpont</span>-od van

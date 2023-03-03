@@ -147,13 +147,14 @@ const UserSettings = () => {
   };
   useEffect(() => {
     authenticationHandler();
+    document.body.className = "body-zoom";
   });
   
   //Page Visual Part
   return (
     <>
       <NavMenu username={username} profilePicturePath={picFilePath} />
-      <FormWrapper vhnum="89vh" background={dark == "false" ? "loginbackground-dark": "loginbackground-light"}>
+      <FormWrapper vhnum="55.6vh" background={dark == "false" ? "loginbackground-dark": "loginbackground-light"}>
         <InputField
           type={{
             inputType: "Username",

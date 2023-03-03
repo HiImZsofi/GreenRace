@@ -1,5 +1,5 @@
 //Imports
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import FormSubmitButton from "../components/FormSubmitButton";
 import InputField from "../components/InputField";
@@ -86,9 +86,12 @@ const Login = () => {
         });
     }
   };
+  useEffect(() => {
+    document.body.className = "body-zoom";
+  });
   //Page Visual Part
   return (
-    <FormWrapper vhnum="100vh" background="loginbackground-light">
+    <FormWrapper vhnum="66.6vh" background="loginbackground-light">
       <InputField
         type={{
           inputType: "Email",
