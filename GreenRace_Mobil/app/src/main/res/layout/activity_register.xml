@@ -19,14 +19,14 @@
 
     <!--edit text for user name-->
     <EditText
-        android:id="@+id/registrationUserName"
+        android:id="@+id/registrationEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/registrationHeader"
         android:layout_marginStart="10dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="10dp"
-        android:hint="Enter UserName"
+        android:hint="E-mail cím"
         android:inputType="textEmailAddress" />
 
     <!--edit text for user password-->
@@ -34,11 +34,11 @@
         android:id="@+id/registrationPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/registrationUserName"
+        android:layout_below="@id/registrationEmail"
         android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="10dp"
-        android:hint="Enter Password"
+        android:hint="Jelszó"
         android:inputType="textPassword" />
 
     <!--button to register our new user-->
@@ -50,7 +50,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="10dp"
-        android:text="Register User"
+        android:text="Megerősítés"
         android:textAllCaps="false"
         android:backgroundTint="@color/green_700"/>
 
