@@ -26,6 +26,11 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(R.layout.activity_register)
         init()
 
+        registrationConfirmButton.setOnClickListener(){
+            testHttpRequest()
+
+        }
+
     }
 
     @OptIn(DelicateCoroutinesApi::class)
@@ -36,19 +41,19 @@ class RegisterActivity : AppCompatActivity() {
         /*val status = HttpClient().use { client ->
 
         }*/
-        val response: HttpResponse = client.request("http://localhost:3001/register") {
+        val request: HttpResponse = client.request("http://localhost:3001/register") {
+
+            var userEmail = registrationEmail.text.toString()
+            var userPassword = registrationPassword.text.toString()
+            var userName = registrationUsername.text.toString()
+
             method = HttpMethod.Post
             headers {
                 append(HttpHeaders.Accept, "application/json")
                 //append(HttpHeaders.Authorization, "abc123")
             }
-            setBody()
+            setBody(UserRegisterDto(userName, userPassword, userPassword))
         }
-    }
-
-    fun getUserInput(){
-        var userEmail = registrationEmail.text.toString()
-        var userPassword = registrationPassword.text.toString()
     }
 
     fun init(){
