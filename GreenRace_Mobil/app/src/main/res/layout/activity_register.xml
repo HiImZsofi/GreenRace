@@ -17,12 +17,23 @@
         android:textColor="@color/green_700"
         android:textSize="18sp" />
 
+    <EditText
+        android:id="@+id/registrationUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/registrationHeader"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="10dp"
+        android:hint="Felhasználónév"
+        android:inputType="textEmailAddress" />
+
     <!--edit text for user name-->
     <EditText
         android:id="@+id/registrationEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/registrationHeader"
+        android:layout_below="@id/registrationUsername"
         android:layout_marginStart="10dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="10dp"
