@@ -4,16 +4,8 @@ import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import FormWrapper from "../components/FormWrapper";
 import NavMenu from "../components/NavBarLogic";
+import Profilepictures from "../components/ProfilePicList";
 
-interface Profpics {
-	path: string;
-  name: string;
-}
-let Profilepictures: Profpics[] = [
-  {path: "npic.png", name: "genderless"},
-  {path: "profpic-male.jpg", name: "male"},
-  {path: "profpic-female.jpg", name: "female"},
-];
 
 //ProfilePicSetter main code
 const ProfilePicSetter = () => {
@@ -56,6 +48,7 @@ const ProfilePicSetter = () => {
   };
 
   const nextHandler = () => {
+    setPicpathErrMsg("");
     if(index < Profilepictures.length-1) {
       setIndex(index + 1);
     } else {
@@ -64,6 +57,7 @@ const ProfilePicSetter = () => {
   };
 
   const backHandler = () => {
+    setPicpathErrMsg("");
     if(index > 0) {
       setIndex(index - 1);
     } else {
@@ -72,6 +66,7 @@ const ProfilePicSetter = () => {
   };
 
   const saveHandler = () => {
+    if(Profilepictures[index].unlock) {
     setPicpathErr(false);
     setPicpathErrMsg("");
     const token = localStorage.getItem("key");
@@ -107,6 +102,10 @@ const ProfilePicSetter = () => {
     .catch((error) => {
       console.error("There was an error!", error);
     });
+    } else {
+      setPicpathErr(true);
+      setPicpathErrMsg("Nincs még feloldva");
+    }
   };
 
   useEffect(() => {
@@ -136,7 +135,9 @@ const ProfilePicSetter = () => {
           className="py-4"
           onClick={nextHandler}
         >&#10095;</Button>
-        <h6>{Profilepictures[index].name}</h6></div>
+        <h6 className={Profilepictures[index].unlock == false ? "Unlocknt":"Unlock"}>{Profilepictures[index].name} {Profilepictures[index].unlock == false ? "🔒":"🔓"}</h6>
+        <h6 className="Errorlock">{PicpathErrMsg}</h6></div>
+        
         <div><Button
           variant="success"
           className="px-4 me-4"

@@ -78,7 +78,7 @@
   top: 85px;
 }
 .editicon:hover{
-  opacity: 1;
+  opacity: 0.5;
 }
 #logo {
   border-radius: 10%
@@ -88,6 +88,17 @@
 }
 #pont-dark {
   color: #8cad8d;
+}
+
+.Unlocknt{
+  color: red;
+}
+.Errorlock{
+  color: red;
+  font-size: smaller;
+}
+.Unlock{
+  color: black;
 }
 
 .LRlink:link, .LRlink:visited{
