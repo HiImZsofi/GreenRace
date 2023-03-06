@@ -7,6 +7,10 @@ import {
 	Offcanvas,
 	Button,
 	Row,
+	DropdownButton,
+	Dropdown,
+	NavDropdown,
+	ButtonGroup,
 } from "react-bootstrap";
 import React from "react";
 import "../Views/Pages.css";
@@ -23,6 +27,9 @@ let NavMenuPoints: MenuPoints[] = [
 	{ text: "Barátok", link: "/friendPage", class: "me-auto" },
 ];
 
+
+
+
 //Navbar
 const NavMenuLayout = (props: {
 	username: string;
@@ -31,6 +38,31 @@ const NavMenuLayout = (props: {
 }) => {
 	let dark = localStorage.getItem('darkmode');
 	const navigate = useNavigate();
+
+	const UnCollapse = NavMenuPoints.map((mp, i) => (<Nav className={mp.class} key={i}><Nav.Link as={Link} to={mp.link} replace>{mp.text}</Nav.Link></Nav> ));
+
+	const Collapse = <div className="mb-2">
+		<DropdownButton
+		  as={ButtonGroup}
+		  key='down-centered'
+		  id='dropdown-button-drop-down-centered'
+		  drop={'down-centered'}
+		  variant={dark == "false" ? "dark" : "success" }
+		  title='Menu'
+		>
+		{NavMenuPoints.map((mp, i) => (
+		<div key={i}>
+		  <Nav.Link as={Link} to={mp.link} replace className="ms-1">{mp.text}</Nav.Link>
+		  <Dropdown.Divider />
+		  </div>
+		))}
+		</DropdownButton>
+  </div>;
+
+  const Brand = <Navbar.Brand>
+						<img id="logo" alt="Green_Race_Logo" src="greenRaceLogo.png" width="50vh=" height="50vh="/>
+					</Navbar.Brand>;
+
 	return (
 		<>
 			{[false].map((expand) => (	
@@ -42,22 +74,9 @@ const NavMenuLayout = (props: {
 					style={{ minHeight: "11vh" }}
 				>
 					<Container fluid>
-						<Navbar.Brand>
-							<img
-								id="logo"
-								alt="Green_Race_Logo"
-								src="greenRaceLogo.png"
-								width="50vh="
-								height="50vh="
-							/>
-						</Navbar.Brand>
-						{NavMenuPoints.map((mp, i) => (
-							<Nav className={mp.class} key={i}>
-							<Nav.Link as={Link} to={mp.link} replace>
-								{mp.text}
-							</Nav.Link>
-							</Nav> 
-						))}
+					
+						{window.innerWidth > 400 && Brand}
+						{window.innerWidth < 400 ? Collapse : UnCollapse }			
 						<Navbar.Toggle
 							id={dark == "false" ? "profpictoggle-dark": "profpictoggle-light"}
 							aria-controls={`offcanvasNavbar-expand-${expand}`}

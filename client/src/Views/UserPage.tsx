@@ -67,13 +67,13 @@ const UserPage = () => {
             alt="Achivements"
             src="achivement_placeholder.jpg"
             height="300vh="
-            width="400vh="
+            width="100%"
             className="mb-3"
           />
         </div>
         <div>
           <h6>Statisztikáid:</h6>
-          <img alt="Graph" src="graph-placeholder.jpg" className="mb-3" />
+          <img alt="Graph" src="graph-placeholder.jpg" className="mb-3" width="100%"/>
         </div>
       </div>
     </div>

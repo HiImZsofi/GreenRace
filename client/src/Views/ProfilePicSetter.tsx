@@ -10,7 +10,7 @@ import Profilepictures from "../components/ProfilePicList";
 //ProfilePicSetter main code
 const ProfilePicSetter = () => {
   const [PicpathErr, setPicpathErr] = useState(false);
-  const [PicpathErrMsg, setPicpathErrMsg] = useState("");
+  const [PicpathErrMsg, setPicpathErrMsg] = useState("‎");
   const [username, setUsername] = useState("");
   const [picFilePath, setPicFilePath] = useState("");
   const [index, setIndex] = useState(0);
@@ -48,7 +48,7 @@ const ProfilePicSetter = () => {
   };
 
   const nextHandler = () => {
-    setPicpathErrMsg("");
+    setPicpathErrMsg("‎");
     if(index < Profilepictures.length-1) {
       setIndex(index + 1);
     } else {
@@ -57,7 +57,7 @@ const ProfilePicSetter = () => {
   };
 
   const backHandler = () => {
-    setPicpathErrMsg("");
+    setPicpathErrMsg("‎");
     if(index > 0) {
       setIndex(index - 1);
     } else {
@@ -68,7 +68,7 @@ const ProfilePicSetter = () => {
   const saveHandler = () => {
     if(Profilepictures[index].unlock) {
     setPicpathErr(false);
-    setPicpathErrMsg("");
+    setPicpathErrMsg("‎");
     const token = localStorage.getItem("key");
     const requestOptions = {
       method: "POST",
