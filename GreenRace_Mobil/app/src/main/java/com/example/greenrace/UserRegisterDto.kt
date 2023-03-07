@@ -1,18 +1,17 @@
 package com.example.greenrace
 
-import android.provider.ContactsContract.CommonDataKinds.Email
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder
-import com.google.gson.annotations.SerializedName
 
+//user info data model
 data class RequestModel(
-    @JsonProperty("username") val username: String,
+    @JsonProperty("username") val username: String = "",
 
-    @JsonProperty("password") val password: String,
+    @JsonProperty("password") val password: String = "",
 
-    @JsonProperty("email") val email: String
-    )
+    @JsonProperty("email") val email: String = ""
+)
 
+//http response model
 data class ResponseModel(
     val message: String
 )

@@ -3,7 +3,6 @@ package com.example.greenrace
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 
 class MainActivity : AppCompatActivity() {
@@ -18,6 +17,7 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+    //create intent for navigation
     fun navigateToRegistry(){
         val intent = Intent(this, RegisterActivity::class.java)
         startActivity(intent)
