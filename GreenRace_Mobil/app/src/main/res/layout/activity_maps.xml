@@ -19,16 +19,12 @@
         android:layout_below="@id/latitude"
         android:text="longitude" />
     <fragment
+        android:layout_below="@id/longitude"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/map"
         tools:context=".MapsActivity"
         android:name="com.google.android.gms.maps.SupportMapFragment" />
-<!--    <com.google.android.gms.maps.MapView-->
-<!--        android:id="@+id/map_view"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_below="@id/latitude"/>-->
 
 </RelativeLayout>
 

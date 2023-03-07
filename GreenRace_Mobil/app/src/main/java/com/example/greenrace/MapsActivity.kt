@@ -30,28 +30,34 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var latitudeTextView:TextView
     private lateinit var longitudeTextView: TextView
 
+    private var lat = 0.0
+    private var lng = 0.0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
         latitudeTextView=findViewById(R.id.latitude)
         longitudeTextView=findViewById(R.id.longitude)
 
-        val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment
-        mapFragment.getMapAsync(this)
-
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         getLocationPermission()
 
-        try {
+        val mapFragment = supportFragmentManager
+            .findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
 
+        try {
             fusedLocationClient.lastLocation
                 .addOnSuccessListener { location : Location? ->
                     // Got last known location. In some rare situations this can be null.
                     if(location!=null){
                         latitudeTextView.text= location.latitude.toString()
                         longitudeTextView.text= location.longitude.toString()
+
+                        lat=location.latitude
+                        lng = location.longitude
+                        mapFragment.getMapAsync(this)
                     }else{
                         latitudeTextView.text="Error"
                         longitudeTextView.text="Error"
@@ -67,7 +73,7 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
 
         // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
+        val sydney = LatLng(lat, lng)
         mMap.addMarker(MarkerOptions()
             .position(sydney)
             .title("Marker in Sydney"))
