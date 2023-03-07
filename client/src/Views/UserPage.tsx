@@ -4,6 +4,8 @@ import "./Pages.css";
 import "bootstrap/dist/css/bootstrap.css";
 import NavMenu from "../components/NavBarLogic";
 import { useNavigate } from "react-router-dom";
+import GreenChart from "../components/Chart";
+
 
 //UserPage main code
 const UserPage = () => {
@@ -71,9 +73,8 @@ const UserPage = () => {
             className="mb-3"
           />
         </div>
-        <div>
-          <h6>Statisztikáid:</h6>
-          <img alt="Graph" src="graph-placeholder.jpg" className="mb-3" width="100%"/>
+        <div className="Chart">
+          <GreenChart />
         </div>
       </div>
     </div>

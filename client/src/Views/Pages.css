@@ -109,6 +109,10 @@
   display: inline-block;
 }
 
+.Chart{
+  width: 100%;
+}
+
 .loginbackground-light {
   background: radial-gradient(circle, #3ffb91 0%,  #2e7d32 50%);
 }
