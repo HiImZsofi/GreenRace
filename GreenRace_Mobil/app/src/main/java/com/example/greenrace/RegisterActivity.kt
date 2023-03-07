@@ -2,20 +2,17 @@ package com.example.greenrace
 
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import io.ktor.client.*
-import io.ktor.client.engine.cio.*
-import io.ktor.client.request.*
-import io.ktor.client.statement.*
-import io.ktor.http.*
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-    private lateinit var registrationEmail : EditText
+
+private lateinit var registrationEmail : EditText
     private lateinit var registrationPassword : EditText
     private lateinit var registrationUsername : EditText
     private lateinit var registrationConfirmButton : Button
@@ -26,33 +23,25 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(R.layout.activity_register)
         init()
 
-        registrationConfirmButton.setOnClickListener(){
-            testHttpRequest()
+        val response = ServiceBuilder.buildService(ApiInterface::class.java)
 
-        }
+        registrationConfirmButton.setOnClickListener {
+            val requestModel = RequestModel(registrationUsername.text.toString(), registrationPassword.text.toString(), registrationEmail.text.toString())
 
-    }
+            response.sendReq(requestModel).enqueue(
+                object : Callback<ResponseModel> {
+                    override fun onResponse(
+                        call: Call<ResponseModel>,
+                        response: Response<ResponseModel>
+                    ) {
+                        Toast.makeText(this@RegisterActivity,response.message().toString(),Toast.LENGTH_LONG).show()
+                    }
 
-    @OptIn(DelicateCoroutinesApi::class)
-    fun testHttpRequest() = GlobalScope.async{
-        val client = HttpClient(CIO){
-            expectSuccess = true
-        }
-        /*val status = HttpClient().use { client ->
-
-        }*/
-        val request: HttpResponse = client.request("http://localhost:3001/register") {
-
-            var userEmail = registrationEmail.text.toString()
-            var userPassword = registrationPassword.text.toString()
-            var userName = registrationUsername.text.toString()
-
-            method = HttpMethod.Post
-            headers {
-                append(HttpHeaders.Accept, "application/json")
-                //append(HttpHeaders.Authorization, "abc123")
-            }
-            setBody(UserRegisterDto(userName, userPassword, userPassword))
+                    override fun onFailure(call: Call<ResponseModel>, t: Throwable) {
+                        Toast.makeText(this@RegisterActivity,t.toString(),Toast.LENGTH_LONG).show()
+                    }
+                }
+            )
         }
     }
 
