@@ -34,7 +34,13 @@ class RegisterActivity : AppCompatActivity() {
                         call: Call<ResponseModel>,
                         response: Response<ResponseModel>
                     ) {
-                        Toast.makeText(this@RegisterActivity,response.message().toString(),Toast.LENGTH_LONG).show()
+                        if(response.code() == 500){
+                            registrationEmail.setBackgroundResource(R.drawable.email_error)
+                            registrationEmail.setError("Ez az e-mail cím már foglalt!")
+                            Toast.makeText(this@RegisterActivity,"E-mail cím már foglalt!",Toast.LENGTH_LONG).show()
+                        } else{
+                            registrationEmail.setBackgroundResource(R.drawable.email_normal)
+                        }
                     }
 
                     override fun onFailure(call: Call<ResponseModel>, t: Throwable) {
