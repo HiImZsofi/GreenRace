@@ -12,6 +12,7 @@ const UserPage = () => {
   const [username, setUsername] = useState("");
   const [picfilepath, setPicfilepath] = useState("");
   const [points, setPoints] = useState(0);
+  const [chartData, setChartData] = useState([0]);
   let dark = localStorage.getItem('darkmode');
   const navigate = useNavigate();
 
@@ -74,7 +75,7 @@ const UserPage = () => {
           />
         </div>
         <div className="Chart">
-          <GreenChart />
+          <GreenChart chartData={chartData}/>
         </div>
       </div>
     </div>

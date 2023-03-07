@@ -58,16 +58,13 @@ const FriendPage = () => {
           <h1>Barátok:</h1>
           <table className="mx-auto">
             <tbody>
-            <tr>USername: 1000pont</tr>
-            <tr>USername: 1000pont</tr>
-            <tr>USername: 1000pont</tr>
-            <tr>USername: 1000pont</tr>
-            <tr>USername: 1000pont</tr>
-            <tr>USername: 1000pont</tr>
-            <tr>USername: 1000pont</tr>
-            <tr>USername: 1000pont</tr>
-            <tr>USername: 1000pont</tr>
-            <tr>USername: 1000pont</tr>
+            <tr><img
+            alt="No-friends-placeholder"
+            src="friends.jpg"
+            height="300vh="
+            width="100%"
+            className="mb-3"
+          /></tr>
             </tbody>
           </table>
         </div>
