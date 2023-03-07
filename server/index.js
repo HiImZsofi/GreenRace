@@ -28,6 +28,7 @@ app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+
 //? middleware options ig
 app.use((req, res, next) => {
 	res.header("Access-Control-Allow-Credentials", true);
@@ -133,24 +134,22 @@ app.post("/login", async (req, res) => {
 
 //User page route
 //Authorize user
-//TODO Send back appropriate user data
 app.get("/userPage", (req, res) => {
 	authorizeUserGetRequest(req, res, "user");
 });
 
 //Friend page route
 //Authorize user
-//TODO Send back appropriate user data
 app.get("/friendPage", (req, res) => {
 	authorizeUserGetRequest(req, res);
 });
 
 //Rank page route
 //Authorize user
-//TODO Send back appropriate user data
 app.get("/rankPage", (req, res) => {
 	authorizeUserGetRequest(req, res, "rank");
 });
+
 
 //Logout route POST request
 app.post("/logout", (req, res) => {

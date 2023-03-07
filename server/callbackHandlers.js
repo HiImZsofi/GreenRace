@@ -5,6 +5,7 @@ import {
 	getUserDataFromDB,
 	getRankListFromDB,
 	getPassWithIDQuery,
+	getUserStatisticsFromDB,
 	changeProfpic
 } from "./queries.js";
 import bcrypt from "bcrypt";

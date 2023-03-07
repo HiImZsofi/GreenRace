@@ -56,17 +56,13 @@ const FriendPage = () => {
       <div className="text-center mt-3">
         <div>
           <h1>Barátok:</h1>
-          <table className="mx-auto">
-            <tbody>
-            <tr><img
+              <img
             alt="No-friends-placeholder"
             src="friends.jpg"
             height="300vh="
             width="100%"
             className="mb-3"
-          /></tr>
-            </tbody>
-          </table>
+            />
         </div>
       </div>
     </div>

@@ -44,8 +44,18 @@ const UserPage = () => {
     );
   };
 
+  const chartDataHandler = async () => {
+    const today: Date = new Date();
+    let dayOfWeek: number = today.getDay()-1;
+    if (dayOfWeek < 0) {
+      dayOfWeek = 6;
+    }
+    const MonDayDate: Date = new Date(today.getTime() - dayOfWeek * 24 * 60 * 60 * 1000);
+    console.log(MonDayDate);
+  };
   useEffect(() => {
 		authenticationHandler();
+    chartDataHandler();
     if (dark == "false"){
       document.body.className = "body-dark body-zoom";
     } else {
