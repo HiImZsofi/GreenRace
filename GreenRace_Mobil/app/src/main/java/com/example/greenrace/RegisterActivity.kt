@@ -28,10 +28,10 @@ class RegisterActivity : AppCompatActivity() {
         registrationConfirmButton.setOnClickListener {
 
             //putting user info into the request model class
-            val requestModel = RequestModel(registrationUsername.text.toString(), registrationPassword.text.toString(), registrationEmail.text.toString())
+            val requestModelRegistration = RequestModelRegistration(registrationUsername.text.toString(), registrationPassword.text.toString(), registrationEmail.text.toString())
 
             try{
-                response.sendReq(requestModel).enqueue(
+                response.sendReq(requestModelRegistration).enqueue(
                     object : Callback<ResponseModel> {
 
                         //callback for a response
