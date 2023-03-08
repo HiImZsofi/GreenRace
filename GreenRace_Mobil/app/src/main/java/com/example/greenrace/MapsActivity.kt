@@ -39,19 +39,29 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         getLocationPermission()
 
+        initMap(mapFragment)
+    }
+
+    private fun initMap(mapFragment: SupportMapFragment) {
+
         try {
             fusedLocationClient.lastLocation
                 .addOnSuccessListener { location: Location? ->
                     // Got last known location. In some rare situations this can be null.
                     if (location != null) {
-                        lat = location.latitude
-                        lng = location.longitude
-                        mapFragment.getMapAsync(this)
+                        try {
+                            lat = location.latitude
+                            lng = location.longitude
+                            mapFragment.getMapAsync(this)
+                        } catch (e: SecurityException) {
+                            Log.e("Security Exception", e.message.toString())
+                        }
                     } else {
-                       mapFragment.getMapAsync { mMap->
-                           val notSydney = LatLng(47.4980635,19.0472096)
-                           mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(notSydney, 10F))
-                       }
+                        mapFragment.getMapAsync { mMap ->
+                            val notSydney = LatLng(47.4980635, 19.0472096)
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(notSydney, 10F))
+                        }
+
                     }
                 }
         } catch (e: SecurityException) {
