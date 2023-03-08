@@ -35,7 +35,11 @@ class LoginActivity : AppCompatActivity() {
                             loginPassword.setBackgroundResource(R.drawable.email_error)
                             loginEmail.error = "Az e-mail cím vagy a jelszó nem egyezik!"
                             loginPassword.error = "Az e-mail cím vagy a jelszó nem egyezik!"
-                        } else {
+                        } else if(response.code() == 404) {
+                            loginEmail.setBackgroundResource(R.drawable.email_error)
+                            loginEmail.error = "Ilyen e-maillel nincs regisztrálva felhasználó!"
+                        }
+                        else {
                             loginEmail.setBackgroundResource(R.drawable.email_normal)
                             loginPassword.setBackgroundResource(R.drawable.email_normal)
                         }
