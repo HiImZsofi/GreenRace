@@ -40,11 +40,11 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         longitudeTextView=findViewById(R.id.longitude)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        val mapFragment = supportFragmentManager
+            .findFragmentById(R.id.map) as SupportMapFragment
 
         getLocationPermission()
 
-        val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment
 
         try {
             fusedLocationClient.lastLocation
@@ -75,8 +75,8 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val sydney = LatLng(lat, lng)
         mMap.addMarker(MarkerOptions()
             .position(sydney)
-            .title("Marker in Sydney"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+            .title("Te most itt vagy"))
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 17F))
     }
 
     private fun getLocationPermission() {
