@@ -13,11 +13,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         init()
 
-        registerButton.setOnClickListener(){
+        registerButton.setOnClickListener {
             navigateToRegistry()
         }
 
-        loginButton.setOnClickListener(){
+        loginButton.setOnClickListener {
             navigateToLogin()
         }
 

@@ -43,7 +43,7 @@ class RegisterActivity : AppCompatActivity() {
                             if(response.code() == 500){
                                 //change background resource to red
                                 registrationEmail.setBackgroundResource(R.drawable.email_error)
-                                registrationEmail.setError("Ez az e-mail cím már foglalt!")
+                                registrationEmail.error = "Ez az e-mail cím már foglalt!"
                             } else{
                                 registrationEmail.setBackgroundResource(R.drawable.email_normal)
                             }
