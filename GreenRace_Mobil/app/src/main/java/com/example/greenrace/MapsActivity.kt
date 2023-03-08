@@ -44,12 +44,20 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
 
+        //Request location permissions
         getLocationPermission()
 
+        //Show a zoomed out map of Budapest in the background
         initMap(mapFragment)
 
+        //Check if GPS is on then re-render the map
+        locationStateCheck()
+    }
+
+    private fun locationStateCheck() {
         val locationManager: LocationManager =
-            getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            getSystemService(LOCATION_SERVICE) as LocationManager
+
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             val builder = AlertDialog.Builder(this)
             builder.setTitle("Kapcsold be a GPS-t")
@@ -67,6 +75,8 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    //Initialize the map with coordinates
+    //And move the camera to the correct location
     private fun initMap(mapFragment: SupportMapFragment) {
         try {
             fusedLocationClient.lastLocation
@@ -85,7 +95,6 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                             val notSydney = LatLng(47.4980635, 19.0472096)
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(notSydney, 10F))
                         }
-
                     }
                 }
         } catch (e: SecurityException) {
@@ -94,15 +103,20 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    //Runs when the location settings activity is finished
+    //It executes the initMap again using a delay
+    //So the correct location is shown to the user
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 1) {
             val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
             if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                Handler().postDelayed({initMap(mapFragment)},2000)
+                Handler().postDelayed({ initMap(mapFragment) }, 2000)
             }
-        }}
+        }
+    }
 
+    //Sets map to the users last know location and zooms in
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
@@ -117,6 +131,7 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 17F))
     }
 
+    //Checks if the fine and coarse location are granted to the app
     private fun getLocationPermission() {
         if (ContextCompat.checkSelfPermission(
                 this.applicationContext,
@@ -133,22 +148,6 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             )
         }
     }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        mLocationPermissionGranted = false
-        when (requestCode) {
-            PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    mLocationPermissionGranted = true
-                }
-            }
-        }
-    }
-
 }
 
 
