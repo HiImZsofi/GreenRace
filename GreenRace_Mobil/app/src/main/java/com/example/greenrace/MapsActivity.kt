@@ -52,20 +52,19 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 .addOnSuccessListener { location: Location? ->
                     // Got last known location. In some rare situations this can be null.
                     if (location != null) {
-                        latitudeTextView.text = location.latitude.toString()
-                        longitudeTextView.text = location.longitude.toString()
-
                         lat = location.latitude
                         lng = location.longitude
                         mapFragment.getMapAsync(this)
                     } else {
-                        latitudeTextView.text = "Error"
-                        longitudeTextView.text = "Error"
+                       mapFragment.getMapAsync { mMap->
+                           val notSydney = LatLng(47.4980635,19.0472096)
+                           mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(notSydney, 10F))
+                       }
                     }
                 }
         } catch (e: SecurityException) {
             // Handle exception
-            e.message?.let { Log.e("Security_Exception", it) }
+            Log.e("Security Exception", e.message.toString())
         }
     }
 
@@ -97,7 +96,6 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                 PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
             )
-            //ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_NETWORK_STATE),)
         }
     }
 
