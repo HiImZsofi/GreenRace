@@ -1,57 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@mipmap/login_bk"
+    android:orientation="vertical"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    android:gravity="center_vertical">
 
-    <TextView
-        android:id="@+id/loginHeader"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:gravity="center_horizontal"
-        android:padding="5dp"
-        android:text="Bejelentkezés"
-        android:textAlignment="center"
-        android:textColor="@color/green_700"
-        android:textSize="18sp" />
+        android:layout_height="400dp"
+        android:layout_gravity="center_vertical"
+        app:cardBackgroundColor="@color/darkCardColor"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="10dp"
+        app:cardMaxElevation="12dp"
+        app:cardPreventCornerOverlap="true"
+        app:cardUseCompatPadding="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/loginHeader"
+                style="@style/parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/loginViewsMargin"
+                android:gravity="center_horizontal"
+                android:padding="5dp"
+                android:text="Bejelentkezés"
+                android:textAlignment="center"
+                android:textColor="@color/whiteTextColor"
+                android:textSize="18sp" />
+
+            <!--edit text for user name-->
+            <EditText
+                android:id="@+id/loginEmail"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@id/loginHeader"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginEnd="10dp"
+                android:hint="E-mail cím"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:textColorHint="@color/whiteTextColor"
+                android:textColor="@color/whiteTextColor"/>
+
+            <!--edit text for user password-->
+            <EditText
+                android:id="@+id/loginPassword"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@id/loginEmail"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
+                android:hint="Jelszó"
+                android:inputType="textPassword"
+                android:textColorHint="@color/whiteTextColor"
+                android:textColor="@color/whiteTextColor"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/loginConfirmButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/loginPassword"
+                android:layout_gravity="right"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="@dimen/loginViewsMargin"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/button_item"
+                android:text="Megerősítés"
+                android:textAllCaps="false"
+                android:textColor="@color/whiteTextColor"
+                />
+
+
+        </LinearLayout>
 
 
 
-    <!--edit text for user name-->
-    <EditText
-        android:id="@+id/loginEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/loginHeader"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="10dp"
-        android:hint="E-mail cím"
-        android:inputType="textEmailAddress" />
+    </androidx.cardview.widget.CardView>
 
-    <!--edit text for user password-->
-    <EditText
-        android:id="@+id/loginPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/loginEmail"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="10dp"
-        android:hint="Jelszó"
-        android:inputType="textPassword" />
 
-    <!--button to log in an existing user-->
-    <Button
-        android:id="@+id/loginConfirmButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/loginPassword"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="10dp"
-        android:text="Megerősítés"
-        android:textAllCaps="false"
-        android:backgroundTint="@color/green_700"/>
-
-</RelativeLayout>
+</LinearLayout>
