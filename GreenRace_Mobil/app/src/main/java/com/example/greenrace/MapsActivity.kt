@@ -28,7 +28,7 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
 
-    private lateinit var latitudeTextView:TextView
+    private lateinit var latitudeTextView: TextView
     private lateinit var longitudeTextView: TextView
 
     private var lat = 0.0
@@ -37,8 +37,8 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
-        latitudeTextView=findViewById(R.id.latitude)
-        longitudeTextView=findViewById(R.id.longitude)
+        latitudeTextView = findViewById(R.id.latitude)
+        longitudeTextView = findViewById(R.id.longitude)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         val mapFragment = supportFragmentManager
@@ -49,18 +49,18 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         try {
             fusedLocationClient.lastLocation
-                .addOnSuccessListener { location : Location? ->
+                .addOnSuccessListener { location: Location? ->
                     // Got last known location. In some rare situations this can be null.
-                    if(location!=null){
-                        latitudeTextView.text= location.latitude.toString()
-                        longitudeTextView.text= location.longitude.toString()
+                    if (location != null) {
+                        latitudeTextView.text = location.latitude.toString()
+                        longitudeTextView.text = location.longitude.toString()
 
-                        lat=location.latitude
+                        lat = location.latitude
                         lng = location.longitude
                         mapFragment.getMapAsync(this)
-                    }else{
-                        latitudeTextView.text="Error"
-                        longitudeTextView.text="Error"
+                    } else {
+                        latitudeTextView.text = "Error"
+                        longitudeTextView.text = "Error"
                     }
                 }
         } catch (e: SecurityException) {
@@ -74,28 +74,37 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // Add a marker in Sydney and move the camera
         val sydney = LatLng(lat, lng)
-        mMap.addMarker(MarkerOptions()
-            .position(sydney)
-            .title("Te most itt vagy")
-            .icon(BitmapDescriptorFactory.defaultMarker(140F)))
+        mMap.addMarker(
+            MarkerOptions()
+                .position(sydney)
+                .title("Te most itt vagy")
+                .icon(BitmapDescriptorFactory.defaultMarker(140F))
+        )?.showInfoWindow()
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 17F))
     }
 
     private fun getLocationPermission() {
-        if (ContextCompat.checkSelfPermission(this.applicationContext,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-            == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(
+                this.applicationContext,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
+            == PackageManager.PERMISSION_GRANTED
+        ) {
             mLocationPermissionGranted = true
         } else {
-            ActivityCompat.requestPermissions(this,
+            ActivityCompat.requestPermissions(
+                this,
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION)
+                PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
+            )
             //ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_NETWORK_STATE),)
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>,
-                                            grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         mLocationPermissionGranted = false
         when (requestCode) {
@@ -106,9 +115,6 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
     }
-
-
-
 
 
 }
