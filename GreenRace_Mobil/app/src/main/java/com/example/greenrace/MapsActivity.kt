@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
+import android.os.Handler
 import android.provider.Settings
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -30,7 +31,7 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var mMap: GoogleMap
-    private lateinit var mapFragment : SupportMapFragment
+    private lateinit var mapFragment: SupportMapFragment
 
     private var lat = 0.0
     private var lng = 0.0
@@ -46,15 +47,10 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         getLocationPermission()
 
         initMap(mapFragment)
-    }
 
-    private fun initMap(mapFragment: SupportMapFragment) {
-        val locationManager:LocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-//        mapFragment.getMapAsync { mMap ->
-//            val notSydney = LatLng(47.4980635, 19.0472096)
-//            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(notSydney, 10F))
-//        }
-        if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+        val locationManager: LocationManager =
+            getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             val builder = AlertDialog.Builder(this)
             builder.setTitle("Kapcsold be a GPS-t")
                 .setMessage("Az alkalmazás helyes működéséhez a helymeghatározás bekapcsolása szükséges")
@@ -66,30 +62,35 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
             val alert = builder.create()
             alert.show()
-        }else{
-            try {
-                fusedLocationClient.lastLocation
-                    .addOnSuccessListener { location: Location? ->
-                        // Got last known location. In some rare situations this can be null.
-                        if (location != null) {
-                            try {
-                                lat = location.latitude
-                                lng = location.longitude
-                                mapFragment.getMapAsync(this)
-                            } catch (e: SecurityException) {
-                                Log.e("Security Exception", e.message.toString())
-                            }
-                        } else {
-                            mapFragment.getMapAsync { mMap ->
-                                val notSydney = LatLng(47.4980635, 19.0472096)
-                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(notSydney, 10F))
-                            }
+        } else {
+            initMap(mapFragment)
+        }
+    }
+
+    private fun initMap(mapFragment: SupportMapFragment) {
+        try {
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location: Location? ->
+                    // Got last known location. In some rare situations this can be null.
+                    if (location != null) {
+                        try {
+                            lat = location.latitude
+                            lng = location.longitude
+                            mapFragment.getMapAsync(this)
+                        } catch (e: SecurityException) {
+                            Log.e("Security Exception", e.message.toString())
                         }
+                    } else {
+                        mapFragment.getMapAsync { mMap ->
+                            val notSydney = LatLng(47.4980635, 19.0472096)
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(notSydney, 10F))
+                        }
+
                     }
-            } catch (e: SecurityException) {
-                // Handle exception
-                Log.e("Security Exception", e.message.toString())
-            }
+                }
+        } catch (e: SecurityException) {
+            // Handle exception
+            Log.e("Security Exception", e.message.toString())
         }
     }
 
@@ -98,10 +99,9 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         if (requestCode == 1) {
             val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
             if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                initMap(mapFragment)
+                Handler().postDelayed({initMap(mapFragment)},2000)
             }
-        }
-    }
+        }}
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
@@ -149,7 +149,7 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-
 }
+
 
       
