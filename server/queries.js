@@ -129,7 +129,7 @@ export function getUserDataFromDB(user_ID) {
 export function getUserStatisticsFromDB(user_ID, date) {
 	return new Promise((resolve, rejects) => {
 		connection.query(
-			"SELECT sum(emission), date FROM `routes` WHERE user_id = ? && date > ? GROUP BY date",
+			"SELECT sum(emission) as SUM, date FROM `routes` WHERE user_id = ? && date > ? GROUP BY date",
 			[user_ID, date],
 			function (err, result) {
 				if (err || result.length == 0) return rejects(err);

@@ -74,6 +74,47 @@ export function authorizeUserGetRequest(req, res, type) {
 	);
 }
 
+//User Chart Data
+export function getChartData(req, res, type) {
+	const header = req.headers["authorization"];
+
+	//make sure if token header is not undefined
+	if (header !== undefined) {
+		const bearer = header.split(" "); //separate request token from bearer
+		const token = bearer[1];
+		req.token = token;
+	} else {
+		//if undefined return forbidden status code
+		res.statusCode = 403;
+	}
+	//TODO use .decode to get the payload from the token
+	//TODO so the id won't have to be sent to the frontend separately
+	jwt.verify(
+		req.token,
+		"secret",
+		{ algorithm: "HS256" },
+		async (err, authorizedData) => {
+			if (err) {
+				res.sendStatus(403);
+				console.log("403 Forbidden request");
+			} else {
+    			const today = new Date();
+    			let dayOfWeek = today.getDay()-1;
+    			if (dayOfWeek < 0) {
+    			  dayOfWeek = 6;
+    			}
+    			const MonDayDate = new Date(today.getTime() - dayOfWeek * 24 * 60 * 60 * 1000);
+				authorizedData = await getUserStatisticsFromDB(
+					jwt.decode(req.token).user_id, MonDayDate,
+				);
+				res.statusCode = 200;
+				res.send(authorizedData);
+				console.log("200 Successful request");
+			}
+		}
+	);
+}
+
 //Used when the save button is clicked on the settings page
 export function saveSettings(req, res) {
 	const { newUsername, newPassword, currentPassword } = req.body;

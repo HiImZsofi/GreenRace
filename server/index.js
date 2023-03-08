@@ -10,6 +10,7 @@ import {
 	authorizeUserGetRequest,
 	saveSettings,
 	saveProfpic,
+	getChartData,
 } from "./callbackHandlers.js";
 import express from "express";
 import bodyParser from "body-parser";
@@ -148,6 +149,10 @@ app.get("/friendPage", (req, res) => {
 //Authorize user
 app.get("/rankPage", (req, res) => {
 	authorizeUserGetRequest(req, res, "rank");
+});
+
+app.get("/chartData", (req, res) => {
+	getChartData(req, res);
 });
 
 

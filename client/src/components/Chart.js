@@ -24,7 +24,7 @@ const GreenChart = (chartData) => {
     labels: ['Hétfő', 'Kedd', 'Szerda', 'Csütörök', 'Péntek', 'Szombat', 'Vasárnap'],
     datasets: [
       {
-        label: 'Pointjaid hónaponként',
+        label: 'Pointjaid az elmúlt héten',
         backgroundColor: backgColor,
         borderColor: borderColor,
         data: points,
