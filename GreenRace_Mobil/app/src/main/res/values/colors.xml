@@ -7,5 +7,10 @@
     <color name="green_700">#349B35</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="teal_700">#00639A</color>
+    <color name="teal_700">#8BC34A</color>
+    <color name="whiteTextColor">#fff</color>
+    <color name="primaryTextColor">#1F6700</color>
+    <color name="loginBkColor">#f0f0f0</color>
+    <color name="whiteCardColor">#B1B1B1</color>
+    <color name="darkCardColor">#333333</color>
 </resources>
