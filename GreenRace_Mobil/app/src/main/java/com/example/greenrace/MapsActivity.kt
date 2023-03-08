@@ -15,6 +15,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 
@@ -75,7 +76,8 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val sydney = LatLng(lat, lng)
         mMap.addMarker(MarkerOptions()
             .position(sydney)
-            .title("Te most itt vagy"))
+            .title("Te most itt vagy")
+            .icon(BitmapDescriptorFactory.defaultMarker(140F)))
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 17F))
     }
 
