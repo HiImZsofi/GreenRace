@@ -5,7 +5,6 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -22,14 +21,10 @@ import com.google.android.gms.maps.model.MarkerOptions
 internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1
-
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var mLocationPermissionGranted = false
 
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var mMap: GoogleMap
-
-    private lateinit var latitudeTextView: TextView
-    private lateinit var longitudeTextView: TextView
 
     private var lat = 0.0
     private var lng = 0.0
@@ -37,15 +32,12 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
-        latitudeTextView = findViewById(R.id.latitude)
-        longitudeTextView = findViewById(R.id.longitude)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
 
         getLocationPermission()
-
 
         try {
             fusedLocationClient.lastLocation

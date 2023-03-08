@@ -4,22 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MapsActivity">
-
-    <TextView
-        android:id="@+id/latitude"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="latitude"
-        android:layout_marginBottom="10dp"/>
-
-    <TextView
-        android:id="@+id/longitude"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/latitude"
-        android:text="longitude" />
     <fragment
-        android:layout_below="@id/longitude"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/map"
