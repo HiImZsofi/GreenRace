@@ -103,7 +103,7 @@ const NavMenuLayout = (props: {
 							<Offcanvas.Header closeButton className={dark == "false" ? "offcanvas-dark" : "offcanvas-light"}>
 								<Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`} />
 							</Offcanvas.Header>
-							<Offcanvas.Body className={dark == "false" ? "offcanvas-dark" : ""}>
+							<Offcanvas.Body className={dark == "false" ? "offcanvas-dark" : "offcanvas-light"}>
 								<Container className="text-center">
 									<button
 											className="mb-2"

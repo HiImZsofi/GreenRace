@@ -12,6 +12,7 @@ const GreenChart = (chartData) => {
   let borderColor = "";
   let points = Object.values(chartData)[0]
 
+  //Colors
   if (dark == "false") {
     backgColor = "#6b65db"
     borderColor = "#8983f7"
@@ -20,6 +21,7 @@ const GreenChart = (chartData) => {
     borderColor = 'darkgreen' //Beast
   }
   
+  //Chart structure
   const [data] = useState({
     labels: ['Hétfő', 'Kedd', 'Szerda', 'Csütörök', 'Péntek', 'Szombat', 'Vasárnap'],
     datasets: [

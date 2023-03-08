@@ -5,7 +5,6 @@ import "bootstrap/dist/css/bootstrap.css";
 import NavMenu from "../components/NavBarLogic";
 import { useNavigate } from "react-router-dom";
 import GreenChart from "../components/Chart";
-import { stringify } from "querystring";
 
 
 //UserPage main code
@@ -45,6 +44,7 @@ const UserPage = () => {
     );
   };
 
+  //Converts the terrible typescript date format to something usable
   function formatDate(date: Date): string {
     const year = date.getFullYear().toString();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -52,6 +52,7 @@ const UserPage = () => {
     return `${year}/${month}/${day}`;
   }
 
+  //Getting data form Server for the User Statistic Chart
   const chartDataHandler = async () => {
     const token = localStorage.getItem("key");
     const requestOptions = {
@@ -69,29 +70,22 @@ const UserPage = () => {
           ?.includes("application/json");
         const data = isJson && (await response.json());
         if(data !== undefined) {
+          //Get the date of the last Monday
           const today = new Date();
           let dayOfWeek = today.getDay()-1;
-          if (dayOfWeek < 0) {
-            dayOfWeek = 6;
-          }
-          let MonDayDate = new Date(today.getTime() - dayOfWeek * 24 * 60 * 60 * 1000);
+          if (dayOfWeek < 0) {dayOfWeek = 6;}
+          let mondayDate = new Date(today.getTime() - dayOfWeek * 24 * 60 * 60 * 1000);
+          //Fill the ChartData with the data from the database
           let pointlist = chartData;
-          let notEmpty:boolean = true;
           for(let i = 0; i < 7; i++) {
-            let DayDate = new Date(MonDayDate .getTime() + i * 24 * 60 * 60 * 1000);
-            let DayDateString = formatDate(DayDate);
-            notEmpty = true;
-            for (let j = 0; j < data.length; j++) {
-              let DataDate = new Date(data[j].date);
-              let DataDateString = formatDate(DataDate);
-              if(DayDateString == DataDateString) {
-                pointlist[i] = data[j].SUM;
-                notEmpty = false;
+            let dayDate = formatDate(new Date(mondayDate .getTime() + i * 24 * 60 * 60 * 1000));
+            pointlist[i] = 0;
+            data.forEach((item: { date: Date; SUM: number; }) => {
+              let dataDate = formatDate(new Date(item.date));
+              if(dayDate == dataDate) {
+                pointlist[i] = item.SUM;
               }
-            }
-            if(notEmpty){
-              pointlist[i] = 0;
-            }
+            });
           }
           setChartData(pointlist);
         }
