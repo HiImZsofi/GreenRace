@@ -1,9 +1,11 @@
 package com.example.greenrace
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.fasterxml.jackson.databind.exc.MismatchedInputException
 import retrofit2.Call
@@ -16,6 +18,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var registrationPassword : EditText
     private lateinit var registrationUsername : EditText
     private lateinit var registrationConfirmButton : Button
+    private lateinit var regToLoginText: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +62,12 @@ class RegisterActivity : AppCompatActivity() {
             }
 
         }
+
+        regToLoginText.setOnClickListener(){
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 
     fun init(){
@@ -66,5 +75,6 @@ class RegisterActivity : AppCompatActivity() {
         registrationPassword = findViewById(R.id.registrationPassword)
         registrationConfirmButton = findViewById(R.id.registrationConfirmButton)
         registrationUsername = findViewById(R.id.registrationUsername)
+        regToLoginText = findViewById(R.id.regToLoginText)
     }
 }

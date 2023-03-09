@@ -26,10 +26,12 @@ class MainActivity : AppCompatActivity() {
     fun navigateToRegistry(){
         val intent = Intent(this, RegisterActivity::class.java)
         startActivity(intent)
+        finish()
     }
     fun navigateToLogin(){
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
+        finish()
     }
 
 
