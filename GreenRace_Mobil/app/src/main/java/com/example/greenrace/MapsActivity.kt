@@ -7,7 +7,6 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
-import android.os.Handler
 import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
@@ -24,6 +23,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.coroutines.*
 
 internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -114,8 +114,13 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                 //Toast that let's the user know when the map is updating
                 Toast.makeText(this, "Térkép frissítése folyamatban", Toast.LENGTH_LONG).show()
-                Handler().postDelayed({ initMap(mapFragment) }, 2000)
-            }else{
+                GlobalScope.launch {
+                    delay(2000L)
+                    withContext(Dispatchers.Main) {
+                        initMap(mapFragment)
+                    }
+                }
+            } else {
                 //Call the locationStateCheck function again if the GPS is still not turned on
                 locationStateCheck()
             }
