@@ -21,6 +21,7 @@ const UserSettings = () => {
   const [darkTheme, setDarkTheme] = useState(false);
   const [username, setUsername] = useState("");
   const [picFilePath, setPicFilePath] = useState("");
+  const [windowSize, setWindowSize] = useState(window.innerWidth);
   let dark = localStorage.getItem('darkmode');
   const navigate = useNavigate();
 
@@ -85,16 +86,19 @@ const UserSettings = () => {
       setNewPasswordErrMsg("");
       setCurrentPasswordErr(false);
       setCurrentPasswordErrMsg("");
-      const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: localStorage.getItem("email"),
-          newUsername: newUsername,
-          newPassword: newPassword,
-          currentPassword: currentPassword,
-        }),
-      };
+      const token = localStorage.getItem("key");
+			const requestOptions = {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: "Bearer " + token,
+				},
+				body: JSON.stringify({
+					newUsername: newUsername,
+					newPassword: newPassword,
+					currentPassword: currentPassword,
+				}),
+			};
       fetch("http://localhost:3001/settings", requestOptions)
         .then(async (response) => {
           const isJson = response.headers
@@ -142,19 +146,26 @@ const UserSettings = () => {
       }
     }
   };
+
+  function handleResize() {
+    setWindowSize(window.innerWidth);
+  }
+
   useEffect(() => {
     authenticationHandler();
+    document.body.className = "body-zoom";
+    window.addEventListener('resize', handleResize)
   });
   
   //Page Visual Part
   return (
     <>
-      <NavMenu username={username} profilePicturePath={picFilePath} />
-      <FormWrapper vhnum="89vh" background={dark == "false" ? "loginbackground-dark": "loginbackground-light"}>
+      <NavMenu username={username} profilePicturePath={picFilePath} width={windowSize}/>
+      <FormWrapper vhnum="55.6vh" background={dark == "false" ? "loginbackground-dark": "loginbackground-light"}>
         <InputField
           type={{
             inputType: "Username",
-            placeholder: "New username",
+            placeholder: "Új felhasználónév",
             value: newUsername,
             onChangeHandler: newUsernameOnChangeHandler,
           }}
@@ -164,7 +175,7 @@ const UserSettings = () => {
         <InputField
           type={{
             inputType: "Password",
-            placeholder: "New password",
+            placeholder: "Új jelszó",
             value: newPassword,
             onChangeHandler: newPasswordOnChangeHandler,
           }}
@@ -174,24 +185,24 @@ const UserSettings = () => {
         <InputField
           type={{
             inputType: "Password",
-            placeholder: "Current password",
+            placeholder: "Jelenlegi jelszó:",
             value: currentPassword,
             onChangeHandler: currentPasswordOnChangeHandler,
           }}
           error={currentPasswordErr}
           errorMessage={currentPasswordErrMsg}
         /> 
-        <CheckboxDark darkTheme={darkTheme} onSwitchHandler={onSwitchClick}/>
+        <CheckboxDark onSwitchHandler={onSwitchClick}/>
         <Button
           variant="success"
           className="px-4 me-4"
           onClick={saveHandler}
-        >Save</Button>
+        >Mentés</Button>
         <Button
           variant="outline-success"
           className="px-3"
           onClick={cancelHandler}
-        >Cancel</Button>
+        >Vissza</Button>
       </FormWrapper>
     </>
   );

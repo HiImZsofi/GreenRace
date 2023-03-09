@@ -5,6 +5,7 @@ import { NavMenuProps, NavMenuState } from "../Interfaces";
 const NavMenu = (props: {
   username: string;
 	profilePicturePath: string;
+  width: number;
   }) => {
   //This can be set to true because it should only be on pages when you are logged in
   const [isLoggedIn, setIsLoggedIn] = useState(true);
@@ -40,6 +41,7 @@ const NavMenu = (props: {
           username={props.username}
           picfilepath={props.profilePicturePath}
           logoutHandler={logoutHandler}
+          width={props.width}
         />
       );
     }
