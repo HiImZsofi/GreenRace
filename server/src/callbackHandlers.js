@@ -4,9 +4,6 @@ import {
 	changeUsername,
 	getUserDataFromDB,
 	getRankListFromDB,
-	getPassWithIDQuery,
-	getUserStatisticsFromDB,
-	changeProfpic
 } from "./queries.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -74,119 +71,13 @@ export function authorizeUserGetRequest(req, res, type) {
 	);
 }
 
-//User Chart Data
-export function getChartData(req, res, type) {
-	const header = req.headers["authorization"];
-
-	//make sure if token header is not undefined
-	if (header !== undefined) {
-		const bearer = header.split(" "); //separate request token from bearer
-		const token = bearer[1];
-		req.token = token;
-	} else {
-		//if undefined return forbidden status code
-		res.statusCode = 403;
-	}
-	//TODO use .decode to get the payload from the token
-	//TODO so the id won't have to be sent to the frontend separately
-	jwt.verify(
-		req.token,
-		"secret",
-		{ algorithm: "HS256" },
-		async (err, authorizedData) => {
-			if (err) {
-				res.sendStatus(403);
-				console.log("403 Forbidden request");
-			} else {
-    			const today = new Date();
-    			let dayOfWeek = today.getDay()-1;
-    			if (dayOfWeek < 0) {
-    			  dayOfWeek = 6;
-    			}
-    			const MonDayDate = new Date(today.getTime() - dayOfWeek * 24 * 60 * 60 * 1000);
-				authorizedData = await getUserStatisticsFromDB(
-					jwt.decode(req.token).user_id, MonDayDate,
-				);
-				res.statusCode = 200;
-				res.send(authorizedData);
-				console.log("200 Successful request");
-			}
-		}
-	);
-}
-
-//Used when the save button is clicked on the settings page
-export function saveSettings(req, res) {
-	const { newUsername, newPassword, currentPassword } = req.body;
-	const header = req.headers["authorization"];
-	//make sure if token header is not undefined
-	if (header !== undefined) {
-		const bearer = header.split(" "); //separate request token from bearer
-		const token = bearer[1];
-		req.token = token;
-	} else {
-		//if undefined return forbidden status code
-		res.statusCode = 403;
-	}
-
-	jwt.verify(req.token, "secret", { algorithm: "HS256" }, async (err) => {
-		if (err) {
-			res.sendStatus(403);
-			console.log("403 Forbidden request");
-		} else {
-			const passwordInDB = await getPassWithIDQuery(
-				jwt.decode(req.token).user_id
-			).catch((error) => {
-				res.statusCode = 404;
-				console.log(404);
-				res.send(JSON.stringify({ error: "Invalid email", response: error }));
-			});
-			//Only runs if both values are changed
-			if (newUsername != "" && newPassword !== "") {
-				bcrypt
-					.compare(currentPassword, passwordInDB)
-					.then(
-						usernameAndPasswordChangeHandler(
-							jwt.decode(req.token).user_id,
-							newPassword,
-							newUsername,
-							res
-						)
-					);
-			} //Change the password only
-			else if (newPassword !== "") {
-				bcrypt
-					.compare(currentPassword, passwordInDB)
-					.then(
-						onlyPasswordChangeHandler(
-							jwt.decode(req.token).user_id,
-							newPassword,
-							res
-						)
-					);
-			} //Change username
-			else if (newUsername !== "") {
-				bcrypt
-					.compare(currentPassword, passwordInDB)
-					.then(
-						onlyUsernameChangeHandler(
-							jwt.decode(req.token).user_id,
-							newUsername,
-							res
-						)
-					);
-			}
-		}
-	});
-}
-
 //Used when only the new username field is filled in
-export function onlyUsernameChangeHandler(id, newUsername, res) {
+export function onlyUsernameChangeHandler(email, newUsername, res) {
 	return async (compareRes, compareErr) => {
 		if (compareErr) throw compareErr;
 		if (compareRes) {
 			try {
-				await changeUsername(id, newUsername);
+				await changeUsername(email, newUsername);
 				res.statusCode = 200;
 				res.send({ result: "Username updated" });
 			} catch (error) {
@@ -206,56 +97,14 @@ export function onlyUsernameChangeHandler(id, newUsername, res) {
 	};
 }
 
-
-export function saveProfpic(req, res) {
-	const { picfilepath } = req.body;
-	const header = req.headers["authorization"];
-	//make sure if token header is not undefined
-	if (header !== undefined) {
-		const bearer = header.split(" "); //separate request token from bearer
-		const token = bearer[1];
-		req.token = token;
-	} else {
-		//if undefined return forbidden status code
-		res.statusCode = 403;
-	}
-	jwt.verify(req.token, "secret", { algorithm: "HS256" }, async (err) => {
-		if (err) {
-			res.sendStatus(403);
-			console.log("403 Forbidden request");
-		} else {
-			const passwordInDB = await getPassWithIDQuery(
-				jwt.decode(req.token).user_id
-			).catch((error) => {
-				res.statusCode = 404;
-				console.log(404);
-				res.send(JSON.stringify({ error: "Invalid email", response: error }));
-			});
-			if (picfilepath !== "") {
-				try {
-					await changeProfpic(jwt.decode(req.token).user_id, picfilepath);
-					res.statusCode = 200;
-					res.send({ result: "Profile picture updated" });
-				} catch (error) {
-					res.statusCode = 500;
-					res.send({
-						error: "Profile picture",
-						result: "Error updating the Profile picture",
-					});
-				}
-			}
-		}
-	});
-}
-
 //Used only when the new password field is filled
-export function onlyPasswordChangeHandler(id, newPassword, res) {
+export function onlyPasswordChangeHandler(newPassword, email, res) {
 	return async (compareRes, compareErr) => {
 		if (compareErr) throw compareErr;
 		if (compareRes) {
 			let newEncryptedPassword = bcrypt.hashSync(newPassword, 10);
 			try {
-				await changePassword(id, newEncryptedPassword);
+				await changePassword(email, newEncryptedPassword);
 				res.statusCode = 200;
 				res.send({ result: "Password updated" });
 			} catch (error) {
@@ -277,8 +126,8 @@ export function onlyPasswordChangeHandler(id, newPassword, res) {
 
 //Used when both the new username and password fields are filled
 export function usernameAndPasswordChangeHandler(
-	id,
 	newPassword,
+	email,
 	newUsername,
 	res
 ) {
@@ -287,8 +136,8 @@ export function usernameAndPasswordChangeHandler(
 		if (compareRes) {
 			let newEncryptedPassword = bcrypt.hashSync(newPassword, 10);
 			try {
-				await changeUsername(id, newUsername);
-				await changePassword(id, newEncryptedPassword);
+				await changeUsername(email, newUsername);
+				await changePassword(email, newEncryptedPassword);
 				res.statusCode = 200;
 				res.send({ result: "Username and password updated" });
 			} catch (error) {

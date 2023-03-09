@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@mipmap/login_bk"
+    android:orientation="vertical"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    android:gravity="center_vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_gravity="center_vertical"
+        app:cardBackgroundColor="@color/darkCardColor"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="10dp"
+        app:cardMaxElevation="12dp"
+        app:cardPreventCornerOverlap="true"
+        app:cardUseCompatPadding="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/loginHeader"
+                style="@style/parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/loginViewsMargin"
+                android:gravity="center_horizontal"
+                android:padding="5dp"
+                android:text="@string/login"
+                android:textAlignment="center"
+                android:textColor="@color/whiteTextColor"
+                android:textSize="30sp" />
+
+            <!--edit text for user name-->
+            <EditText
+                android:id="@+id/loginEmail"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:textColorHint="@color/whiteTextColor"
+                android:textColor="@color/whiteTextColor"/>
+
+            <!--edit text for user password-->
+            <EditText
+                android:id="@+id/loginPassword"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:textColorHint="@color/whiteTextColor"
+                android:textColor="@color/whiteTextColor"
+                android:layout_marginBottom="20dp"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/loginToReqText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/loginDoesNotExist"
+                    android:layout_gravity="start"
+                    android:textColor="@color/teal_700"
+                    android:textSize="15sp"
+                    android:layout_marginStart="13dp"
+                    android:clickable="true"
+                    android:focusable="true" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/loginConfirmButton"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/loginViewsMargin"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/button_item"
+                    android:text="@string/confirm"
+                    android:textAllCaps="false"
+                    android:textColor="@color/whiteTextColor"
+                    android:layout_gravity="end"
+                    android:layout_marginStart="30dp"
+                    />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+
+    </androidx.cardview.widget.CardView>
+
+
+</LinearLayout>

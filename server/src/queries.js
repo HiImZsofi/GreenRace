@@ -35,7 +35,7 @@ export function checkEmailInDB(email) {
 export function insertNewUser(username, hashedPassword, email) {
 	return new Promise((resolve, reject) => {
 		connection.query(
-			"INSERT INTO users (username, password, email, points, picfilepath) VALUES (?, ?, ?,0, null)",
+			"INSERT INTO users (username, password, email, points, picfilepath) VALUES (?, ?, ?,0, '')",
 			[username, hashedPassword, email],
 			function (err, result) {
 				if (err) {
@@ -61,24 +61,11 @@ export function getPassQuery(email) {
 	});
 }
 
-export function getPassWithIDQuery(id) {
+export function changePassword(email, password) {
 	return new Promise((resolve, rejects) => {
 		connection.query(
-			"SELECT password FROM users WHERE user_id = ?",
-			[id],
-			function (err, result) {
-				if (err || result.length == 0) return rejects(err);
-				return resolve(result[0].password);
-			}
-		);
-	});
-}
-
-export function changePassword(id, password) {
-	return new Promise((resolve, rejects) => {
-		connection.query(
-			"UPDATE users SET password = ? WHERE user_ID = ?",
-			[password, id],
+			"UPDATE users SET password = ? WHERE email = ?",
+			[password, email],
 			function (err, result) {
 				if (err || result.length == 0) return rejects(err);
 				return resolve(result);
@@ -87,24 +74,11 @@ export function changePassword(id, password) {
 	});
 }
 
-export function changeUsername(id, username) {
+export function changeUsername(email, username) {
 	return new Promise((resolve, rejects) => {
 		connection.query(
-			"UPDATE users SET username = ? WHERE user_ID = ?",
-			[username, id],
-			function (err, result) {
-				if (err || result.length == 0) return rejects(err);
-				return resolve(result);
-			}
-		);
-	});
-}
-
-export function changeProfpic(id, picfilepath) {
-	return new Promise((resolve, rejects) => {
-		connection.query(
-			"UPDATE users SET picfilepath = ? WHERE user_ID = ?",
-			[picfilepath, id],
+			"UPDATE users SET username = ? WHERE email = ?",
+			[username, email],
 			function (err, result) {
 				if (err || result.length == 0) return rejects(err);
 				return resolve(result);
@@ -126,23 +100,10 @@ export function getUserDataFromDB(user_ID) {
 	});
 }
 
-export function getUserStatisticsFromDB(user_ID, date) {
-	return new Promise((resolve, rejects) => {
-		connection.query(
-			"SELECT sum(emission) as SUM, date FROM `routes` WHERE user_id = ? && date > ? GROUP BY date",
-			[user_ID, date],
-			function (err, result) {
-				if (err || result.length == 0) return rejects(err);
-				return resolve(result);
-			}
-		);
-	});
-}
-
 export function getRankListFromDB() {
 	return new Promise((resolve, rejects) => {
 		connection.query(
-			"SELECT username, points, picfilepath FROM users ORDER BY points DESC",
+			"SELECT username, points FROM users ORDER BY points DESC LIMIT 10",
 			function (err, result) {
 				if (err || result.length == 0) return rejects(err);
 				return resolve(result);
