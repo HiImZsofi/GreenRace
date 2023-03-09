@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 const FriendPage = () => {
   const [username, setUsername] = useState("");
   const [picFilePath, setPicFilePath] = useState("");
+  const [windowSize, setWindowSize] = useState(window.innerWidth);
   let dark = localStorage.getItem('darkmode');
   const navigate = useNavigate();
 
@@ -39,6 +40,11 @@ const FriendPage = () => {
       }
     );
   };
+
+  function handleResize() {
+    setWindowSize(window.innerWidth);
+  }
+
   useEffect(() => {
     authenticationHandler();
     if (dark == "false"){
@@ -46,13 +52,14 @@ const FriendPage = () => {
     } else {
       document.body.className = "body-light body-zoom";
     }
+    window.addEventListener('resize', handleResize)
   });
 
   //Page Visual Part
   //TODO: Only Placeholder
   return (
     <div key={"friendPage"}>
-      <NavMenu username={username} profilePicturePath={picFilePath} />
+      <NavMenu username={username} profilePicturePath={picFilePath} width={windowSize}/>
       <div className="text-center mt-3">
         <div>
           <h1>Barátok:</h1>

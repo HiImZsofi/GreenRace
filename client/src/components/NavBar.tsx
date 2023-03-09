@@ -35,6 +35,7 @@ const NavMenuLayout = (props: {
 	username: string;
 	picfilepath: string;
 	logoutHandler: () => void;
+	width: number;
 }) => {
 	let dark = localStorage.getItem('darkmode');
 	const navigate = useNavigate();
@@ -48,7 +49,7 @@ const NavMenuLayout = (props: {
 		  id='dropdown-button-drop-down-centered'
 		  drop={'down-centered'}
 		  variant={dark == "false" ? "dark" : "success" }
-		  title='Menu'
+		  title='Menü'
 		>
 		{NavMenuPoints.map((mp, i) => (
 		<div key={i}>
@@ -74,9 +75,8 @@ const NavMenuLayout = (props: {
 					style={{ minHeight: "11vh" }}
 				>
 					<Container fluid>
-					
-						{window.innerWidth > 400 && Brand}
-						{window.innerWidth < 400 ? Collapse : UnCollapse }			
+						{props.width > 500 && Brand}
+						{props.width <= 500 ? Collapse : UnCollapse }			
 						<Navbar.Toggle
 							id={dark == "false" ? "profpictoggle-dark": "profpictoggle-light"}
 							aria-controls={`offcanvasNavbar-expand-${expand}`}

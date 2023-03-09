@@ -1,5 +1,5 @@
 //Imports
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Pages.css";
 import "bootstrap/dist/css/bootstrap.css";
 import NavMenu from "../components/NavBarLogic";
@@ -13,6 +13,7 @@ const UserPage = () => {
   const [picfilepath, setPicfilepath] = useState("");
   const [points, setPoints] = useState(0);
   const [chartData, setChartData] = useState<number[]>([0]);
+  const [windowSize, setWindowSize] = useState(window.innerWidth);
   let dark = localStorage.getItem('darkmode');
   const navigate = useNavigate();
 
@@ -92,7 +93,11 @@ const UserPage = () => {
       }
     );
   };
-  
+
+  function handleResize() {
+    setWindowSize(window.innerWidth);
+  }
+
   useEffect(() => {
 		authenticationHandler();
     chartDataHandler();
@@ -101,12 +106,13 @@ const UserPage = () => {
     } else {
       document.body.className = "body-light body-zoom";
     }
+     window.addEventListener('resize', handleResize)
 	},[]);
-
+  
   //Page Visual Part
   return (
     <div key={"userPage"}>
-      <NavMenu username={username} profilePicturePath={picfilepath} />
+      <NavMenu username={username} profilePicturePath={picfilepath} width={windowSize}/>
       <div className="text-center overflow-auto" style={{maxHeight:"55.7vh"}}>
         <div>
           <h1>

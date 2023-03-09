@@ -14,6 +14,7 @@ const ProfilePicSetter = () => {
   const [username, setUsername] = useState("");
   const [picFilePath, setPicFilePath] = useState("");
   const [index, setIndex] = useState(0);
+  const [windowSize, setWindowSize] = useState(window.innerWidth);
   let dark = localStorage.getItem('darkmode');
   const navigate = useNavigate();
 
@@ -108,15 +109,20 @@ const ProfilePicSetter = () => {
     }
   };
 
+  function handleResize() {
+    setWindowSize(window.innerWidth);
+  }
+
   useEffect(() => {
     authenticationHandler();
     document.body.className = "body-zoom";
+    window.addEventListener('resize', handleResize)
   });
 
   //Page Visual Part
   return (
     <>
-      <NavMenu username={username} profilePicturePath={picFilePath} />
+      <NavMenu username={username} profilePicturePath={picFilePath} width={windowSize}/>
       <FormWrapper vhnum="55.6vh" background={dark == "false" ? "loginbackground-dark": "loginbackground-light"}>
         <div className="mb-4">
         <Button 

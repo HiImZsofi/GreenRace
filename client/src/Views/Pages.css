@@ -11,6 +11,10 @@
   zoom: 150%
 }
 
+.zoom{
+  zoom:80%
+}
+
 /*Navbar*/
 .color-nav-light {
   background-color: darkgreen;

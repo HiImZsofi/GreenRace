@@ -142,7 +142,7 @@ export function getUserStatisticsFromDB(user_ID, date) {
 export function getRankListFromDB() {
 	return new Promise((resolve, rejects) => {
 		connection.query(
-			"SELECT username, points FROM users ORDER BY points DESC LIMIT 10",
+			"SELECT username, points, picfilepath FROM users ORDER BY points DESC",
 			function (err, result) {
 				if (err || result.length == 0) return rejects(err);
 				return resolve(result);
