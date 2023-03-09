@@ -1,15 +1,19 @@
 //Imports
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Pages.css";
 import "bootstrap/dist/css/bootstrap.css";
 import NavMenu from "../components/NavBarLogic";
 import { useNavigate } from "react-router-dom";
+import GreenChart from "../components/Chart";
+
 
 //UserPage main code
 const UserPage = () => {
   const [username, setUsername] = useState("");
   const [picfilepath, setPicfilepath] = useState("");
   const [points, setPoints] = useState(0);
+  const [chartData, setChartData] = useState<number[]>([0]);
+  const [windowSize, setWindowSize] = useState(window.innerWidth);
   let dark = localStorage.getItem('darkmode');
   const navigate = useNavigate();
 
@@ -41,20 +45,75 @@ const UserPage = () => {
     );
   };
 
+  //Converts the terrible typescript date format to something usable
+  function formatDate(date: Date): string {
+    const year = date.getFullYear().toString();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}/${month}/${day}`;
+  }
+
+  //Getting data form Server for the User Statistic Chart
+  const chartDataHandler = async () => {
+    const token = localStorage.getItem("key");
+    const requestOptions = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token, 
+      },
+      withCredentials: true,
+    };
+    fetch("http://localhost:3001/chartData", requestOptions).then(
+      async (response) => {
+        const isJson = response.headers
+          .get("content-type")
+          ?.includes("application/json");
+        const data = isJson && (await response.json());
+        if(data !== undefined) {
+          //Get the date of the last Monday
+          const today = new Date();
+          let dayOfWeek = today.getDay()-1;
+          if (dayOfWeek < 0) {dayOfWeek = 6;}
+          let mondayDate = new Date(today.getTime() - dayOfWeek * 24 * 60 * 60 * 1000);
+          //Fill the ChartData with the data from the database
+          let pointlist = chartData;
+          for(let i = 0; i < 7; i++) {
+            let dayDate = formatDate(new Date(mondayDate .getTime() + i * 24 * 60 * 60 * 1000));
+            pointlist[i] = 0;
+            data.forEach((item: { date: Date; SUM: number; }) => {
+              let dataDate = formatDate(new Date(item.date));
+              if(dayDate == dataDate) {
+                pointlist[i] = item.SUM;
+              }
+            });
+          }
+          setChartData(pointlist);
+        }
+      }
+    );
+  };
+
+  function handleResize() {
+    setWindowSize(window.innerWidth);
+  }
+
   useEffect(() => {
 		authenticationHandler();
+    chartDataHandler();
     if (dark == "false"){
-      document.body.className = "body-dark";
+      document.body.className = "body-dark body-zoom";
     } else {
-      document.body.className = "body-light";
+      document.body.className = "body-light body-zoom";
     }
-	});
-
+     window.addEventListener('resize', handleResize)
+	},[]);
+  
   //Page Visual Part
   return (
     <div key={"userPage"}>
-      <NavMenu username={username} profilePicturePath={picfilepath} />
-      <div className="text-center mt-3">
+      <NavMenu username={username} profilePicturePath={picfilepath} width={windowSize}/>
+      <div className="text-center overflow-auto" style={{maxHeight:"55.7vh"}}>
         <div>
           <h1>
             {points} <span id={dark == "false" ? "pont-dark": "pont-light"}>Zöldpont</span>-od van
@@ -67,13 +126,12 @@ const UserPage = () => {
             alt="Achivements"
             src="achivement_placeholder.jpg"
             height="300vh="
-            width="400vh="
+            width="100%"
             className="mb-3"
           />
         </div>
-        <div>
-          <h6>Statisztikáid:</h6>
-          <img alt="Graph" src="graph-placeholder.jpg" className="mb-3" />
+        <div className="Chart">
+          <GreenChart chartData={chartData}/>
         </div>
       </div>
     </div>

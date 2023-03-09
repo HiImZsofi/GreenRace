@@ -8,13 +8,14 @@ import {
 import {
 	generateAccessToken,
 	authorizeUserGetRequest,
-	usernameAndPasswordChangeHandler,
-	onlyPasswordChangeHandler,
-	onlyUsernameChangeHandler,
+	saveSettings,
+	saveProfpic,
+	getChartData,
 } from "./callbackHandlers.js";
 import express from "express";
 import bodyParser from "body-parser";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
@@ -27,6 +28,7 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
 
 //? middleware options ig
 app.use((req, res, next) => {
@@ -133,24 +135,26 @@ app.post("/login", async (req, res) => {
 
 //User page route
 //Authorize user
-//TODO Send back appropriate user data
 app.get("/userPage", (req, res) => {
 	authorizeUserGetRequest(req, res, "user");
 });
 
 //Friend page route
 //Authorize user
-//TODO Send back appropriate user data
 app.get("/friendPage", (req, res) => {
 	authorizeUserGetRequest(req, res);
 });
 
 //Rank page route
 //Authorize user
-//TODO Send back appropriate user data
 app.get("/rankPage", (req, res) => {
 	authorizeUserGetRequest(req, res, "rank");
 });
+
+app.get("/chartData", (req, res) => {
+	getChartData(req, res);
+});
+
 
 //Logout route POST request
 app.post("/logout", (req, res) => {
@@ -164,29 +168,10 @@ app.post("/logout", (req, res) => {
 
 //Settings route POST request
 app.post("/settings", async (req, res) => {
-	const { email, newUsername, newPassword, currentPassword } = req.body;
-	const passwordInDB = await getPassQuery(email).catch((error) => {
-		res.statusCode = 404;
-		console.log(404);
-		res.send(JSON.stringify({ error: "Invalid email", response: error }));
-	});
-	//Only runs if both values are changed
-	if (newUsername != "" && newPassword !== "") {
-		bcrypt
-			.compare(currentPassword, passwordInDB)
-			.then(
-				usernameAndPasswordChangeHandler(newPassword, email, newUsername, res)
-			);
-	} //Change the password only
-	else if (newPassword !== "") {
-		bcrypt
-			.compare(currentPassword, passwordInDB)
-			.then(onlyPasswordChangeHandler(newPassword, email, res));
-	} //Change username
-	else if (newUsername !== "") {
-		bcrypt
-			.compare(currentPassword, passwordInDB)
-			.then(onlyUsernameChangeHandler(email, newUsername, res));
-	}
+	saveSettings(req, res);
 });
 
+//ProfpicSetter route POST request
+app.post("/profpicset", async (req, res) => {
+	saveProfpic(req,res);
+});

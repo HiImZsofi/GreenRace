@@ -9,6 +9,7 @@ import NavMenu from "../components/NavBarLogic";
 interface Ranking {
   username: string;
   points: number;
+  picfilepath: string;
 }
 const Ranglist: Ranking[] = [];
 
@@ -16,6 +17,7 @@ const Ranglist: Ranking[] = [];
 const RankPage = () => {
   const [username, setUsername] = useState("");
   const [picFilePath, setPicFilePath] = useState("");
+  const [windowSize, setWindowSize] = useState(window.innerWidth);
   let dark = localStorage.getItem('darkmode');
   const navigate = useNavigate();
 
@@ -53,21 +55,27 @@ const RankPage = () => {
         for (let i = 0; i < rankdata.length; i++) {
           if (rankdata[i] !== undefined) {
             let username: string = rankdata[i].username;
-            let points = rankdata[i].points;
-            let rang: Ranking = { username: username, points: points };
+            let points:number = rankdata[i].points;
+            let picfilepath:string = rankdata[i].picfilepath;
+            let rang: Ranking = { username: username, points: points , picfilepath: picfilepath};
             Ranglist[i] = rang;
           }
         }
       });
   };
 
+  function handleResize() {
+    setWindowSize(window.innerWidth);
+  }
+
   useEffect(() => {
     authenticationHandler();
     if (dark == "false"){
-      document.body.className = "body-dark";
+      document.body.className = "body-dark body-zoom";
     } else {
-      document.body.className = "body-light";
+      document.body.className = "body-light body-zoom";
     }
+    window.addEventListener('resize', handleResize)
   });
 
   //Page Visual Part
@@ -76,17 +84,26 @@ const RankPage = () => {
         <NavMenu
           username={username}
           profilePicturePath={picFilePath}
+          width={windowSize}
         />
         <div className="text-center mt-3">
           <div>
             <h1>Rang Lista:</h1>
-            <ul>
+            <div className="text-center overflow-auto zoom" style={{maxHeight:"55.7vh"}}>
+            <table className="mx-auto">
+              <tbody>
               {Ranglist.map((Ranking, i) => (
-                <li key={i}>
-                  {i + 1}. {Ranking.username}:{Ranking.points}p
-                </li>
+                <tr key={i}>
+                  <td className="px-2"><img id="profpic" alt="Profpic" 
+                  src={Ranking.picfilepath !== null ? Ranking.picfilepath : "npic.png"}
+									width="40vh=" height="40vh="/></td>
+                  <td className="px-2">{Ranking.username}</td>
+                  <td className="px-2">{Ranking.points}p</td>
+                </tr>
               ))}
-            </ul>
+              </tbody>
+            </table>
+            </div>
           </div>
         </div>
       </div>

@@ -7,6 +7,10 @@ import {
 	Offcanvas,
 	Button,
 	Row,
+	DropdownButton,
+	Dropdown,
+	NavDropdown,
+	ButtonGroup,
 } from "react-bootstrap";
 import React from "react";
 import "../Views/Pages.css";
@@ -23,14 +27,45 @@ let NavMenuPoints: MenuPoints[] = [
 	{ text: "Barátok", link: "/friendPage", class: "me-auto" },
 ];
 
+
+
+
 //Navbar
 const NavMenuLayout = (props: {
 	username: string;
 	picfilepath: string;
 	logoutHandler: () => void;
+	width: number;
 }) => {
 	let dark = localStorage.getItem('darkmode');
 	const navigate = useNavigate();
+
+	const UnCollapse = NavMenuPoints.map((mp, i) => (<Nav className={mp.class} key={i}><Nav.Link as={Link} to={mp.link} replace>{mp.text}</Nav.Link></Nav> ));
+
+	const Collapse = <div className="mb-2">
+		<DropdownButton
+		  as={ButtonGroup}
+		  key='down-centered'
+		  id='dropdown-button-drop-down-centered'
+		  drop={'down-centered'}
+		  variant={dark == "false" ? "dark" : "success" }
+		  title='Menü'
+		>
+		{NavMenuPoints.map((mp, i) => (
+		<div key={i}>
+		<Nav.Link as={Link} to={mp.link} replace className="ms-1">
+			{mp.text}
+		</Nav.Link>
+		{i != NavMenuPoints.length - 1 ? <Dropdown.Divider /> : <></>}
+		</div>
+		))}
+		</DropdownButton>
+  </div>;
+
+  const Brand = <Navbar.Brand>
+						<img id="logo" alt="Green_Race_Logo" src="greenRaceLogo.png" width="50vh=" height="50vh="/>
+					</Navbar.Brand>;
+
 	return (
 		<>
 			{[false].map((expand) => (	
@@ -42,24 +77,10 @@ const NavMenuLayout = (props: {
 					style={{ minHeight: "11vh" }}
 				>
 					<Container fluid>
-						<Navbar.Brand>
-							<img
-								id="logo"
-								alt="Green_Race_Logo"
-								src="greenRaceLogo.png"
-								width="50vh="
-								height="50vh="
-							/>
-						</Navbar.Brand>
-						{NavMenuPoints.map((mp, i) => (
-							<Nav className={mp.class} key={i}>
-							<Nav.Link as={Link} to={mp.link} replace>
-								{mp.text}
-							</Nav.Link>
-							</Nav> 
-						))}
+						{props.width > 500 && Brand}
+						{props.width <= 500 ? Collapse : UnCollapse }			
 						<Navbar.Toggle
-							id={dark == "false" ? "profpicbut-dark": "profpicbut-light"}
+							id={dark == "false" ? "profpictoggle-dark": "profpictoggle-light"}
 							aria-controls={`offcanvasNavbar-expand-${expand}`}
 						>
 							<div className="profpicbor">
@@ -81,27 +102,34 @@ const NavMenuLayout = (props: {
 							placement="end"
 							className="w-auto"
 						>
-							<Offcanvas.Header closeButton>
+							<Offcanvas.Header closeButton className={dark == "false" ? "offcanvas-dark" : "offcanvas-light"}>
 								<Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`} />
 							</Offcanvas.Header>
-							<Offcanvas.Body>
+							<Offcanvas.Body className={dark == "false" ? "offcanvas-dark" : "offcanvas-light"}>
 								<Container className="text-center">
-									<img
+									<button
+											className="mb-2"
+											id={dark == "false" ? "profpicbut-dark": "profpicbut-light"}
+											onClick={() => navigate("/profpicsetter")}
+										>
+										<div>
+										<img src="edit.png" width="90vh=" height="90vh=" className="editicon"/>
+										<img
 										id="profpic"
 										alt="Profpic"
 										src={
 											props.picfilepath !== null ? props.picfilepath : "npic.png"
 										}
-										width="90vh="
-										height="90vh="
-										className="mb-3"
-									/>
+										width="100vh="
+										height="100vh="
+									/></div>
+									</button>
 									<Row>
-										<p>
+										<h4 className="mb-3">
 											{props.username !== ""
 												? props.username
 												: "username_placeholder"}
-										</p>
+										</h4>
 									</Row>
 									<Row>
 										<Button
@@ -109,12 +137,12 @@ const NavMenuLayout = (props: {
 											className="mb-1"
 											onClick={() => navigate("/settings")}
 										>
-											Options
+											Beállítások
 										</Button>
 									</Row>
 									<Row>
 										<Button variant="danger" onClick={props.logoutHandler}>
-											Logout
+											Kijelentkezés
 										</Button>{" "}
 									</Row>
 								</Container>

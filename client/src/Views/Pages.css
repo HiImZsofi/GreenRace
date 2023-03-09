@@ -1,54 +1,116 @@
-/* All the Pages CSS code set here*/
+/*Used by All Page*/
 .body-light{
   background-color: white;
+  color: black;
 }
 .body-dark{
   background-color: #303136;
+  color: 	#dbedff;
+}
+.body-zoom{
+  zoom: 150%
 }
 
+.zoom{
+  zoom:80%
+}
+
+/*Navbar*/
 .color-nav-light {
   background-color: darkgreen;
 }
 .color-nav-dark {
-  background-color: #8cad8d;
+  background-color: #423f75;
 }
-
 #profpic{ 
   border-radius: 50%;
 }
 #profpicbor{
   margin: 10px;
 }
-#profpicbut-light{
+#profpictoggle-light{
   padding: 0;
   border-radius: 50%;
   border: darkgreen solid 5px;
 }
-#profpicbut-light:hover{
+#profpictoggle-light:hover{
   border: #8cad8d solid 5px;
+}
+#profpictoggle-dark{
+  padding: 0;
+  border-radius: 50%;
+  border: #423f75 solid 5px;
+}
+#profpictoggle-dark:hover{
+  border: #6b65db solid 5px;
+}
+#profpicbut-light{
+  padding: 0;
+  border-radius: 50%;
+  border: white solid 10px;
+}
+#profpicbut-light:hover{
+  border: #8cad8d solid 10px;
 }
 #profpicbut-dark{
   padding: 0;
   border-radius: 50%;
-  border: #8cad8d solid 5px;
+  border: #303136 solid 10px;
 }
 #profpicbut-dark:hover{
-  border: darkgreen solid 5px;
+  border: #6b65db solid 10px;
 }
-
+.editicon{
+  opacity: 0;
+  position: absolute;
+  left: 26%;
+  top: 85px;
+}
+.editicon:hover{
+  opacity: 0.5;
+}
 #logo {
   border-radius: 10%
 } 
+.offcanvas-light{
+  background-color: white;
+  color: black;
+}
+.offcanvas-dark{
+  background-color: #303136;
+  color: #dbedff;
+}
+
+/*UserPage*/
 #pont-light {
   color: darkgreen;
 }
 #pont-dark {
   color: #8cad8d;
 }
-ul{
-  list-style: none;
+.Chart{
+  width: 100%;
 }
 
+/*ProfilePicSetter*/
+.Unlocknt{
+  color: red;
+}
+.Errorlock{
+  color: red;
+  font-size: smaller;
+}
+.Unlock{
+  color: black;
+}
+
+/*FormsWrapper*/
+.loginbackground-light {
+  background: radial-gradient(circle, #3ffb91 0%,  #2e7d32 50%);
+}
+.loginbackground-dark {
+  background: radial-gradient(circle, #a3dafb 0%,  #303136 50%);
+}
 .LRlink:link, .LRlink:visited{
   color: #007133;
   padding: 14px 25px;
@@ -57,42 +119,26 @@ ul{
   display: inline-block;
 }
 
-.loginbackground-light {
-  background: #3ffb91;
-  background: radial-gradient(circle, #3ffb91 0%,  #2e7d32 41%);
-}
-.loginbackground-dark {
-  background: #3ffb91;
-  background: radial-gradient(circle, #2e7d32 0%,  #3ffb91 41%);
-}
-
 /*checkbox*/
   .checkbox-wrapper-54 input[type="checkbox"] {
     visibility: hidden;
     display: none;
   }
-
   .checkbox-wrapper-54 *,
   .checkbox-wrapper-54 ::after,
   .checkbox-wrapper-54 ::before {
     box-sizing: border-box;
   }
-
-  /* The switch - the box around the slider */
   .checkbox-wrapper-54 .switch {
     --width-of-switch: 3.5em;
     --height-of-switch: 2em;
-    /* size of sliding icon -- sun and moon */
     --size-of-icon: 1.4em;
-    /* it is like a inline-padding of switch */
     --slider-offset: 0.3em;
     position: relative;
     width: var(--width-of-switch);
     height: var(--height-of-switch);
     display: inline-block;
   }
-
-  /* The slider */
   .checkbox-wrapper-54 .slider {
     position: absolute;
     cursor: pointer;
@@ -105,7 +151,6 @@ ul{
     border-radius: 30px;
     border: 2px solid #303136;
   }
-
   .checkbox-wrapper-54 .slider:before {
     position: absolute;
     content: "";
@@ -115,18 +160,19 @@ ul{
     left: var(--slider-offset,0.3em);
     top: 50%;
     transform: translateY(-50%);
-    background: linear-gradient(40deg,#ff0080,#ff8c00 70%);
+    background: linear-gradient(40deg,#007133,#8cad8d 70%);
     ;
    transition: .4s;
   }
-
   .checkbox-wrapper-54 input:checked + .slider {
     background-color: #303136;
   }
-
   .checkbox-wrapper-54 input:checked + .slider:before {
     left: calc(100% - (var(--size-of-icon,1.4em) + var(--slider-offset,0.3em)));
     background: #303136;
-    /* change the value of second inset in box-shadow to change the angle and direction of the moon  */
     box-shadow: inset -3px -2px 5px -2px #8983f7, inset -10px -4px 0 0 #a3dafb;
   } 
+  
+  
+  
+
