@@ -4,13 +4,7 @@
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
-    <color name="green_700">#349B35</color>
+    <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="teal_700">#8BC34A</color>
-    <color name="whiteTextColor">#fff</color>
-    <color name="primaryTextColor">#1F6700</color>
-    <color name="loginBkColor">#f0f0f0</color>
-    <color name="whiteCardColor">#B1B1B1</color>
-    <color name="darkCardColor">#333333</color>
 </resources>
