@@ -112,9 +112,11 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         if (requestCode == 1) {
             val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
             if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                //Toast that let's the user know when the map is updating
                 Toast.makeText(this, "Térkép frissítése folyamatban", Toast.LENGTH_LONG).show()
                 Handler().postDelayed({ initMap(mapFragment) }, 2000)
             }else{
+                //Call the locationStateCheck function again if the GPS is still not turned on
                 locationStateCheck()
             }
         }
