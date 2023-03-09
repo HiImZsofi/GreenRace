@@ -1,5 +1,13 @@
 <resources>
     <string name="app_name">GreenRace</string>
+    <string name="register">Regisztráció</string>
+    <string name="username">Felhasználónév</string>
+    <string name="email">E-mail cím</string>
+    <string name="password">Jelszó</string>
+    <string name="reqDoesNotExist">Már van fiókod? Kattints ide!</string>
+    <string name="confirm">Megerősítés</string>
+    <string name="login">Bejelentkezés</string>
+    <string name="loginDoesNotExist">Még nincs fiókod? Kattints ide!</string>
     <string name="maps">maps</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
