@@ -53,9 +53,11 @@ const NavMenuLayout = (props: {
 		>
 		{NavMenuPoints.map((mp, i) => (
 		<div key={i}>
-		  <Nav.Link as={Link} to={mp.link} replace className="ms-1">{mp.text}</Nav.Link>
-		  <Dropdown.Divider />
-		  </div>
+		<Nav.Link as={Link} to={mp.link} replace className="ms-1">
+			{mp.text}
+		</Nav.Link>
+		{i != NavMenuPoints.length - 1 ? <Dropdown.Divider /> : <></>}
+		</div>
 		))}
 		</DropdownButton>
   </div>;
