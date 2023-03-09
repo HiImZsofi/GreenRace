@@ -13,10 +13,10 @@ function FormWrapper(props: PropsWithChildren<Props>) {
 			direction="column"
 			alignItems="center"
 			justifyContent="center"
-			style={{ minHeight: props.vhnum }}
+			style={{ minHeight: props.vhnum}}
 			className={props.background}
 		>
-			<Grid item xs={3}>
+			<Grid item xs={3} style={{maxWidth: "100%"}}>
 				<Box
 					component="form"
 					sx={{

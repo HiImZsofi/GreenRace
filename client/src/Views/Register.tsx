@@ -1,5 +1,5 @@
 //Imports
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FormSubmitButton from "../components/FormSubmitButton";
 import InputField from "../components/InputField";
 import { useNavigate } from "react-router-dom";
@@ -82,13 +82,16 @@ const Register = () => {
 				});
 		}
 	};
+	useEffect(() => {
+		document.body.className = "body-zoom";
+	  });
 	//Page Visual Part
 	return (
-		<FormWrapper vhnum="100vh" background="loginbackground-light">
+		<FormWrapper vhnum="66.6vh" background="loginbackground-light">
 			<InputField
 				type={{
 					inputType: "Username",
-					placeholder: "Username",
+					placeholder: "Felhasználónév",
 					value: username,
 					onChangeHandler: usernameChangeHandler,
 				}}
@@ -98,7 +101,7 @@ const Register = () => {
 			<InputField
 				type={{
 					inputType: "Password",
-					placeholder: "Password",
+					placeholder: "Jelszó",
 					value: password,
 					onChangeHandler: passwordChangeHandler,
 				}}
@@ -116,7 +119,7 @@ const Register = () => {
 				errorMessage={emailErrMsg}
 			/>
 			<FormSubmitButton
-				type={{ inputType: "Register" }}
+				type={{ inputType: "Regisztráció" }}
 				onClickHandler={submitHandler}
 			/>
 			<FormRedirectLink url="/login" classname="LRlink" text="Már van fiókom" />

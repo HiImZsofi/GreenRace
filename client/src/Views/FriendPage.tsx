@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 const FriendPage = () => {
   const [username, setUsername] = useState("");
   const [picFilePath, setPicFilePath] = useState("");
+  const [windowSize, setWindowSize] = useState(window.innerWidth);
   let dark = localStorage.getItem('darkmode');
   const navigate = useNavigate();
 
@@ -39,35 +40,36 @@ const FriendPage = () => {
       }
     );
   };
+
+  function handleResize() {
+    setWindowSize(window.innerWidth);
+  }
+
   useEffect(() => {
     authenticationHandler();
     if (dark == "false"){
-      document.body.className = "body-dark";
+      document.body.className = "body-dark body-zoom";
     } else {
-      document.body.className = "body-light";
+      document.body.className = "body-light body-zoom";
     }
+    window.addEventListener('resize', handleResize)
   });
 
   //Page Visual Part
   //TODO: Only Placeholder
   return (
     <div key={"friendPage"}>
-      <NavMenu username={username} profilePicturePath={picFilePath} />
+      <NavMenu username={username} profilePicturePath={picFilePath} width={windowSize}/>
       <div className="text-center mt-3">
         <div>
           <h1>Barátok:</h1>
-          <ul>
-            <li>USername: 1000pont</li>
-            <li>USername: 1000pont</li>
-            <li>USername: 1000pont</li>
-            <li>USername: 1000pont</li>
-            <li>USername: 1000pont</li>
-            <li>USername: 1000pont</li>
-            <li>USername: 1000pont</li>
-            <li>USername: 1000pont</li>
-            <li>USername: 1000pont</li>
-            <li>USername: 1000pont</li>
-          </ul>
+              <img
+            alt="No-friends-placeholder"
+            src="friends.jpg"
+            height="300vh="
+            width="100%"
+            className="mb-3"
+            />
         </div>
       </div>
     </div>
