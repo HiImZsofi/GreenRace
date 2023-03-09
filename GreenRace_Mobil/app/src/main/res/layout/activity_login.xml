@@ -34,21 +34,20 @@
                 android:layout_marginTop="@dimen/loginViewsMargin"
                 android:gravity="center_horizontal"
                 android:padding="5dp"
-                android:text="Bejelentkezés"
+                android:text="@string/login"
                 android:textAlignment="center"
                 android:textColor="@color/whiteTextColor"
-                android:textSize="18sp" />
+                android:textSize="30sp" />
 
             <!--edit text for user name-->
             <EditText
                 android:id="@+id/loginEmail"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_below="@id/loginHeader"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginEnd="10dp"
-                android:hint="E-mail cím"
+                android:hint="@string/email"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
                 android:textColorHint="@color/whiteTextColor"
@@ -59,29 +58,46 @@
                 android:id="@+id/loginPassword"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_below="@id/loginEmail"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="10dp"
-                android:hint="Jelszó"
+                android:hint="@string/password"
                 android:inputType="textPassword"
                 android:textColorHint="@color/whiteTextColor"
-                android:textColor="@color/whiteTextColor"/>
+                android:textColor="@color/whiteTextColor"
+                android:layout_marginBottom="20dp"/>
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/loginConfirmButton"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/loginPassword"
-                android:layout_gravity="right"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="@dimen/loginViewsMargin"
-                android:layout_marginEnd="10dp"
-                android:background="@drawable/button_item"
-                android:text="Megerősítés"
-                android:textAllCaps="false"
-                android:textColor="@color/whiteTextColor"
-                />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/loginToReqText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/loginDoesNotExist"
+                    android:layout_gravity="start"
+                    android:textColor="@color/teal_700"
+                    android:textSize="15sp"
+                    android:layout_marginStart="13dp"
+                    android:clickable="true"
+                    android:focusable="true" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/loginConfirmButton"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/loginViewsMargin"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/button_item"
+                    android:text="@string/confirm"
+                    android:textAllCaps="false"
+                    android:textColor="@color/whiteTextColor"
+                    android:layout_gravity="end"
+                    android:layout_marginStart="30dp"
+                    />
+            </LinearLayout>
 
 
         </LinearLayout>
