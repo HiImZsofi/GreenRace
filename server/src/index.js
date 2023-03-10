@@ -4,6 +4,7 @@ import {
   getIDFromDB,
   insertNewUser,
   getPassQuery,
+  getRouteNumbers,
 } from "./queries.js";
 import {
   generateAccessToken,
@@ -171,4 +172,12 @@ app.post("/settings", async (req, res) => {
 //ProfpicSetter route POST request
 app.post("/profpicset", async (req, res) => {
   saveProfpic(req, res);
+});
+
+app.get("/logRoute", async (req, res) => {
+  let routeData = await getRouteNumbers().catch((err) => {
+    throw err;
+  });
+  console.log(routeData);
+  res.send({ routeData: routeData });
 });
