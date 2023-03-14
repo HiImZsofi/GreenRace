@@ -63,6 +63,7 @@ const UserPage = () => {
           .get("content-type")
           ?.includes("application/json");
         const data = isJson && (await response.json());
+        //setting chart data
         if(data !== undefined) {
           const pointlist = data.map((point:number, index:number) => {
             return chartData[index] = point;

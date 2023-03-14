@@ -106,32 +106,29 @@ export function getChartData(req, res, type) {
 				res.sendStatus(403);
 				console.log("403 Forbidden request");
 			} else {
-    			const today = new Date();
-    			let dayOfWeek = today.getDay()-1;
-    			if (dayOfWeek < 0) {
-    			  dayOfWeek = 6;
-    			}
-    			const MonDayDate = new Date(today.getTime() - dayOfWeek * 24 * 60 * 60 * 1000);
+				//Get the date of the last Monday
+    			const today = new Date(); //Date of today
+    			const dayOfWeek = (today.getDay() + 6) % 7; //How many day passed since last Monday
+    			const MonDayDate = new Date(today.getTime() - dayOfWeek * 24 * 60 * 60 * 1000); // Date of last Monday
+				//Get Data from database
 				authorizedData = await getUserStatisticsFromDB(
 					jwt.decode(req.token).user_id, MonDayDate,
-				);
+				);// Return te Sum of points in the last week using User_Id and date of last Monday
 				let datalist = [];
-				if (authorizedData != null) {
-				for(let i = 0; i < 7; i++) {
-					let dayDate = formatDate(new Date(MonDayDate .getTime() + i * 24 * 60 * 60 * 1000));	
-					datalist[i] = 0;	
-					authorizedData.forEach(data => {
-						let dataDate = formatDate(new Date(data.date));
-						if(dayDate == dataDate) {
-							datalist[i] = data.SUM;
-						}
+				if (authorizedData == null) {//Tests if Querry empty
+					datalist = [0,0,0,0,0,0,0];//If empty sets every number to 0
+				}else{	
+				for(let i = 0; i < 7; i++) {//Loops through the days of the week
+					let dayDate = formatDate(new Date(MonDayDate .getTime() + i * 24 * 60 * 60 * 1000));//Date of X day	
+					datalist[i] = 0;//Sets default value to 0	
+					authorizedData.forEach(data => {//Loops through the days in the database
+						let dataDate = formatDate(new Date(data.date));//Date y from the database
+						if(dayDate == dataDate) {datalist[i] = data.SUM;}//If date x and y the same set that day value for the value int the database
 					});
 				}
-				}else{
-					datalist = [0,0,0,0,0,0,0];
 				}
 				res.statusCode = 200;
-				res.send(datalist);
+				res.send(datalist);//Return a Number list for the Frontend
 				console.log("200 Successful request");
 			}
 		}
