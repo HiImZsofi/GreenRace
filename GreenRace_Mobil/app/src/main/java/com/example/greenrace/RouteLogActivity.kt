@@ -4,18 +4,18 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatSpinner
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
 class RouteLogActivity : AppCompatActivity() {
-    private lateinit var vehicleTypeSpinner: Spinner
-    private lateinit var lineNumberSpinner: Spinner
-    private lateinit var getOnStopSpinner: Spinner
-    private lateinit var getOffStopSpinner: Spinner
+    private lateinit var vehicleTypeSpinner: AppCompatSpinner
+    private lateinit var lineNumberSpinner: AppCompatSpinner
+    private lateinit var getOnStopSpinner: AppCompatSpinner
+    private lateinit var getOffStopSpinner: AppCompatSpinner
     private lateinit var logRouteButton: Button
 
 
@@ -25,29 +25,36 @@ class RouteLogActivity : AppCompatActivity() {
 
         getData()
         initElements()
-        //getLineRouteData()
-        while (vehicleTypeSpinner.selectedItem!=null){
+        //TODO Fix surface invalid error
+        //setAdapters()
+
+
+        while (vehicleTypeSpinner.selectedItem != null) {
             //TODO Fill line number spinner with the appropriate type of lines
-            lineNumberSpinner.isEnabled=true
-            while (lineNumberSpinner.selectedItem!=null){
+            lineNumberSpinner.isEnabled = true
+            while (lineNumberSpinner.selectedItem != null) {
                 //TODO Make all stops of the line available
-                getOnStopSpinner.isEnabled=true
-                while (getOffStopSpinner.selectedItem!=null){
+                getOnStopSpinner.isEnabled = true
+                while (getOffStopSpinner.selectedItem != null) {
                     //TODO Pass the same array with the selected getOnStop filtered out to the adapter
-                    logRouteButton.isEnabled=true
+                    logRouteButton.isEnabled = true
                 }
             }
         }
 
     }
 
-    private fun getData(){
+    //Gets BKK line data from the backend
+    private fun getData() {
         val response = ServiceBuilder.buildService(ApiInterface::class.java)
 
         response.getData().enqueue(
             object : Callback<RouteData> {
                 override fun onResponse(call: Call<RouteData>, response: Response<RouteData>) {
-                    val data = response.body()?.routeData?.forEach { element -> element.routeShortName
+                    //Array list of lines with the route types
+                    val data = response.body()?.routeData?.forEach { element ->
+                        element.routeShortName
+                        //TODO set adapters
                     }
                 }
 
@@ -58,23 +65,24 @@ class RouteLogActivity : AppCompatActivity() {
         )
     }
 
-    private fun initElements(){
+    private fun initElements() {
         //Initialize user input elements
-        vehicleTypeSpinner=findViewById(R.id.vehicleTypeSpinner)
-        lineNumberSpinner=findViewById(R.id.lineNumberSpinner)
-        getOnStopSpinner=findViewById(R.id.getOnStopSpinner)
-        getOffStopSpinner=findViewById(R.id.getOffStopSpinner)
-        logRouteButton=findViewById(R.id.logRouteButton)
+        vehicleTypeSpinner = findViewById(R.id.vehicleTypeSpinner)
+        lineNumberSpinner = findViewById(R.id.lineNumberSpinner)
+        getOnStopSpinner = findViewById(R.id.getOnStopSpinner)
+        getOffStopSpinner = findViewById(R.id.getOffStopSpinner)
+        logRouteButton = findViewById(R.id.logRouteButton)
 
         //Disable input fields and submit button
         //So the user has to fill them in one by one from the top down
-        lineNumberSpinner.isEnabled=false
-        getOnStopSpinner.isEnabled=false
-        getOffStopSpinner.isEnabled=false
-        logRouteButton.isEnabled=false
+        lineNumberSpinner.isEnabled = false
+        getOnStopSpinner.isEnabled = false
+        getOffStopSpinner.isEnabled = false
+        logRouteButton.isEnabled = false
     }
 
-    private fun getLineRouteData(){
+    private fun setAdapters() {
+
         // Array of choices
         val colors =
             arrayOf("Red", "Blue", "White", "Yellow", "Black", "Green", "Purple", "Orange", "Grey")
@@ -82,21 +90,18 @@ class RouteLogActivity : AppCompatActivity() {
         val spinnerArrayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, colors)
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) // The drop down view
 
-        val spinnerArrayAdapter2 = ArrayAdapter(this, android.R.layout.simple_spinner_item, colors)
-        spinnerArrayAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) // The drop down view
 
-        val spinnerArrayAdapter3 = ArrayAdapter(this, android.R.layout.simple_spinner_item, colors)
-        spinnerArrayAdapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) // The drop down view
-
-        val spinnerArrayAdapter4 = ArrayAdapter(this, android.R.layout.simple_spinner_item, colors)
-        spinnerArrayAdapter4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) // The drop down view
-
-        vehicleTypeSpinner.adapter = spinnerArrayAdapter
-        lineNumberSpinner.adapter = spinnerArrayAdapter2
-        getOnStopSpinner.adapter = spinnerArrayAdapter3
-        getOffStopSpinner.adapter = spinnerArrayAdapter4
+        try {
+            //!! The app crasher if this is executed
+            vehicleTypeSpinner.adapter = spinnerArrayAdapter
+        }catch (e:Exception){
+            Log.e("Surface szar", e.message.toString())
+            recreate()
+        }
 
         //TODO GET request to the backend
 
+
     }
+
 }
