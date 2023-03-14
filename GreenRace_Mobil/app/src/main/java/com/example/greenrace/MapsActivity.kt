@@ -9,6 +9,7 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -33,6 +34,7 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var mMap: GoogleMap
     private lateinit var mapFragment: SupportMapFragment
+    private lateinit var addRouteButton:Button
 
     private var lat = 0.0
     private var lng = 0.0
@@ -45,8 +47,15 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
 
+        addRouteButton=findViewById(R.id.addRoute)
+        addRouteButton.setOnClickListener{
+            val toRouteLogPage = Intent(this@MapsActivity, RouteLogActivity::class.java)
+            startActivity(toRouteLogPage)
+        }
+
         //Request location permissions
         getLocationPermission()
+        //TODO load map to correct place if the permission need enabling
 
         //Show a zoomed out map of Budapest in the background
         initMap(mapFragment)
