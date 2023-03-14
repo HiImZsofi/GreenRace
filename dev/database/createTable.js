@@ -68,10 +68,18 @@ connection.query(
 );
 
 connection.query(
-  "CREATE OR REPLACE TABLE RouteData (route_data_id int PRIMARY KEY AUTO_INCREMENT, route_short_name VARCHAR(5), route_type int)",
+  "CREATE OR REPLACE TABLE RouteData (route_data_id int PRIMARY KEY AUTO_INCREMENT, route_id VARCHAR(5), route_short_name VARCHAR(5), route_type int)",
   function (err, result) {
     if (err) throw err;
     console.log("Table RouteData created or modified");
+  }
+);
+
+connection.query(
+  "CREATE OR REPLACE TABLE StopsData (stop_data_id int PRIMARY KEY AUTO_INCREMENT, stop_id VARCHAR(10), stop_name VARCHAR(30), stop_lat int, stop_lon int)",
+  function (err, result) {
+    if (err) throw err;
+    console.log("Table StopsData created or modified");
     process.exit();
   }
 );
