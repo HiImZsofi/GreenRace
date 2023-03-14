@@ -12,10 +12,12 @@ const connection = mysql.createConnection({
 connection.connect();
 
 class RouteData {
+  route_id: string;
   short_name: string;
   route_type: number;
 
-  constructor(shortName: string, routeType: number) {
+  constructor(route_id: string, shortName: string, routeType: number) {
+    this.route_id = route_id;
     this.short_name = shortName;
     this.route_type = routeType;
   }
@@ -32,7 +34,11 @@ fs.readFile(filePath, "utf-8", (err, data) => {
     let line = data.split("\n");
     line.forEach((element) => {
       let fields: string[] = element.split(",");
-      let routeData: RouteData = new RouteData(fields[2], parseInt(fields[4]));
+      let routeData: RouteData = new RouteData(
+        fields[1],
+        fields[2],
+        parseInt(fields[4])
+      );
       routeDataList.push(routeData);
       console.log(routeData);
     });
@@ -42,8 +48,8 @@ fs.readFile(filePath, "utf-8", (err, data) => {
 setTimeout(() => {
   routeDataList.forEach((element) => {
     connection.query(
-      "INSERT INTO routedata (route_short_name, route_type) VALUES (?, ?)",
-      [element.short_name, element.route_type],
+      "INSERT INTO routedata (route_id, route_short_name, route_type) VALUES (?, ?, ?)",
+      [element.route_id, element.short_name, element.route_type],
       function (err, result) {
         if (err) throw err;
         console.log("Data inserted");

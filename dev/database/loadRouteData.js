@@ -10,7 +10,8 @@ var connection = mysql.createConnection({
 });
 connection.connect();
 var RouteData = /** @class */ (function () {
-    function RouteData(shortName, routeType) {
+    function RouteData(route_id, shortName, routeType) {
+        this.route_id = route_id;
         this.short_name = shortName;
         this.route_type = routeType;
     }
@@ -26,7 +27,7 @@ fs.readFile(filePath, "utf-8", function (err, data) {
         var line = data.split("\n");
         line.forEach(function (element) {
             var fields = element.split(",");
-            var routeData = new RouteData(fields[2], parseInt(fields[4]));
+            var routeData = new RouteData(fields[1], fields[2], parseInt(fields[4]));
             routeDataList.push(routeData);
             console.log(routeData);
         });
@@ -34,7 +35,7 @@ fs.readFile(filePath, "utf-8", function (err, data) {
 });
 setTimeout(function () {
     routeDataList.forEach(function (element) {
-        connection.query("INSERT INTO routedata (route_short_name, route_type) VALUES (?, ?)", [element.short_name, element.route_type], function (err, result) {
+        connection.query("INSERT INTO routedata (route_id, route_short_name, route_type) VALUES (?, ?, ?)", [element.route_id, element.short_name, element.route_type], function (err, result) {
             if (err)
                 throw err;
             console.log("Data inserted");
