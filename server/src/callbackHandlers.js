@@ -54,7 +54,7 @@ export function authorizeUserGetRequest(req, res, type) {
 					case "user":
 						authorizedData = await getUserDataFromDB(
 							jwt.decode(req.token).user_id
-						);
+						).catch(err => {throw err;});
 						break;
 					case "rank":
 						authorizedData = await getRankListFromDB(
@@ -73,6 +73,14 @@ export function authorizeUserGetRequest(req, res, type) {
 		}
 	);
 }
+
+//Converts the terrible typescript date format to something usable  
+function formatDate(date) {
+    const year = date.getFullYear().toString();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}/${month}/${day}`;
+  }
 
 //User Chart Data
 export function getChartData(req, res, type) {
@@ -107,8 +115,23 @@ export function getChartData(req, res, type) {
 				authorizedData = await getUserStatisticsFromDB(
 					jwt.decode(req.token).user_id, MonDayDate,
 				);
+				let datalist = [];
+				if (authorizedData != null) {
+				for(let i = 0; i < 7; i++) {
+					let dayDate = formatDate(new Date(MonDayDate .getTime() + i * 24 * 60 * 60 * 1000));	
+					datalist[i] = 0;	
+					authorizedData.forEach(data => {
+						let dataDate = formatDate(new Date(data.date));
+						if(dayDate == dataDate) {
+							datalist[i] = data.SUM;
+						}
+					});
+				}
+				}else{
+					datalist = [0,0,0,0,0,0,0];
+				}
 				res.statusCode = 200;
-				res.send(authorizedData);
+				res.send(datalist);
 				console.log("200 Successful request");
 			}
 		}
