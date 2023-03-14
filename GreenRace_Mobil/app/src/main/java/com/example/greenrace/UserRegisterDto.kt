@@ -47,12 +47,12 @@ data class ResponseModel(
 //}
 
 class RouteData @JsonCreator constructor(
-    @JsonProperty("routeData") val routeData: Any
+    @JsonProperty("routeData") val routeData: List<Route>
 )
 
-class Route @JsonCreator constructor(routeShortName: String, routeType: Int) {
+class Route @JsonCreator constructor(@JsonProperty("route_short_name") routeShortName: String, @JsonProperty("route_type") routeType: Int) {
     @JsonProperty("route_short_name")
-    val routeShortName: String = routeShortName
+    @SerializedName("route_short_name") val routeShortName: String = routeShortName
     @JsonProperty("route_type")
-    val routeType: Int = routeType
+    @SerializedName("route_type") val routeType: Int = routeType
 }

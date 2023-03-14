@@ -29,7 +29,8 @@ class RouteLogginActivity : AppCompatActivity(){
         response.getData().enqueue(
             object : Callback<RouteData> {
                 override fun onResponse(call: Call<RouteData>, response: Response<RouteData>) {
-                    val data = response.body()?.routeData //TODO szar
+                    val data = response.body()?.routeData?.forEach { element -> element.routeShortName
+                    }
                 }
 
                 override fun onFailure(call: Call<RouteData>, t: Throwable) {
