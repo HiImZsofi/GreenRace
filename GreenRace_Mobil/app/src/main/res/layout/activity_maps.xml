@@ -12,8 +12,8 @@
         tools:context=".MapsActivity"
         android:name="com.google.android.gms.maps.SupportMapFragment" />
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
         android:text="+"
         android:textSize="25sp"
         android:tooltipText="Utazás hozzáadása"
@@ -22,6 +22,7 @@
         app:layout_constraintRight_toLeftOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="16dp"
+        android:background="@drawable/btn_shape_round"
 />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
