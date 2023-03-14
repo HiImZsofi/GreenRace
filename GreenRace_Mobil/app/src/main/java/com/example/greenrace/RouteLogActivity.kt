@@ -1,10 +1,14 @@
 package com.example.greenrace
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class RouteLogActivity : AppCompatActivity() {
@@ -19,8 +23,9 @@ class RouteLogActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_route_log)
 
+        getData()
         initElements()
-        getLineRouteData()
+        //getLineRouteData()
         while (vehicleTypeSpinner.selectedItem!=null){
             //TODO Fill line number spinner with the appropriate type of lines
             lineNumberSpinner.isEnabled=true
@@ -34,6 +39,23 @@ class RouteLogActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    private fun getData(){
+        val response = ServiceBuilder.buildService(ApiInterface::class.java)
+
+        response.getData().enqueue(
+            object : Callback<RouteData> {
+                override fun onResponse(call: Call<RouteData>, response: Response<RouteData>) {
+                    val data = response.body()?.routeData?.forEach { element -> element.routeShortName
+                    }
+                }
+
+                override fun onFailure(call: Call<RouteData>, t: Throwable) {
+                    Log.e("Error", t.toString())
+                }
+            }
+        )
     }
 
     private fun initElements(){
