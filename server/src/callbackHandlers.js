@@ -111,9 +111,11 @@ export function getChartData(req, res, type) {
     			const dayOfWeek = (today.getDay() + 6) % 7; //How many day passed since last Monday
     			const MonDayDate = new Date(today.getTime() - dayOfWeek * 24 * 60 * 60 * 1000); // Date of last Monday
 				//Get Data from database
-				authorizedData = await getUserStatisticsFromDB(
-					jwt.decode(req.token).user_id, MonDayDate,
-				);// Return te Sum of points in the last week using User_Id and date of last Monday
+				try {
+					authorizedData = await getUserStatisticsFromDB(jwt.decode(req.token).user_id, MonDayDate);
+				  } catch (error) {
+					authorizedData = null;
+				  }// Return te Sum of points in the last week using User_Id and date of last Monday
 				let datalist = [];
 				if (authorizedData == null) {//Tests if Querry empty
 					datalist = [0,0,0,0,0,0,0];//If empty sets every number to 0
