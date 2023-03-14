@@ -20,16 +20,36 @@ class RouteLogActivity : AppCompatActivity() {
         setContentView(R.layout.activity_route_log)
 
         initElements()
-
+        getLineRouteData()
+        while (vehicleTypeSpinner.selectedItem!=null){
+            //TODO Fill line number spinner with the appropriate type of lines
+            lineNumberSpinner.isEnabled=true
+            while (lineNumberSpinner.selectedItem!=null){
+                //TODO Make all stops of the line available
+                getOnStopSpinner.isEnabled=true
+                while (getOffStopSpinner.selectedItem!=null){
+                    //TODO Pass the same array with the selected getOnStop filtered out to the adapter
+                    logRouteButton.isEnabled=true
+                }
+            }
+        }
 
     }
 
     private fun initElements(){
+        //Initialize user input elements
         vehicleTypeSpinner=findViewById(R.id.vehicleTypeSpinner)
         lineNumberSpinner=findViewById(R.id.lineNumberSpinner)
         getOnStopSpinner=findViewById(R.id.getOnStopSpinner)
         getOffStopSpinner=findViewById(R.id.getOffStopSpinner)
         logRouteButton=findViewById(R.id.logRouteButton)
+
+        //Disable input fields and submit button
+        //So the user has to fill them in one by one from the top down
+        lineNumberSpinner.isEnabled=false
+        getOnStopSpinner.isEnabled=false
+        getOffStopSpinner.isEnabled=false
+        logRouteButton.isEnabled=false
     }
 
     private fun getLineRouteData(){
@@ -40,7 +60,19 @@ class RouteLogActivity : AppCompatActivity() {
         val spinnerArrayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, colors)
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) // The drop down view
 
+        val spinnerArrayAdapter2 = ArrayAdapter(this, android.R.layout.simple_spinner_item, colors)
+        spinnerArrayAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) // The drop down view
+
+        val spinnerArrayAdapter3 = ArrayAdapter(this, android.R.layout.simple_spinner_item, colors)
+        spinnerArrayAdapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) // The drop down view
+
+        val spinnerArrayAdapter4 = ArrayAdapter(this, android.R.layout.simple_spinner_item, colors)
+        spinnerArrayAdapter4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) // The drop down view
+
         vehicleTypeSpinner.adapter = spinnerArrayAdapter
+        lineNumberSpinner.adapter = spinnerArrayAdapter2
+        getOnStopSpinner.adapter = spinnerArrayAdapter3
+        getOffStopSpinner.adapter = spinnerArrayAdapter4
 
         //TODO GET request to the backend
 
