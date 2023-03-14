@@ -49,6 +49,8 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         addRouteButton=findViewById(R.id.addRoute)
         addRouteButton.setOnClickListener{
+            //Redirects the user to the route logging page
+            //With the option to go back to the map activity
             val toRouteLogPage = Intent(this@MapsActivity, RouteLogActivity::class.java)
             startActivity(toRouteLogPage)
         }
