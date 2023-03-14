@@ -7,9 +7,11 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.greenrace.sharedPreferences.TokenUtils
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
 
 class LoginActivity : AppCompatActivity() {
 
@@ -31,7 +33,7 @@ class LoginActivity : AppCompatActivity() {
                 object : Callback<ResponseModel> {
                     override fun onResponse(
                         call: Call<ResponseModel>,
-                        response: Response<ResponseModel>
+                        response: Response<ResponseModel>,
                     ) {
                         if(response.code() == 401){
                             loginPassword.setBackgroundResource(R.drawable.email_error)
@@ -43,6 +45,16 @@ class LoginActivity : AppCompatActivity() {
                         else {
                             loginEmail.setBackgroundResource(R.drawable.email_normal)
                             loginPassword.setBackgroundResource(R.drawable.email_normal)
+                            val responseBody = response.body()
+                            if (responseBody != null) {
+                                val jwtToken: String = responseBody.token
+                                val tokenUtils = TokenUtils(this@LoginActivity)
+                                tokenUtils.saveAccessToken(jwtToken)
+                                val logSuccessful =
+                                    Intent(this@LoginActivity, MapsActivity::class.java)
+                                startActivity(logSuccessful)
+                                finish()
+                            }
                         }
                     }
                     override fun onFailure(call: Call<ResponseModel>, t: Throwable) {
@@ -66,3 +78,4 @@ class LoginActivity : AppCompatActivity() {
         loginToReqText = findViewById(R.id.loginToReqText)
     }
 }
+
