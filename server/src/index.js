@@ -13,6 +13,7 @@ import {
   saveProfpic,
   getChartData,
 } from "./callbackHandlers.js";
+import { getRoutes } from "./userStopsData.js";
 import express from "express";
 import bodyParser from "body-parser";
 import bcrypt from "bcrypt";
@@ -174,10 +175,16 @@ app.post("/profpicset", async (req, res) => {
   saveProfpic(req, res);
 });
 
+//send back every line from the database
 app.get("/logRoute", async (req, res) => {
   let routeData = await getRouteNumbers().catch((err) => {
     throw err;
   });
   console.log(routeData);
   res.send({ routeData: routeData });
+});
+
+app.get("/get/routeData", (req, res) => {
+  var givenRoute = getRoutes();
+  res.send(givenRoute);
 });
