@@ -31,33 +31,13 @@ fs.createReadStream(filePath)
     .on("end", function () {
     console.log(stopsDataList);
 });
-// fs.readFile(filePath, "utf-8", (err, data) => {
-//   if (err) {
-//     console.error(err);
-//   } else {
-//     let line = data.split("\n");
-//     line.forEach((element) => {
-//       let fields: string[] = element.split(",");
-//       let stopsData: StopsData = new StopsData(
-//         fields[0],
-//         fields[1],
-//         parseInt(fields[2]),
-//         parseInt(fields[3])
-//       );
-//       stopsDataList.push(stopsData);
-//     });
-//   }
-// });
-// setTimeout(() => {
-//   stopsDataList.forEach((element) => {
-//     connection.query(
-//       "INSERT INTO stopsdata (stop_id, stop_name, stop_lat, stop_lon) VALUES (?, ?, ?, ?)",
-//       [element.stop_id, element.stop_name, element.stop_lat, element.stop_lon],
-//       function (err, result) {
-//         if (err) throw err;
-//         console.log("Data inserted");
-//       }
-//     );
-//   });
-// }, 5000);
-// console.log("Success I guess");
+setTimeout(function () {
+    stopsDataList.forEach(function (element) {
+        connection.query("INSERT INTO stopsdata (stop_id, stop_name, stop_lat, stop_lon) VALUES (?, ?, ?, ?)", [element.stop_id, element.stop_name, element.stop_lat, element.stop_lon], function (err, result) {
+            if (err)
+                throw err;
+            console.log("Data inserted");
+        });
+    });
+}, 5000);
+console.log("Success I guess");

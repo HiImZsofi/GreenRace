@@ -1,6 +1,4 @@
 import * as fs from "fs";
-import { parse } from "path";
-import { Any } from "typeorm";
 
 var mysql = require("mysql");
 const csv = require("csv-parser");
