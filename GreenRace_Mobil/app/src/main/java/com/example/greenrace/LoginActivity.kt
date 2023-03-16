@@ -67,6 +67,7 @@ class LoginActivity : AppCompatActivity() {
         loginToReqText.setOnClickListener(){
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
             finish()
         }
     }

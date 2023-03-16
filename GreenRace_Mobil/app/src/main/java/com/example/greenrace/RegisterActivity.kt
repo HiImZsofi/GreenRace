@@ -93,6 +93,7 @@ class RegisterActivity : AppCompatActivity() {
         regToLoginText.setOnClickListener() {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.transition.slide_in_left, R.transition.slide_out_right);
             finish()
         }
     }
