@@ -7,8 +7,10 @@ import android.util.Log
 import android.util.Patterns
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.greenrace.swipeTouchListener.OnSwipeTouchListener
 import com.fasterxml.jackson.databind.exc.MismatchedInputException
 import retrofit2.Call
 import retrofit2.Callback
@@ -22,11 +24,23 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var registrationUsername: EditText
     private lateinit var registrationConfirmButton: Button
     private lateinit var regToLoginText: TextView
+    private lateinit var myView : LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
         init()
+        // Set up swipe listener on your view
+        val swipeListener = object : OnSwipeTouchListener(this@RegisterActivity) {
+            override fun onSwipeRight() {
+                // Change to new page here
+                val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
+                startActivity(intent)
+                overridePendingTransition(R.transition.slide_in_left, R.transition.slide_out_right)
+                finish()
+            }
+        }
+        myView.setOnTouchListener(swipeListener)
 
         //http service builder
         val response = ServiceBuilder.buildService(ApiInterface::class.java)
@@ -108,5 +122,6 @@ class RegisterActivity : AppCompatActivity() {
         registrationConfirmButton = findViewById(R.id.registrationConfirmButton)
         registrationUsername = findViewById(R.id.registrationUsername)
         regToLoginText = findViewById(R.id.regToLoginText)
+        myView = findViewById(R.id.myView)
     }
 }

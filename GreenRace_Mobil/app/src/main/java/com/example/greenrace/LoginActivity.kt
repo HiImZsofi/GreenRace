@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.greenrace.sharedPreferences.TokenUtils
+import com.example.greenrace.swipeTouchListener.OnSwipeTouchListener
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -19,14 +21,26 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var loginPassword : EditText
     private lateinit var loginConfirmButton : Button
     private lateinit var loginToReqText : TextView
+    private lateinit var myView : LinearLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         init()
+        // Set up swipe listener on your view
+        val swipeListener = object : OnSwipeTouchListener(this@LoginActivity) {
+            override fun onSwipeLeft() {
+                // Change to new page here
+                val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
+                startActivity(intent)
+                overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left)
+                finish()
+            }
+        }
+        myView.setOnTouchListener(swipeListener)
 
         val response = ServiceBuilder.buildService(ApiInterface::class.java)
 
-        loginConfirmButton.setOnClickListener(){
+        loginConfirmButton.setOnClickListener {
             val requestModelLogin = RequestModelLogin(loginEmail.text.toString(), loginPassword.text.toString())
 
             response.sendReq(requestModelLogin).enqueue(
@@ -64,10 +78,10 @@ class LoginActivity : AppCompatActivity() {
             )
         }
 
-        loginToReqText.setOnClickListener(){
+        loginToReqText.setOnClickListener{
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
-            overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
+            overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left)
             finish()
         }
     }
@@ -77,6 +91,7 @@ class LoginActivity : AppCompatActivity() {
         loginPassword = findViewById(R.id.loginPassword)
         loginConfirmButton = findViewById(R.id.loginConfirmButton)
         loginToReqText = findViewById(R.id.loginToReqText)
+        myView = findViewById(R.id.myView)
     }
 }
 
