@@ -11,7 +11,7 @@
         android:text="Jármű típusa"
         android:textSize="20sp"/>
 
-    <androidx.appcompat.widget.AppCompatSpinner
+    <Spinner
         android:id="@+id/vehicleTypeSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:text="Járat szám"
         android:textSize="20sp"/>
-    <androidx.appcompat.widget.AppCompatSpinner
+    <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="false"
@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:text="Induló megálló"
         android:textSize="20sp"/>
-    <androidx.appcompat.widget.AppCompatSpinner
+    <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="false"
@@ -57,7 +57,7 @@
         android:text="Leszállás megálló"
         android:textSize="20sp"
         />
-    <androidx.appcompat.widget.AppCompatSpinner
+    <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="false"
