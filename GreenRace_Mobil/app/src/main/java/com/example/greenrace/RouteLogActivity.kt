@@ -128,6 +128,7 @@ class RouteLogActivity : AppCompatActivity() {
                 lineNumberSpinner.isEnabled = false
             }
         }
+        //TODO Fix so nothing is selected by default
         vehicleTypeSpinner.setSelection(-1)
 
     }
