@@ -17,29 +17,44 @@ class RouteLogActivity : AppCompatActivity() {
     private lateinit var getOffStopSpinner: Spinner
     private lateinit var logRouteButton: Button
 
+    private val check:Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_route_log)
 
         initElements()
-        //getData()
-        //TODO Fix surface invalid error
         setVehicleTypeAdapter()
+    }
 
+    private fun setVehicleTypeAdapter() {
+        val items = listOf("Item 1", "Item 2", "Item 3") // example list of items
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, items)
+        adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line)
+        vehicleTypeSpinner.adapter = adapter
 
-        while (vehicleTypeSpinner.selectedItem != null) {
-            //TODO Fill line number spinner with the appropriate type of lines
-            lineNumberSpinner.isEnabled = true
-            while (lineNumberSpinner.selectedItem != null) {
-                //TODO Make all stops of the line available
-                getOnStopSpinner.isEnabled = true
-                while (getOffStopSpinner.selectedItem != null) {
-                    //TODO Pass the same array with the selected getOnStop filtered out to the adapter
-                    logRouteButton.isEnabled = true
-                }
+        vehicleTypeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                // handle item selection here
+                val selectedItem = items[position]
+                Toast.makeText(
+                    this@RouteLogActivity,
+                    "Selected item: $selectedItem",
+                    Toast.LENGTH_SHORT
+                ).show()
+                lineNumberSpinner.isEnabled = true
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // handle case where no item is selected
+                lineNumberSpinner.isEnabled = false
             }
         }
-
     }
 
     //Gets BKK line data from the backend
@@ -73,36 +88,9 @@ class RouteLogActivity : AppCompatActivity() {
 
         //Disable input fields and submit button
         //So the user has to fill them in one by one from the top down
-        lineNumberSpinner.isEnabled = false
+//        lineNumberSpinner.isEnabled = false
         getOnStopSpinner.isEnabled = false
         getOffStopSpinner.isEnabled = false
         logRouteButton.isEnabled = false
     }
-
-    private fun setVehicleTypeAdapter() {
-        val types = listOf("Busz", "Villamos", "Trolibusz", "Metró") // example list of items
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, types)
-
-        vehicleTypeSpinner.adapter = adapter
-
-        vehicleTypeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                // handle item selection here
-                val selectedItem = types[position]
-                Toast.makeText(
-                    this@RouteLogActivity,
-                    "Selected item: $selectedItem",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                // handle case where no item is selected
-            }
-        }
-}}
+}
