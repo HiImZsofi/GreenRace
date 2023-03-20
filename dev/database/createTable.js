@@ -76,7 +76,7 @@ connection.query(
 );
 
 connection.query(
-  "CREATE OR REPLACE TABLE StopsData (stop_data_id int PRIMARY KEY AUTO_INCREMENT, stop_id VARCHAR(10), stop_name VARCHAR(30), stop_lat int, stop_lon int)",
+  "CREATE OR REPLACE TABLE StopsData (stop_data_id int PRIMARY KEY AUTO_INCREMENT, stop_id VARCHAR(10), stop_name VARCHAR(30), stop_lat VARCHAR(30), stop_lon VARCHAR(30))",
   function (err, result) {
     if (err) throw err;
     console.log("Table StopsData created or modified");

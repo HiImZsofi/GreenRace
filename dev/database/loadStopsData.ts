@@ -14,14 +14,14 @@ connection.connect();
 class StopsData {
   stop_id: string;
   stop_name: string;
-  stop_lat: number;
-  stop_lon: number;
+  stop_lat: string;
+  stop_lon: string;
 
   constructor(
     stop_id: string,
     stop_name: string,
-    stop_lat: number,
-    stop_lon: number
+    stop_lat: string,
+    stop_lon: string
   ) {
     this.stop_id = stop_id;
     this.stop_name = stop_name;
