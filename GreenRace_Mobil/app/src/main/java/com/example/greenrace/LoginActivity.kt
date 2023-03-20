@@ -65,7 +65,7 @@ class LoginActivity : AppCompatActivity() {
                                 val tokenUtils = TokenUtils(this@LoginActivity)
                                 tokenUtils.saveAccessToken(jwtToken)
                                 val logSuccessful =
-                                    Intent(this@LoginActivity, MapsActivity::class.java)
+                                    Intent(this@LoginActivity, MainActivity::class.java)
                                 startActivity(logSuccessful)
                                 finish()
                             }
