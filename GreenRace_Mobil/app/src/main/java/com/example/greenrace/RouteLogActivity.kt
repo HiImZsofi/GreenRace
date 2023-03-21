@@ -26,6 +26,7 @@ class RouteLogActivity : AppCompatActivity() {
         initElements()
         setVehicleTypeAdapter()
         getData()
+        setLineSpinnerAdapter()
     }
 
     private fun initElements() {
@@ -38,7 +39,6 @@ class RouteLogActivity : AppCompatActivity() {
 
         //Disable input fields and submit button
         //So the user has to fill them in one by one from the top down
-//        lineNumberSpinner.isEnabled = false
         getOnStopSpinner.isEnabled = false
         getOffStopSpinner.isEnabled = false
         logRouteButton.isEnabled = false
@@ -47,15 +47,11 @@ class RouteLogActivity : AppCompatActivity() {
     //Gets BKK line data from the backend
     private fun getData() {
         val response = ServiceBuilder.buildService(ApiInterface::class.java)
-        val lines :ArrayList<String> = ArrayList()
 
         response.getData().enqueue(
             object : Callback<RouteData> {
                 override fun onResponse(call: Call<RouteData>, response: Response<RouteData>) {
                     //Array list of lines with the route types
-                    response.body()?.routeData?.forEach { element ->
-                        lines.add(element.routeShortName)
-                    }
                     lineNumberList = response.body()!!.routeData
                 }
                 override fun onFailure(call: Call<RouteData>, t: Throwable) {
@@ -63,6 +59,10 @@ class RouteLogActivity : AppCompatActivity() {
                 }
             }
         )
+    }
+
+    private fun setLineSpinnerAdapter(){
+        var lines: ArrayList<String> = setLineList()
 
         //Set list with the line numbers
         //For the line spinner adapter
@@ -73,7 +73,6 @@ class RouteLogActivity : AppCompatActivity() {
         )
         //TODO Set default to none selected
         lineNumberSpinner.adapter = adapter
-        vehicleTypeSpinner.setSelection(-1)
 
         lineNumberSpinner.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
@@ -100,9 +99,24 @@ class RouteLogActivity : AppCompatActivity() {
             }
     }
 
+    private fun setLineList(): ArrayList<String> {
+        var lines: ArrayList<String> = ArrayList()
+        val currentType = vehicleTypeSpinner.selectedItem
+        lineNumberList.forEach { element ->
+            when (currentType){
+                RouteLineType.Tram.printableType -> lines.add(element.routeShortName)
+                RouteLineType.Subway.printableType -> lines.add(element.routeShortName)
+                RouteLineType.Bus.printableType -> lines.add(element.routeShortName)
+                RouteLineType.Trolley.printableType -> lines.add(element.routeShortName)
+                RouteLineType.SuburbanRail.printableType -> lines.add(element.routeShortName)
+            }
+        }
+        return lines
+    }
+
     private fun setVehicleTypeAdapter() {
-        val items = listOf("Item 1", "Item 2", "Item 3") // example list of items
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, items)
+        val types = RouteLineType.values().map { it.printableType }
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, types)
         //TODO Set default to none selected
         vehicleTypeSpinner.adapter = adapter
 
@@ -114,7 +128,7 @@ class RouteLogActivity : AppCompatActivity() {
                 id: Long
             ) {
                 // handle item selection here
-                val selectedItem = items[position]
+                val selectedItem = types[position]
                 Toast.makeText(
                     this@RouteLogActivity,
                     "Selected item: $selectedItem",
@@ -129,7 +143,6 @@ class RouteLogActivity : AppCompatActivity() {
             }
         }
         //TODO Fix so nothing is selected by default
-        vehicleTypeSpinner.setSelection(-1)
-
+        vehicleTypeSpinner.setSelection(SpinnerAdapter.NO_SELECTION)
     }
 }
