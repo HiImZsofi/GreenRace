@@ -13,7 +13,7 @@ import {
   saveProfpic,
   getChartData,
 } from "./callbackHandlers.js";
-import { getRoutes } from "./userStopsData.js";
+import { setStopNames } from "./userStopsData.js";
 import express from "express";
 import bodyParser from "body-parser";
 import bcrypt from "bcrypt";
@@ -184,7 +184,8 @@ app.get("/logRoute", async (req, res) => {
   res.send({ routeData: routeData });
 });
 
-app.get("/get/routeData", (req, res) => {
-  var givenRoute = getRoutes();
-  res.send(givenRoute);
+app.get("/get/routeData", async (req, res) => {
+  var stopNames = await setStopNames();
+  console.log(stopNames);
+  res.send(stopNames);
 });
