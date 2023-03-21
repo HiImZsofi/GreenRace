@@ -24,9 +24,8 @@ class RouteLogActivity : AppCompatActivity() {
         setContentView(R.layout.activity_route_log)
 
         initElements()
-        setVehicleTypeAdapter()
         getData()
-        setLineSpinnerAdapter()
+        setVehicleTypeAdapter()
     }
 
     private fun initElements() {
@@ -53,17 +52,20 @@ class RouteLogActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<RouteData>, response: Response<RouteData>) {
                     //Array list of lines with the route types
                     lineNumberList = response.body()!!.routeData
+                    setLineSpinnerAdapter()
                 }
+
                 override fun onFailure(call: Call<RouteData>, t: Throwable) {
                     Log.e("Error", t.toString())
+                    lineNumberList = ArrayList()
                 }
             }
         )
     }
 
-    private fun setLineSpinnerAdapter(){
-        var lines: ArrayList<String> = setLineList()
-
+    private fun setLineSpinnerAdapter() {
+        lineNumberSpinner.adapter = null
+        val lines: ArrayList<String> = setLineList()
         //Set list with the line numbers
         //For the line spinner adapter
         val adapter = ArrayAdapter(
@@ -100,25 +102,36 @@ class RouteLogActivity : AppCompatActivity() {
     }
 
     private fun setLineList(): ArrayList<String> {
-        var lines: ArrayList<String> = ArrayList()
+        val lines: ArrayList<String> = ArrayList()
         val currentType = vehicleTypeSpinner.selectedItem
+        var currentTypeCode = -1
+        when (currentType) {
+            RouteLineType.Tram.printableType -> currentTypeCode = RouteLineType.Tram.type
+            RouteLineType.Subway.printableType -> currentTypeCode = RouteLineType.Subway.type
+            RouteLineType.Bus.printableType -> currentTypeCode = RouteLineType.Bus.type
+            RouteLineType.Trolley.printableType -> currentTypeCode = RouteLineType.Trolley.type
+            RouteLineType.SuburbanRail.printableType -> currentTypeCode =
+                RouteLineType.SuburbanRail.type
+        }
         lineNumberList.forEach { element ->
-            when (currentType){
-                RouteLineType.Tram.printableType -> lines.add(element.routeShortName)
-                RouteLineType.Subway.printableType -> lines.add(element.routeShortName)
-                RouteLineType.Bus.printableType -> lines.add(element.routeShortName)
-                RouteLineType.Trolley.printableType -> lines.add(element.routeShortName)
-                RouteLineType.SuburbanRail.printableType -> lines.add(element.routeShortName)
+            if (element.routeType == currentTypeCode) {
+                lines.add(element.routeShortName)
             }
+
         }
         return lines
     }
 
     private fun setVehicleTypeAdapter() {
+        var inited:Boolean = false
         val types = RouteLineType.values().map { it.printableType }
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, types)
         //TODO Set default to none selected
         vehicleTypeSpinner.adapter = adapter
+
+        if(this::lineNumberList.isInitialized){
+            inited=true
+        }
 
         vehicleTypeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -135,6 +148,9 @@ class RouteLogActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
                 lineNumberSpinner.isEnabled = true
+                if(inited){
+                    setLineSpinnerAdapter()
+                }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -143,6 +159,6 @@ class RouteLogActivity : AppCompatActivity() {
             }
         }
         //TODO Fix so nothing is selected by default
-        vehicleTypeSpinner.setSelection(SpinnerAdapter.NO_SELECTION)
+        //vehicleTypeSpinner.setSelection(SpinnerAdapter.NO_SELECTION)
     }
 }
