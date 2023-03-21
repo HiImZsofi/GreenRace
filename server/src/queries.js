@@ -175,3 +175,15 @@ export function getRouteNumbers() {
     );
   });
 }
+
+export function getStops() {
+  return new Promise((resolve, rejects) => {
+    connection.query(
+      "SELECT stop_id, stop_name, stop_lat, stop_lon FROM stopsdata",
+      function (err, result) {
+        if (err || result.length == 0) return rejects(err);
+        return resolve(result);
+      }
+    );
+  });
+}
