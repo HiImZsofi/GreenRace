@@ -64,7 +64,6 @@ class RouteLogActivity : AppCompatActivity() {
     }
 
     private fun setLineSpinnerAdapter() {
-        lineNumberSpinner.adapter = null
         val lines: ArrayList<String> = setLineList()
         //Set list with the line numbers
         //For the line spinner adapter
@@ -123,15 +122,10 @@ class RouteLogActivity : AppCompatActivity() {
     }
 
     private fun setVehicleTypeAdapter() {
-        var inited:Boolean = false
         val types = RouteLineType.values().map { it.printableType }
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, types)
         //TODO Set default to none selected
         vehicleTypeSpinner.adapter = adapter
-
-        if(this::lineNumberList.isInitialized){
-            inited=true
-        }
 
         vehicleTypeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -148,7 +142,7 @@ class RouteLogActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
                 lineNumberSpinner.isEnabled = true
-                if(inited){
+                if (this@RouteLogActivity::lineNumberList.isInitialized) {
                     setLineSpinnerAdapter()
                 }
             }
