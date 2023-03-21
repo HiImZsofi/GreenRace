@@ -63,6 +63,8 @@ class RouteLogActivity : AppCompatActivity() {
         )
     }
 
+    //Updates the lines list
+    //With the type appropriate data
     private fun setLineSpinnerAdapter() {
         val lines: ArrayList<String> = setLineList()
         //Set list with the line numbers
@@ -72,7 +74,7 @@ class RouteLogActivity : AppCompatActivity() {
             android.R.layout.simple_spinner_dropdown_item,
             lines
         )
-        //TODO Set default to none selected
+
         lineNumberSpinner.adapter = adapter
 
         lineNumberSpinner.onItemSelectedListener =
@@ -104,6 +106,9 @@ class RouteLogActivity : AppCompatActivity() {
         val lines: ArrayList<String> = ArrayList()
         val currentType = vehicleTypeSpinner.selectedItem
         var currentTypeCode = -1
+
+        //Check the currently selected type
+        //And set currentTypeCode to the appropriate type code from the RouteLineType enum class
         when (currentType) {
             RouteLineType.Tram.printableType -> currentTypeCode = RouteLineType.Tram.type
             RouteLineType.Subway.printableType -> currentTypeCode = RouteLineType.Subway.type
@@ -116,7 +121,6 @@ class RouteLogActivity : AppCompatActivity() {
             if (element.routeType == currentTypeCode) {
                 lines.add(element.routeShortName)
             }
-
         }
         return lines
     }
@@ -124,7 +128,6 @@ class RouteLogActivity : AppCompatActivity() {
     private fun setVehicleTypeAdapter() {
         val types = RouteLineType.values().map { it.printableType }
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, types)
-        //TODO Set default to none selected
         vehicleTypeSpinner.adapter = adapter
 
         vehicleTypeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -142,6 +145,9 @@ class RouteLogActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
                 lineNumberSpinner.isEnabled = true
+
+                //Check if the lineNumberList if initialized
+                //If yes then reload the ArrayAdapter of the lineNumberSpinner
                 if (this@RouteLogActivity::lineNumberList.isInitialized) {
                     setLineSpinnerAdapter()
                 }
@@ -152,7 +158,5 @@ class RouteLogActivity : AppCompatActivity() {
                 lineNumberSpinner.isEnabled = false
             }
         }
-        //TODO Fix so nothing is selected by default
-        //vehicleTypeSpinner.setSelection(SpinnerAdapter.NO_SELECTION)
     }
 }
