@@ -187,5 +187,5 @@ app.get("/logRoute", async (req, res) => {
 app.get("/get/routeData", async (req, res) => {
   var stopNames = await setStopNames();
   console.log(stopNames);
-  res.send(stopNames);
+  res.send({ stopNames: stopNames });
 });
