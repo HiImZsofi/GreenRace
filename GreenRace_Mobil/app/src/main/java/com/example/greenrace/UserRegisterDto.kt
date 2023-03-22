@@ -2,11 +2,7 @@ package com.example.greenrace
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.google.gson.annotations.Expose
-
 import com.google.gson.annotations.SerializedName
-import java.util.Objects
 
 
 //user info data model
@@ -50,9 +46,39 @@ class RouteData @JsonCreator constructor(
     @JsonProperty("routeData") val routeData: List<Route>
 )
 
-class Route @JsonCreator constructor(@JsonProperty("route_short_name") routeShortName: String, @JsonProperty("route_type") routeType: Int) {
+class Route @JsonCreator constructor(
+    @JsonProperty("route_short_name") routeShortName: String,
+    @JsonProperty("route_type") routeType: Int
+) {
     @JsonProperty("route_short_name")
-    @SerializedName("route_short_name") val routeShortName: String = routeShortName
+    @SerializedName("route_short_name")
+    val routeShortName: String = routeShortName
+
     @JsonProperty("route_type")
-    @SerializedName("route_type") val routeType: Int = routeType
+    @SerializedName("route_type")
+    val routeType: Int = routeType
+}
+
+class StopsData @JsonCreator constructor(
+    @JsonProperty("stopNames1") stopNames1: List<Stop>,
+    @JsonProperty("stopNames2") stopNames2: List<Stop>
+)
+
+class Stop @JsonCreator constructor(
+    @JsonProperty("stopname") stopName: String,
+    @JsonProperty("stoplat") stopLat: String,
+    @JsonProperty("stoplon") stopLon: String
+) {
+    @JsonProperty("stopname")
+    @SerializedName("stopname")
+    val stopName: String = stopName
+
+    @JsonProperty("stoplat")
+    @SerializedName("stoplat")
+    val stopLat: String = stopLat
+
+    @JsonProperty("stoplon")
+    @SerializedName("stoplon")
+    val stopLon: String = stopLon
+
 }
