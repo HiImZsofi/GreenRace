@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools">
+
+<LinearLayout
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -26,25 +33,20 @@
             android:text="UserPage"
             android:textAlignment="center"
             android:textSize="40dp"/>
-        <androidx.cardview.widget.CardView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            app:cardCornerRadius="250dp"
-            android:layout_gravity="center"
-            android:layout_alignParentRight="true">
-        <ImageView
+
+        <ImageButton
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
             android:adjustViewBounds="true"
-            android:contentDescription="profile picture"
-            android:maxWidth="50dp"
-            android:maxHeight="50dp"
+            android:contentDescription="open button"
             android:scaleType="fitCenter"
-            android:src="@drawable/npic"
-            />
-        </androidx.cardview.widget.CardView>
+            android:src="@drawable/ic_menu"
+            android:id="@+id/open_button"/>
 
     </RelativeLayout>
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -58,5 +60,15 @@
             android:layout_height="wrap_content"
             tools:layout="@layout/fragment_user_page" />
     </LinearLayout>
-
 </LinearLayout>
+
+    <com.google.android.material.navigation.NavigationView
+    android:id="@+id/navigation_drawer"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_gravity="end"
+    android:fitsSystemWindows="true"
+    app:headerLayout="@layout/nav_header"
+    app:menu="@menu/nav_menu"/>
+
+</androidx.drawerlayout.widget.DrawerLayout>
