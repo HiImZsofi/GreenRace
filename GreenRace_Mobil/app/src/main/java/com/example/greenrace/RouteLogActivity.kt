@@ -18,6 +18,7 @@ class RouteLogActivity : AppCompatActivity() {
     private lateinit var logRouteButton: Button
 
     private lateinit var lineNumberList: List<Route>
+    private lateinit var lineStopVariants: List<List<Stop>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +64,25 @@ class RouteLogActivity : AppCompatActivity() {
         )
     }
 
+    private fun getStopsData(){
+        val response = ServiceBuilder.buildService(ApiInterface::class.java)
+
+        response.getStopsData().enqueue(
+            object : Callback<StopsData> {
+                override fun onResponse(call: Call<StopsData>, response: Response<StopsData>) {
+                    //Array list of lines with the route types
+                    response.body()
+
+                }
+
+                override fun onFailure(call: Call<StopsData>, t: Throwable) {
+                    Log.e("Error", t.toString())
+                    lineNumberList = ArrayList()
+                }
+            }
+        )
+    }
+
     //Updates the lines list
     //With the type appropriate data
     private fun setLineSpinnerAdapter() {
@@ -93,6 +113,9 @@ class RouteLogActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                     getOnStopSpinner.isEnabled = true
+//                    if (this@RouteLogActivity::lineStopVariants.isInitialized) {
+//                        setGetOnStopAdapter()
+//                    }
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -150,6 +173,7 @@ class RouteLogActivity : AppCompatActivity() {
                 //If yes then reload the ArrayAdapter of the lineNumberSpinner
                 if (this@RouteLogActivity::lineNumberList.isInitialized) {
                     setLineSpinnerAdapter()
+                    getStopsData()
                 }
             }
 
