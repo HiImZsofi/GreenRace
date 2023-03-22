@@ -23,6 +23,7 @@ async function fetchData() {
   );
   var userRouteData = await res.json();
   console.log("Data fetched");
+  //console.log(userRouteData);
   return userRouteData;
 }
 
@@ -54,32 +55,31 @@ for (let j = 0; j < route1.length; j++) {
 for (let j = 0; j < route2.length; j++) {
   stops2.push(route2[j].slice(4));
 }
-
 //function for matching the stop_ids with stop names from database
 export async function setStopNames() {
   var queryRes = await getStops().catch((err) => {
     throw err;
   });
-  for (let i = 0; i < queryRes.length; i++) {
-    for (let j = 0; j < stops1.length; j++) {
+  for (let i = 0; i < stops1.length; i++) {
+    for (let j = 0; j < queryRes.length; j++) {
       //if id in query matches with id in array push neccessary data into object array
-      if (JSON.parse(JSON.stringify(queryRes[i]["stop_id"])) === stops1[j]) {
+      if (JSON.parse(JSON.stringify(queryRes[j]["stop_id"])) === stops1[i]) {
         stopNames1.push({
-          stopname: JSON.parse(JSON.stringify(queryRes[i]["stop_name"])),
-          stoplat: JSON.parse(JSON.stringify(queryRes[i]["stop_lat"])),
-          stoplon: JSON.parse(JSON.stringify(queryRes[i]["stop_lon"])),
+          stopname: JSON.parse(JSON.stringify(queryRes[j]["stop_name"])),
+          stoplat: JSON.parse(JSON.stringify(queryRes[j]["stop_lat"])),
+          stoplon: JSON.parse(JSON.stringify(queryRes[j]["stop_lon"])),
         });
       }
     }
   }
   //console.log(stopNames1);
-  for (let i = 0; i < queryRes.length; i++) {
-    for (let j = 0; j < stops2.length; j++) {
-      if (JSON.parse(JSON.stringify(queryRes[i]["stop_id"])) === stops2[j]) {
+  for (let i = 0; i < stops2.length; i++) {
+    for (let j = 0; j < queryRes.length; j++) {
+      if (JSON.parse(JSON.stringify(queryRes[j]["stop_id"])) === stops2[i]) {
         stopNames2.push({
-          stopname: JSON.parse(JSON.stringify(queryRes[i]["stop_name"])),
-          stoplat: JSON.parse(JSON.stringify(queryRes[i]["stop_lat"])),
-          stoplon: JSON.parse(JSON.stringify(queryRes[i]["stop_lon"])),
+          stopname: JSON.parse(JSON.stringify(queryRes[j]["stop_name"])),
+          stoplat: JSON.parse(JSON.stringify(queryRes[j]["stop_lat"])),
+          stoplon: JSON.parse(JSON.stringify(queryRes[j]["stop_lon"])),
         });
       }
     }
