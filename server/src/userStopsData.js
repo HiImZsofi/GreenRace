@@ -11,7 +11,7 @@ const connection = mysql.createConnection({
 });
 
 //hardcoded string until I receive actual data
-var userGivenId = "5200";
+var userGivenId = "0050";
 
 //fetch data based on route ID from BKK API
 async function fetchData() {
