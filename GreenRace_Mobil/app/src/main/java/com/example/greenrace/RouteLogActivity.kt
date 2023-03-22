@@ -71,13 +71,12 @@ class RouteLogActivity : AppCompatActivity() {
             object : Callback<StopsData> {
                 override fun onResponse(call: Call<StopsData>, response: Response<StopsData>) {
                     //Array list of lines with the route types
-                    response.body()
+                    val arrays : Array<List<Stop>> = response.body()!!.stopNamesList
 
                 }
 
                 override fun onFailure(call: Call<StopsData>, t: Throwable) {
                     Log.e("Error", t.toString())
-                    lineNumberList = ArrayList()
                 }
             }
         )
@@ -113,6 +112,7 @@ class RouteLogActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                     getOnStopSpinner.isEnabled = true
+                    getStopsData()
 //                    if (this@RouteLogActivity::lineStopVariants.isInitialized) {
 //                        setGetOnStopAdapter()
 //                    }
