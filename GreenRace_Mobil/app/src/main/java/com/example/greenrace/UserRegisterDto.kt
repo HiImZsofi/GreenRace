@@ -60,9 +60,12 @@ class Route @JsonCreator constructor(
 }
 
 class StopsData @JsonCreator constructor(
-    @JsonProperty("stopNames1") stopNames1: List<Stop>,
-    @JsonProperty("stopNames2") stopNames2: List<Stop>
-)
+    @JsonProperty("stopNames") stopNamesList: Array<List<Stop>>
+) {
+    @JsonProperty("stopNames")
+    @SerializedName("stopNames")
+    val stopNamesList: Array<List<Stop>> = stopNamesList
+}
 
 class Stop @JsonCreator constructor(
     @JsonProperty("stopname") stopName: String,
