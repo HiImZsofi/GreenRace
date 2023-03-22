@@ -84,5 +84,5 @@ export async function setStopNames() {
       }
     }
   }
-  return { stopNames1, stopNames2 };
+  return [stopNames1, stopNames2];
 }
