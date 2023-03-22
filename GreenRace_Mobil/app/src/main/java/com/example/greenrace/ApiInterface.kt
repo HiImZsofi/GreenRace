@@ -20,4 +20,9 @@ interface ApiInterface {
     @GET("logRoute")
     fun getData(): Call<RouteData>
 
+    @Headers("Content-Type: application/json")
+    @GET("get/routeData")
+    fun getStopsData(): Call<StopsData>
+
+
 }
