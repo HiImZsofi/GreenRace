@@ -7,6 +7,9 @@ plugins {
 android {
     namespace 'com.example.greenrace'
     compileSdk 33
+    buildFeatures {
+        viewBinding = true
+    }
 
     defaultConfig {
         applicationId "com.example.greenrace"
