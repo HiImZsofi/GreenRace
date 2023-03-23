@@ -45,8 +45,8 @@ var route2 = bothRoutes[1];
 
 var stops1 = [];
 var stops2 = [];
-var stopNames1 = [];
-var stopNames2 = [];
+var stopNames1;
+var stopNames2;
 
 //cut BKK_ from strings so they can actually match with the database
 for (let j = 0; j < route1.length; j++) {
@@ -57,6 +57,8 @@ for (let j = 0; j < route2.length; j++) {
 }
 //function for matching the stop_ids with stop names from database
 export async function setStopNames() {
+  stopNames1 = [];
+  stopNames2 = [];
   var queryRes = await getStops().catch((err) => {
     throw err;
   });
