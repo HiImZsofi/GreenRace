@@ -4,18 +4,25 @@ package com.example.greenrace
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.greenrace.sharedPreferences.PageNum
+import com.example.greenrace.sharedPreferences.TokenUtils
 import com.example.greenrace.swipeTouchListener.OnSwipeTouchListener
+import com.google.android.material.navigation.NavigationView
+import kotlin.math.log
 
 class MainActivity : AppCompatActivity() {
     // Declare variables and views
@@ -24,7 +31,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var buttonOpenDrawer: ImageButton
 
-    private var menulist: List<String> = listOf("UserPage", "RankPage", "FriendPage")
+    private var menulist: List<String> = listOf("Pontjaim", "Rangsor", "Barátok")
     private var pagenumber: Int = 0
     private var fragmentlist: List<Fragment> = listOf(UserPageFragment(), RankPageFragment(), FriendPageFragment())
     // Override the onCreate method to initialize views and set up the layout
@@ -95,6 +102,61 @@ class MainActivity : AppCompatActivity() {
         closeButton.setOnClickListener {
             drawerLayout.closeDrawer(GravityCompat.END)
         }
+        val navigationView = findViewById<NavigationView>(R.id.navigation_drawer)
+        navigationView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_point -> {
+                    val pageNum = PageNum(this@MainActivity)
+                    pageNum.savePageNum(0)
+                    val intent = Intent(this@MainActivity, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                    true
+                }
+                R.id.nav_rank -> {
+                    val pageNum = PageNum(this@MainActivity)
+                    pageNum.savePageNum(1)
+                    val intent = Intent(this@MainActivity, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                    true
+                }
+                R.id.nav_friend -> {
+                    val pageNum = PageNum(this@MainActivity)
+                    pageNum.savePageNum(2)
+                    val intent = Intent(this@MainActivity, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                    true
+                }
+                R.id.nav_map -> {
+                    val intent = Intent(this@MainActivity, MapsActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                    true
+                }
+                R.id.nav_profile -> {
+                    //TODO redirect to profile picture setter
+                    true
+                }
+                R.id.nav_settings -> {
+                    //TODO redirect to settings
+                    true
+                }
+                R.id.nav_logout -> {
+                    val tokenUtils = TokenUtils(this@MainActivity)
+                    tokenUtils.clearToken()
+                    val pageNum = PageNum(this@MainActivity)
+                    pageNum.clearPageNum()
+                    val intent = Intent(this@MainActivity, LoginActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                    true
+                }
+                else -> false
+            }
+        }
+
     }
     fun openCloseDrawer(view: View){
         if (drawerLayout.isDrawerOpen(GravityCompat.END)) {
@@ -112,8 +174,11 @@ class MainActivity : AppCompatActivity() {
         buttonOpenDrawer = findViewById(R.id.open_button)
         val pageNum = PageNum(this@MainActivity)
         var page = pageNum.getPageNum()
-        if(page != null){
+
+        if(!page.isNullOrEmpty()){
             pagenumber = page.toInt()
+        } else {
+            pagenumber = 0
         }
     }
 }

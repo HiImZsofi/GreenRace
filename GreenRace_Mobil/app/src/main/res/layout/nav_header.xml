@@ -12,28 +12,24 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="30dp">
-
         <androidx.cardview.widget.CardView
+            android:layout_marginStart="20dp"
             android:layout_width="72dp"
             android:layout_height="72dp"
-            app:cardCornerRadius="100dp"
-            app:cardBackgroundColor="@color/white"
-            android:layout_marginStart="20dp">
-    <ImageView
-        android:id="@+id/nav_header_imageView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:contentDescription="profile_picture"
-        android:src="@drawable/npic"
-        android:scaleType="fitCenter"
-        android:adjustViewBounds="true"
-        />
-    </androidx.cardview.widget.CardView>
+            app:cardCornerRadius="250dp"
+            android:layout_gravity="center">
+            <ImageView
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:src="@drawable/npic"
+                android:scaleType="centerCrop"
+                android:contentDescription="Profilkép" />
+        </androidx.cardview.widget.CardView>
     <ImageButton
         android:id="@+id/close_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="Close Button"
+        android:contentDescription="Bezárás"
         android:minHeight="48dp"
         android:onClick="openCloseDrawer"
         android:src="@drawable/ic_close"
@@ -48,6 +44,7 @@
         android:layout_height="wrap_content"
         android:text="username_placeholder"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
     <TextView
@@ -56,6 +53,7 @@
         android:layout_height="wrap_content"
         android:text="email_placeholder"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
 
     <LinearLayout

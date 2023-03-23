@@ -21,8 +21,8 @@
         android:background="@color/green_700"
         android:paddingStart="15dp"
         android:paddingEnd="15dp"
-        android:paddingTop="40dp"
-        android:paddingBottom="5dp">
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp">
 
         <TextView
             android:id="@+id/pageName"
@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="UserPage"
+            android:text="Pontjaim"
             android:textAlignment="center"
             android:textSize="40dp"/>
 
@@ -39,7 +39,7 @@
             android:layout_height="50dp"
             android:layout_alignParentRight="true"
             android:adjustViewBounds="true"
-            android:contentDescription="open button"
+            android:contentDescription="Kinyitás"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_menu"
             android:id="@+id/open_button"/>

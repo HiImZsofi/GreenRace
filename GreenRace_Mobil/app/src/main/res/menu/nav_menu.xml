@@ -2,16 +2,32 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_point"
+            android:icon="@drawable/ic_points"
+            android:title="Pontok"/>
+        <item
+            android:id="@+id/nav_rank"
+            android:icon="@drawable/ic_ranklist"
+            android:title="Ranglista"/>
+        <item
+            android:id="@+id/nav_friend"
+            android:icon="@drawable/ic_friends"
+            android:title="Barátok"/>
+        <item
             android:id="@+id/nav_map"
             android:icon="@drawable/ic_map"
-            android:title="Map"/>
+            android:title="Térkép"/>
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_profile"
+            android:title="Profilkép"/>
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings"
-            android:title="Settings"/>
+            android:title="Beállítások"/>
     <item
         android:id="@+id/nav_logout"
         android:icon="@drawable/ic_logout"
-        android:title="Logout" />
+        android:title="Kijelentkezés" />
     </group>
 </menu>
