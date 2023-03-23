@@ -186,7 +186,8 @@ app.get("/logRoute", async (req, res) => {
 
 app.post("/get/routeData", async (req, res) => {
   var stopNames = [];
-  stopNames = await setStopNames(line); //!!!!! NOT IMPLEMENTED (receiving route_id)
+  var userGivenId = req.body.lineid;
+  stopNames = await setStopNames(userGivenId); //!!!!! NOT IMPLEMENTED (receiving route_id)
   //console.log(stopNames);
   res.send({ stopNames: stopNames });
 });
