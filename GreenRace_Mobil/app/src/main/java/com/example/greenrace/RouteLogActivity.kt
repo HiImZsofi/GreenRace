@@ -18,7 +18,10 @@ class RouteLogActivity : AppCompatActivity() {
     private lateinit var logRouteButton: Button
 
     private lateinit var lineNumberList: List<Route>
-    private lateinit var lineStopVariants: List<List<Stop>>
+    private lateinit var lineStopVariants: Array<List<Stop>>
+
+    private lateinit var currentLine : String
+    private lateinit var currentGetOnStop : Stop
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,12 +69,11 @@ class RouteLogActivity : AppCompatActivity() {
 
     private fun getStopsData(){
         val response = ServiceBuilder.buildService(ApiInterface::class.java)
-
         response.getStopsData().enqueue(
             object : Callback<StopsData> {
                 override fun onResponse(call: Call<StopsData>, response: Response<StopsData>) {
                     //Array list of lines with the route types
-                    val arrays : Array<List<Stop>> = response.body()!!.stopNamesList
+                    lineStopVariants = response.body()!!.stopNamesList
 
                 }
 
@@ -80,6 +82,54 @@ class RouteLogActivity : AppCompatActivity() {
                 }
             }
         )
+    }
+
+    private fun setGetOnStopSpinnerAdapter(){
+        val getOnStops : List<Stop> = if(lineStopVariants[0].size>lineStopVariants[1].size) lineStopVariants[0] else if(lineStopVariants[0].size<lineStopVariants[1].size) lineStopVariants[1] else lineStopVariants[0]
+        val getOnStopsList: ArrayList<String> = setGetOnStopList(getOnStops) as ArrayList<String>
+        //Set list with the line numbers
+        //For the line spinner adapter
+        val adapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_dropdown_item,
+            getOnStopsList
+        )
+
+        getOnStopSpinner.adapter = adapter
+
+        getOnStopSpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    // handle item selection here
+                    val selectedItem = getOnStopsList[position]
+                    Toast.makeText(
+                        this@RouteLogActivity,
+                        "Selected item: $selectedItem",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    currentGetOnStop = getOnStops[position]
+                    getOffStopSpinner.isEnabled = true
+                    getStopsData()
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    // handle case where no item is selected
+                    getOnStopSpinner.isEnabled = false
+                }
+            }
+    }
+
+    private fun setGetOnStopList(getOnStops : List<Stop>): List<String> {
+        val getOnStopsList:ArrayList<String> = ArrayList()
+        getOnStops.forEach { element ->
+            getOnStopsList.add(element.stopName)
+        }
+        return getOnStopsList
     }
 
     //Updates the lines list
@@ -112,10 +162,11 @@ class RouteLogActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                     getOnStopSpinner.isEnabled = true
+                    currentLine = selectedItem
                     getStopsData()
-//                    if (this@RouteLogActivity::lineStopVariants.isInitialized) {
-//                        setGetOnStopAdapter()
-//                    }
+                    if (this@RouteLogActivity::lineStopVariants.isInitialized) {
+                        setGetOnStopSpinnerAdapter()
+                    }
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {
