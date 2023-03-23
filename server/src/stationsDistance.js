@@ -48,6 +48,7 @@ function getDistance() {
   var to_lon;
   var to;
   for (let i = 0; i < stationsBetween.length; i++) {
+    //return distance variable so the loop wont throw an index out of bounds exception
     if (i + 2 == stationsBetween.length) {
       from_lat = parseFloat(stationsBetween[i].stoplat);
       from_lon = parseFloat(stationsBetween[i].stoplon);
@@ -63,6 +64,7 @@ function getDistance() {
       distance = distance + turf.distance(from, to);
       return distance;
     }
+    //split coordinates into latitude and longitude then parse them
     from_lat = parseFloat(stationsBetween[i].stoplat);
     from_lon = parseFloat(stationsBetween[i].stoplon);
     from = turf.point([from_lon, from_lat]);
@@ -70,9 +72,11 @@ function getDistance() {
 
     to_lat = parseFloat(stationsBetween[i + 1].stoplat);
     to_lon = parseFloat(stationsBetween[i + 1].stoplon);
+    //convert floats into actual coordinates for turf
     to = turf.point([to_lon, to_lat]);
 
+    //summarize distances between stations
     distance = distance + turf.distance(from, to);
   }
 }
-console.log(getDistance());
+// console.log(getDistance());
