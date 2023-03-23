@@ -56,7 +56,7 @@ for (let j = 0; j < route2.length; j++) {
   stops2.push(route2[j].slice(4));
 }
 //function for matching the stop_ids with stop names from database
-export async function setStopNames() {
+export async function setStopNames(line) {
   stopNames1 = [];
   stopNames2 = [];
   var queryRes = await getStops().catch((err) => {
