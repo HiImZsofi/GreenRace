@@ -11,10 +11,10 @@ const connection = mysql.createConnection({
 });
 
 //hardcoded string until I receive actual data
-var userGivenId = "0050";
+// var userGivenId = "3010";
 
 //fetch data based on route ID from BKK API
-async function fetchData() {
+async function fetchData(userGivenId) {
   const res = await fetch(
     "https://futar.bkk.hu/api/query/v1/ws/otp/api/where/route-details?routeId=BKK_" +
       userGivenId +
@@ -27,36 +27,44 @@ async function fetchData() {
   return userRouteData;
 }
 
-//put API given data into a variable
-var routeData = await fetchData();
+//*This function splits the data from the API call into two arrays
+//*Then formats the id values of the arrays
+//*And pushes the objects with the updated IDs to stops1 and stops2 arrays
+async function formatStopArrays(userGivenId) {
+  //put API given data into a variable
+  var routeData = await fetchData(userGivenId);
 
-//access stop ids from nested json object
-var routeStops = routeData.data.entry.variants;
+  //access stop ids from nested json object
+  var routeStops = routeData.data.entry.variants;
 
-//push every stop id into an array
-var bothRoutes = [];
-routeStops.forEach((element) => {
-  bothRoutes.push(element.stopIds);
-});
+  //push every stop id into an array
+  var bothRoutes = [];
+  routeStops.forEach((element) => {
+    bothRoutes.push(element.stopIds);
+  });
 
-//split the two arrays into two lines
-var route1 = bothRoutes[0];
-var route2 = bothRoutes[1];
+  //split the two arrays into two lines
+  var route1 = bothRoutes[0];
+  var route2 = bothRoutes[1];
+  //cut BKK_ from strings so they can actually match with the database
+  for (let j = 0; j < route1.length; j++) {
+    stops1.push(route1[j].slice(4));
+  }
+  for (let j = 0; j < route2.length; j++) {
+    stops2.push(route2[j].slice(4));
+  }
+}
 
 var stops1 = [];
 var stops2 = [];
 var stopNames1;
 var stopNames2;
 
-//cut BKK_ from strings so they can actually match with the database
-for (let j = 0; j < route1.length; j++) {
-  stops1.push(route1[j].slice(4));
-}
-for (let j = 0; j < route2.length; j++) {
-  stops2.push(route2[j].slice(4));
-}
 //function for matching the stop_ids with stop names from database
-export async function setStopNames() {
+//*The userGivenId is sent from the client when a new line is selected
+//*It is used to return the proper stops for the selected line
+export async function setStopNames(userGivenId) {
+  await formatStopArrays(userGivenId);
   stopNames1 = [];
   stopNames2 = [];
   var queryRes = await getStops().catch((err) => {
@@ -74,7 +82,7 @@ export async function setStopNames() {
       }
     }
   }
-  //console.log(stopNames1);
+  console.log(stopNames1);
   for (let i = 0; i < stops2.length; i++) {
     for (let j = 0; j < queryRes.length; j++) {
       if (JSON.parse(JSON.stringify(queryRes[j]["stop_id"])) === stops2[i]) {

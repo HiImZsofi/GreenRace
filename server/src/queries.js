@@ -167,7 +167,7 @@ export function getIDFromDB(email) {
 export function getRouteNumbers() {
   return new Promise((resolve, rejects) => {
     connection.query(
-      "SELECT route_short_name, route_type FROM routedata ORDER BY route_data_id ASC",
+      "SELECT route_id, route_short_name, route_type FROM routedata ORDER BY route_data_id ASC",
       function (err, result) {
         if (err || result.length == 0) return rejects(err);
         return resolve(result);
