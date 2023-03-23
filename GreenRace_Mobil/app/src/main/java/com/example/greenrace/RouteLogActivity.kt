@@ -67,6 +67,8 @@ class RouteLogActivity : AppCompatActivity() {
         )
     }
 
+    //GET HTTP request to /get/routeData endpoint
+    //Which returns the two arrays of stops for the current line
     private fun getStopsData(){
         val response = ServiceBuilder.buildService(ApiInterface::class.java)
         response.getStopsData().enqueue(
@@ -84,6 +86,7 @@ class RouteLogActivity : AppCompatActivity() {
         )
     }
 
+    //Set the list for getOnStopSpinner
     private fun setGetOnStopSpinnerAdapter(){
         val getOnStops : List<Stop> = if(lineStopVariants[0].size>lineStopVariants[1].size) lineStopVariants[0] else if(lineStopVariants[0].size<lineStopVariants[1].size) lineStopVariants[1] else lineStopVariants[0]
         val getOnStopsList: ArrayList<String> = setGetOnStopList(getOnStops) as ArrayList<String>
@@ -124,6 +127,7 @@ class RouteLogActivity : AppCompatActivity() {
             }
     }
 
+    //Make list of available getOnStops
     private fun setGetOnStopList(getOnStops : List<Stop>): List<String> {
         val getOnStopsList:ArrayList<String> = ArrayList()
         getOnStops.forEach { element ->
