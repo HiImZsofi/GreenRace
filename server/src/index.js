@@ -14,12 +14,15 @@ import {
   getChartData,
 } from "./callbackHandlers.js";
 import { setStopNames } from "./userStopsData.js";
+import { getDistance } from "./stationsDistance.js";
+import { getFinalEmission } from "./emissionCalc.js";
 import express from "express";
 import bodyParser from "body-parser";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import { getDistance } from "./stationsDistance.js";
 
 //server port
 const PORT = process.env.PORT || 3001;
@@ -187,7 +190,17 @@ app.get("/logRoute", async (req, res) => {
 app.post("/get/routeData", async (req, res) => {
   var stopNames = [];
   var userGivenId = req.body.lineid;
-  stopNames = await setStopNames(userGivenId); //!!!!! NOT IMPLEMENTED (receiving route_id)
+  stopNames = await setStopNames("3010"); //! usergivenid nem jó
   //console.log(stopNames);
   res.send({ stopNames: stopNames });
+});
+
+app.post("/get/distance", async (req, res) => {
+  var emission = await getFinalEmission(
+    "3",
+    "3010",
+    "Kelenföld vasútállomás M",
+    "Bécsi út / Vörösvári út"
+  );
+  res.send({ emission: emission });
 });
