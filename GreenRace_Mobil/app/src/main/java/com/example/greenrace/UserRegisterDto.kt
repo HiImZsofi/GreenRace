@@ -47,9 +47,14 @@ class RouteData @JsonCreator constructor(
 )
 
 class Route @JsonCreator constructor(
+    @JsonProperty("route_id") routeId :String,
     @JsonProperty("route_short_name") routeShortName: String,
     @JsonProperty("route_type") routeType: Int
 ) {
+    @JsonProperty("route_id")
+    @SerializedName("route_id")
+    val routeId:String = routeId
+
     @JsonProperty("route_short_name")
     @SerializedName("route_short_name")
     val routeShortName: String = routeShortName
@@ -59,10 +64,13 @@ class Route @JsonCreator constructor(
     val routeType: Int = routeType
 }
 
+//It's value is set to the result of the GET request to /get/routeData
 class StopsData @JsonCreator constructor(
     @JsonProperty("stopNames") val stopNamesList: Array<List<Stop>>
 )
 
+//Handles a stop object
+//Used when the line is selected and an two arrays of stops are returned
 class Stop @JsonCreator constructor(
     @JsonProperty("stopname") stopName: String,
     @JsonProperty("stoplat") stopLat: String,
