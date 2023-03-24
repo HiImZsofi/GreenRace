@@ -64,6 +64,12 @@ class Route @JsonCreator constructor(
     val routeType: Int = routeType
 }
 
+class RequestModelStopsData @JsonCreator constructor(lineId: String){
+    @JsonProperty("lineid")
+    @SerializedName("lineid")
+    val lineId:String = lineId
+}
+
 //It's value is set to the result of the GET request to /get/routeData
 class StopsData @JsonCreator constructor(
     @JsonProperty("stopNames") val stopNamesList: Array<List<Stop>>
