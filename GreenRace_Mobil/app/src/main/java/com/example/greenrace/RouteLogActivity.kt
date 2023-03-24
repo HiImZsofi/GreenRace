@@ -70,7 +70,8 @@ class RouteLogActivity : AppCompatActivity() {
     //Which returns the two arrays of stops for the current line
     private fun getStopsData(){
         val response = ServiceBuilder.buildService(ApiInterface::class.java)
-        response.getStopsData().enqueue(
+        val requestModelStopsData = RequestModelStopsData(currentLine)
+        response.getStopsData(requestModelStopsData).enqueue(
             object : Callback<StopsData> {
                 override fun onResponse(call: Call<StopsData>, response: Response<StopsData>) {
                     //Array list of lines with the route types
@@ -172,7 +173,7 @@ class RouteLogActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                     getOnStopSpinner.isEnabled = true
-                    currentLine = selectedItem
+                    currentLine = lineNumberList.filter { route -> route.routeShortName == selectedItem }[0].routeId
                     getStopsData()
                     if (this@RouteLogActivity::lineStopVariants.isInitialized) {
                         setGetOnStopSpinnerAdapter()
