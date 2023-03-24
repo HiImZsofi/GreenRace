@@ -4,11 +4,13 @@ import * as turf from "@turf/turf";
 //hardcoded user strings until receiving data
 var userStop1 = "Kelenföld vasútállomás M";
 var userStop2 = "Bécsi út / Vörösvári út";
-
-var stopNames = await setStopNames();
+var longerRoute;
+var stationIndexes;
+var stationsBetween;
 
 //return with the longer array so every station will be included
-function getLongerRoute() {
+async function getLongerRoute(userGivenId) {
+  var stopNames = await setStopNames(userGivenId);
   if (stopNames[0].length > stopNames[1].length) {
     return stopNames[0];
   } else if (stopNames[0].length < stopNames[1].length) {
@@ -18,28 +20,27 @@ function getLongerRoute() {
   }
 }
 
-var longerRoute = getLongerRoute();
-var stationIndexes = [];
-
-console.log(longerRoute);
-//get the array index of chosen stations
-for (let index = 0; index < longerRoute.length; index++) {
-  if (
-    longerRoute[index]["stopname"] == userStop1 ||
-    longerRoute[index]["stopname"] == userStop2
-  ) {
-    stationIndexes.push(index);
+function setStationIndexes(firstStop, secondStop) {
+  //console.log(longerRoute);
+  //get the array index of chosen stations
+  for (let index = 0; index < longerRoute.length; index++) {
+    if (
+      longerRoute[index]["stopname"] == firstStop ||
+      longerRoute[index]["stopname"] == secondStop
+    ) {
+      stationIndexes.push(index);
+    }
   }
+
+  //slice up array and only keep stations between the chosen ones
+  stationsBetween = longerRoute.slice(stationIndexes[0], stationIndexes[1] + 1);
+  //console.log(stationsBetween);
 }
 
-//slice up array and only keep stations between the chosen ones
-var stationsBetween = longerRoute.slice(
-  stationIndexes[0],
-  stationIndexes[1] + 1
-);
-console.log(stationsBetween);
-
-function getDistance() {
+export async function getDistance(userGivenId, firstStop, secondStop) {
+  longerRoute = await getLongerRoute(userGivenId);
+  stationIndexes = [];
+  setStationIndexes(firstStop, secondStop);
   var distance = 0;
   var from_lat;
   var from_lon;
@@ -62,6 +63,7 @@ function getDistance() {
       //console.log(to_lat);
 
       distance = distance + turf.distance(from, to);
+      //console.log(distance);
       return distance;
     }
     //split coordinates into latitude and longitude then parse them
@@ -79,4 +81,4 @@ function getDistance() {
     distance = distance + turf.distance(from, to);
   }
 }
-// console.log(getDistance());
+//getDistance("3010", userStop1, userStop2);
