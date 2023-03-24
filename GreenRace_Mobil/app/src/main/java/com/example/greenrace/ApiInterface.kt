@@ -21,8 +21,8 @@ interface ApiInterface {
     fun getData(): Call<RouteData>
 
     @Headers("Content-Type: application/json")
-    @GET("get/routeData")
-    fun getStopsData(): Call<StopsData>
+    @POST("get/routeData")
+    fun getStopsData(@Body requestModelStopsData: RequestModelStopsData): Call<StopsData>
 
 
 }
