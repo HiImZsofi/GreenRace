@@ -50,17 +50,17 @@ connection.query(
 );
 
 // Create Vehicles table
-connection.query(
-  "CREATE OR REPLACE TABLE Vehicles (vehicle_id int PRIMARY KEY AUTO_INCREMENT, vehicle_type VARCHAR(30) NOT NULL, model VARCHAR(255), emission int NOT NULL)",
-  function (err, result) {
-    if (err) throw err;
-    console.log("Table Vehicles created or modified");
-  }
-);
+// connection.query(
+//   "CREATE OR REPLACE TABLE Vehicles (vehicle_id int PRIMARY KEY AUTO_INCREMENT, vehicle_type VARCHAR(30) NOT NULL, model VARCHAR(255), emission int NOT NULL)",
+//   function (err, result) {
+//     if (err) throw err;
+//     console.log("Table Vehicles created or modified");
+//   }
+// );
 
 // Create Route table
 connection.query(
-  "CREATE OR REPLACE TABLE Routes (route_id int PRIMARY KEY AUTO_INCREMENT, user_id int NOT NULL, vehicle_id int NOT NULL, length int, CONSTRAINT fk_ruser_id FOREIGN KEY (user_ID) REFERENCES Users (user_ID), CONSTRAINT fk_vehicle_id FOREIGN KEY (vehicle_id) REFERENCES Vehicles (vehicle_id))",
+  "CREATE OR REPLACE TABLE Routes (route_id int PRIMARY KEY AUTO_INCREMENT, user_id int NOT NULL, emission int NOT NULL, length int)",
   function (err, result) {
     if (err) throw err;
     console.log("Table Routes created or modified");
