@@ -20,8 +20,8 @@ class RouteLogActivity : AppCompatActivity() {
     private lateinit var lineNumberList: List<Route>
     private lateinit var lineStopVariants: Array<List<Stop>>
 
-    private lateinit var currentLine : String
-    private lateinit var currentGetOnStop : Stop
+    private lateinit var currentLine: String
+    private lateinit var currentGetOnStop: Stop
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,7 +68,7 @@ class RouteLogActivity : AppCompatActivity() {
 
     //GET HTTP request to /get/routeData endpoint
     //Which returns the two arrays of stops for the current line
-    private fun getStopsData(){
+    private fun getStopsData() {
         val response = ServiceBuilder.buildService(ApiInterface::class.java)
         val requestModelStopsData = RequestModelStopsData(currentLine)
         response.getStopsData(requestModelStopsData).enqueue(
@@ -87,9 +87,9 @@ class RouteLogActivity : AppCompatActivity() {
     }
 
     //Set the list for getOnStopSpinner
-    private fun setGetOnStopSpinnerAdapter(){
-        val summedStops : List<Stop> = getSummedStopList()
-        val getOnStops : List<String> = setGetOnStopList(summedStops)
+    private fun setGetOnStopSpinnerAdapter() {
+        val summedStops: List<Stop> = getSummedStopList()
+        val getOnStops: List<String> = setGetOnStopList(summedStops)
         //Set list with the line numbers
         //For the line spinner adapter
         val adapter = ArrayAdapter(
@@ -126,15 +126,15 @@ class RouteLogActivity : AppCompatActivity() {
             }
     }
 
-    //Get
+    //Get a combined of the stops in a Stop typed List
     private fun getSummedStopList(): List<Stop> {
         return lineStopVariants[0].plus(lineStopVariants[1])
             .distinctBy { stop -> stop.stopName } as ArrayList<Stop>
     }
 
     //Make list of available getOnStops
-    private fun setGetOnStopList(summedStops : List<Stop>): List<String> {
-        val summedGetOnStopList:ArrayList<String> = ArrayList()
+    private fun setGetOnStopList(summedStops: List<Stop>): List<String> {
+        val summedGetOnStopList: ArrayList<String> = ArrayList()
 
         summedStops.forEach { element ->
             summedGetOnStopList.add(element.stopName)
@@ -173,7 +173,8 @@ class RouteLogActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                     getOnStopSpinner.isEnabled = true
-                    currentLine = lineNumberList.filter { route -> route.routeShortName == selectedItem }[0].routeId
+                    currentLine =
+                        lineNumberList.filter { route -> route.routeShortName == selectedItem }[0].routeId
                     getStopsData()
                     if (this@RouteLogActivity::lineStopVariants.isInitialized) {
                         setGetOnStopSpinnerAdapter()
@@ -187,6 +188,7 @@ class RouteLogActivity : AppCompatActivity() {
             }
     }
 
+    //Returns a list of the lines filtered by the transportation type
     private fun setLineList(): ArrayList<String> {
         val lines: ArrayList<String> = ArrayList()
         val currentType = vehicleTypeSpinner.selectedItem
