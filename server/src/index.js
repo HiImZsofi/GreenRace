@@ -14,7 +14,6 @@ import {
   getChartData,
 } from "./callbackHandlers.js";
 import { setStopNames } from "./userStopsData.js";
-import { getDistance } from "./stationsDistance.js";
 import { getFinalEmission } from "./emissionCalc.js";
 import express from "express";
 import bodyParser from "body-parser";
@@ -36,163 +35,164 @@ app.use(cookieParser());
 
 //? middleware options ig
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Credentials", true);
-  res.header(
-    "Access-Control-Allow-Methods",
-    "GET,PUT,POST,DELETE,UPDATE,OPTIONS"
-  );
-  res.header(
-    "Access-Control-Allow-Headers",
-    "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept"
-  );
-  next();
+	res.header("Access-Control-Allow-Credentials", true);
+	res.header(
+		"Access-Control-Allow-Methods",
+		"GET,PUT,POST,DELETE,UPDATE,OPTIONS"
+	);
+	res.header(
+		"Access-Control-Allow-Headers",
+		"X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept"
+	);
+	next();
 });
 
 //start server on given port
 app.listen(PORT, () => {
-  console.log(`Server listening on ${PORT}`);
+	console.log(`Server listening on ${PORT}`);
 });
 
 //test page route
 app.get("/", (req, res) => {
-  res.send("Main page");
+	res.send("Main page");
 });
 
 //register page route
 app.post("/register", async (req, res) => {
-  //request headers
-  res.set({
-    "Content-Type": "application/json",
-  });
+	//request headers
+	res.set({
+		"Content-Type": "application/json",
+	});
 
-  //request data
-  const { username, password, email } = req.body;
+	//request data
+	const { username, password, email } = req.body;
 
-  const saltRounds = 10; //higher number harder it is to reverse
-  let hash = bcrypt.hashSync(password, saltRounds); //hash the given password with salt before inserting
+	const saltRounds = 10; //higher number harder it is to reverse
+	let hash = bcrypt.hashSync(password, saltRounds); //hash the given password with salt before inserting
 
-  //Check for duplicate email
-  //If it "succeeds" then it sets the status code to 500
-  try {
-    await checkEmailInDB(email);
-    res.statusCode = 500;
-  } catch (error) {
-    res.statusCode = 100;
-    console.log("code changed to", res.statusCode);
-  }
+	//Check for duplicate email
+	//If it "succeeds" then it sets the status code to 500
+	try {
+		await checkEmailInDB(email);
+		res.statusCode = 500;
+	} catch (error) {
+		res.statusCode = 100;
+		console.log("code changed to", res.statusCode);
+	}
 
-  //Insert user into database
-  try {
-    await insertNewUser(username, hash, email);
-    res.statusCode = 200;
-    console.log("Inserted user", res.statusCode);
-    res.send({ result: "Successful registration" });
-  } catch (error) {
-    res.statusCode = 500;
-    console.log("Server error", res.statusCode);
-    res.send({ error: "Duplicate email" });
-  }
+	//Insert user into database
+	try {
+		await insertNewUser(username, hash, email);
+		res.statusCode = 200;
+		console.log("Inserted user", res.statusCode);
+		res.send({ result: "Successful registration" });
+	} catch (error) {
+		res.statusCode = 500;
+		console.log("Server error", res.statusCode);
+		res.send({ error: "Duplicate email" });
+	}
 });
 
 //Login POST request handling
 app.post("/login", async (req, res) => {
-  //Store data in from the POST request
-  const { email, password } = req.body;
+	//Store data in from the POST request
+	const { email, password } = req.body;
 
-  //Store data from SELECT query
-  const passwordInDB = await getPassQuery(email).catch((error) => {
-    res.statusCode = 404;
-    console.log("404 User not found");
-    res.send({ error: "Invalid email", response: error });
-  });
+	//Store data from SELECT query
+	const passwordInDB = await getPassQuery(email).catch((error) => {
+		res.statusCode = 404;
+		console.log("404 User not found");
+		res.send({ error: "Invalid email", response: error });
+	});
 
-  let token;
+	let token;
 
-  //Check password againts the one fetched from the database
-  if (res.statusCode != 404) {
-    //Get user_id from the database
-    const user_ID = await getIDFromDB(email).catch((error) => {
-      throw error;
-    });
-    bcrypt.compare(password, passwordInDB).then((compareRes, compareErr) => {
-      if (compareErr) throw compareErr;
-      if (compareRes) {
-        //Generate token
-        try {
-          token = generateAccessToken(user_ID, email);
-        } catch (e) {
-          throw new Error(e.message);
-        }
-        //Send token if the passwords matches
-        res.send({ Authorization: token });
-        console.log("200 Logged In");
-      } else {
-        //Send error if the passwords don't match
-        res.statusCode = 401;
-        res.send({ error: "Invalid password" });
-        console.log("401 Login Authorization Err");
-      }
-    });
-  }
+	//Check password againts the one fetched from the database
+	if (res.statusCode != 404) {
+		//Get user_id from the database
+		const user_ID = await getIDFromDB(email).catch((error) => {
+			throw error;
+		});
+		bcrypt.compare(password, passwordInDB).then((compareRes, compareErr) => {
+			if (compareErr) throw compareErr;
+			if (compareRes) {
+				//Generate token
+				try {
+					token = generateAccessToken(user_ID, email);
+				} catch (e) {
+					throw new Error(e.message);
+				}
+				//Send token if the passwords matches
+				res.send({ Authorization: token });
+				console.log("200 Logged In");
+			} else {
+				//Send error if the passwords don't match
+				res.statusCode = 401;
+				res.send({ error: "Invalid password" });
+				console.log("401 Login Authorization Err");
+			}
+		});
+	}
 });
 
 //User page route
 //Authorize user
 app.get("/userPage", (req, res) => {
-  authorizeUserGetRequest(req, res, "user");
+	authorizeUserGetRequest(req, res, "user");
 });
 
 //Friend page route
 //Authorize user
 app.get("/friendPage", (req, res) => {
-  authorizeUserGetRequest(req, res);
+	authorizeUserGetRequest(req, res);
 });
 
 //Rank page route
 //Authorize user
 app.get("/rankPage", (req, res) => {
-  authorizeUserGetRequest(req, res, "rank");
+	authorizeUserGetRequest(req, res, "rank");
 });
 
 app.get("/chartData", (req, res) => {
-  getChartData(req, res);
+	getChartData(req, res);
 });
 
 //Logout route POST request
 app.post("/logout", (req, res) => {
-  //throw the cookie if user has logged out
-  res.status(200).clearCookie("authorization", {
-    path: "/login",
-  });
-  res.statusCode = 200;
-  res.send("Logged out");
+	//throw the cookie if user has logged out
+	res.status(200).clearCookie("authorization", {
+		path: "/login",
+	});
+	res.statusCode = 200;
+	res.send("Logged out");
 });
 
 //Settings route POST request
 app.post("/settings", async (req, res) => {
-  saveSettings(req, res);
+	saveSettings(req, res);
 });
 
 //ProfpicSetter route POST request
 app.post("/profpicset", async (req, res) => {
-  saveProfpic(req, res);
+	saveProfpic(req, res);
 });
 
 //send back every line from the database
 app.get("/logRoute", async (req, res) => {
-  let routeData = await getRouteNumbers().catch((err) => {
-    throw err;
-  });
-  console.log(routeData);
-  res.send({ routeData: routeData });
+	let routeData = await getRouteNumbers().catch((err) => {
+		throw err;
+	});
+	console.log(routeData);
+	res.send({ routeData: routeData });
 });
 
 app.post("/get/routeData", async (req, res) => {
-  var stopNames = [];
-  var userGivenId = req.body.lineid;
-  stopNames = await setStopNames("3010"); //! usergivenid nem jó
-  //console.log(stopNames);
-  res.send({ stopNames: stopNames });
+	var stopNames = [];
+	var userGivenId = req.body.lineid;
+	console.log(userGivenId);
+	stopNames = await setStopNames(userGivenId); //! usergivenid nem jó
+	// console.log(stopNames);
+	res.send({ stopNames: stopNames });
 });
 
 app.post("/get/distance", async (req, res) => {

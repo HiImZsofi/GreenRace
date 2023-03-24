@@ -32,33 +32,37 @@ async function fetchData(userGivenId) {
 //*Then formats the id values of the arrays
 //*And pushes the objects with the updated IDs to stops1 and stops2 arrays
 async function formatStopArrays(userGivenId) {
-  //put API given data into a variable
-  var routeData = await fetchData(userGivenId);
+	//put API given data into a variable
+	var routeData = await fetchData(userGivenId);
 
-  //access stop ids from nested json object
-  var routeStops = await routeData.data.entry.variants;
-  //console.log(routeStops);
+	//access stop ids from nested json object
+	var routeStops = await routeData.data.entry.variants;
+	//console.log(routeStops);
 
-  //push every stop id into an array
-  var bothRoutes = [];
-  routeStops.forEach((element) => {
-    bothRoutes.push(element.stopIds);
-  });
+	//push every stop id into an array
+	var bothRoutes = [];
+	routeStops.forEach((element) => {
+		bothRoutes.push(element.stopIds);
+	});
 
-  //split the two arrays into two lines
-  var route1 = bothRoutes[0];
-  var route2 = bothRoutes[1];
-  //cut BKK_ from strings so they can actually match with the database
-  for (let j = 0; j < route1.length; j++) {
-    stops1.push(route1[j].slice(4));
-  }
-  for (let j = 0; j < route2.length; j++) {
-    stops2.push(route2[j].slice(4));
-  }
+	//split the two arrays into two lines
+	var route1 = bothRoutes[0];
+	var route2 = bothRoutes[1];
+
+	stops1 = [];
+	stops2 = [];
+
+	//cut BKK_ from strings so they can actually match with the database
+	for (let j = 0; j < route1.length; j++) {
+		stops1.push(route1[j].slice(4));
+	}
+	for (let j = 0; j < route2.length; j++) {
+		stops2.push(route2[j].slice(4));
+	}
 }
 
-var stops1 = [];
-var stops2 = [];
+var stops1;
+var stops2;
 var stopNames1;
 var stopNames2;
 
