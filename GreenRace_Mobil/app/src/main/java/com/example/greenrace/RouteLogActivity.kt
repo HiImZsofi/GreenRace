@@ -17,6 +17,8 @@ class RouteLogActivity : AppCompatActivity() {
     private lateinit var getOffStopSpinner: Spinner
     private lateinit var logRouteButton: Button
 
+
+    //TODO global stops variable
     private lateinit var lineNumberList: List<Route>
     private lateinit var lineStopVariants: Array<List<Stop>>
 
@@ -142,6 +144,9 @@ class RouteLogActivity : AppCompatActivity() {
 
         return summedGetOnStopList
     }
+
+    //TODO Add setGetOffStop adapter function
+    //TODO Add filtered getOffStop list with the currentGetOnStop being filtered out
 
     //Updates the lines list
     //With the type appropriate data
