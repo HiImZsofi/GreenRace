@@ -1,6 +1,7 @@
 import mysql from "mysql2";
 import fetch from "node-fetch";
 import { getStops } from "./queries.js";
+import * as turf from "@turf/turf";
 
 //Connect to database
 const connection = mysql.createConnection({
@@ -35,7 +36,8 @@ async function formatStopArrays(userGivenId) {
   var routeData = await fetchData(userGivenId);
 
   //access stop ids from nested json object
-  var routeStops = routeData.data.entry.variants;
+  var routeStops = await routeData.data.entry.variants;
+  //console.log(routeStops);
 
   //push every stop id into an array
   var bothRoutes = [];
@@ -82,7 +84,7 @@ export async function setStopNames(userGivenId) {
       }
     }
   }
-  console.log(stopNames1);
+  //console.log(stopNames1);
   for (let i = 0; i < stops2.length; i++) {
     for (let j = 0; j < queryRes.length; j++) {
       if (JSON.parse(JSON.stringify(queryRes[j]["stop_id"])) === stops2[i]) {
@@ -96,3 +98,5 @@ export async function setStopNames(userGivenId) {
   }
   return [stopNames1, stopNames2];
 }
+
+//setStopNames("3010");
