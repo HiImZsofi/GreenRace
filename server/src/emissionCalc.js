@@ -6,6 +6,8 @@ import { getDistance } from "./stationsDistance.js";
 //*trolley, tram, metro and suburban railway is 0g
 
 //console.log(distance);
+var token =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6InRlc3RAdGVzdCIsImlhdCI6MTY3OTY3MDQwNH0.lBROJv04xnsalmV-Ev3y5lJub9o-WdknpKEyaHgYxQ8"; //! handle user id from frontend
 
 //what type of vehicle, route_id, first stop and last stop
 export async function getFinalEmission(type, lineId, getOnStop, getOffStop) {
