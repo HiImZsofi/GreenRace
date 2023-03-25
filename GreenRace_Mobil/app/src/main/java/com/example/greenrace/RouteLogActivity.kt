@@ -24,6 +24,7 @@ class RouteLogActivity : AppCompatActivity() {
 
     private lateinit var currentLine: String
     private lateinit var currentGetOnStop: Stop
+    private lateinit var currentGetOffStop: Stop
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,7 +91,14 @@ class RouteLogActivity : AppCompatActivity() {
 
     //Set the list for getOnStopSpinner
     private fun setGetOnStopSpinnerAdapter() {
-        val summedStops: List<Stop> = getSummedStopList()
+        val summedStops: List<Stop>
+        //TODO Fix the bug where the current get off stop is still in the get on stop list when it's first loaded
+        //TODO It should be filtered out as well
+        if(this@RouteLogActivity::currentGetOffStop.isInitialized){
+            summedStops=getSummedStopList().filter { stop -> stop!=currentGetOffStop }
+        }else {
+            summedStops = getSummedStopList()
+        }
         val getOnStops: List<String> = setGetOnStopList(summedStops)
         //Set list with the line numbers
         //For the line spinner adapter
@@ -119,6 +127,7 @@ class RouteLogActivity : AppCompatActivity() {
                     ).show()
                     currentGetOnStop = summedStops[position]
                     getOffStopSpinner.isEnabled = true
+                    setGetOffStopSpinnerAdapter()
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -135,6 +144,7 @@ class RouteLogActivity : AppCompatActivity() {
     }
 
     //Make list of available getOnStops
+    //TODO Make one function that converts class typed lists to String lists
     private fun setGetOnStopList(summedStops: List<Stop>): List<String> {
         val summedGetOnStopList: ArrayList<String> = ArrayList()
 
@@ -147,6 +157,46 @@ class RouteLogActivity : AppCompatActivity() {
 
     //TODO Add setGetOffStop adapter function
     //TODO Add filtered getOffStop list with the currentGetOnStop being filtered out
+
+    private fun setGetOffStopSpinnerAdapter(){
+        //Filters out the currently selected get on stop
+        val filteredSummedStops: List<Stop> = getSummedStopList().filter { stop -> stop != currentGetOnStop }
+        val getOffStops: List<String> = setGetOnStopList(filteredSummedStops)
+        //Set list with the line numbers
+        //For the line spinner adapter
+        val adapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_dropdown_item,
+            getOffStops
+        )
+
+        getOffStopSpinner.adapter = adapter
+
+        getOffStopSpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    // handle item selection here
+                    val selectedItem = getOffStops[position]
+                    Toast.makeText(
+                        this@RouteLogActivity,
+                        "Selected item: $selectedItem",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    currentGetOffStop = filteredSummedStops[position]
+                    logRouteButton.isEnabled = true
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    // handle case where no item is selected
+                    logRouteButton.isEnabled = false
+                }
+            }
+    }
 
     //Updates the lines list
     //With the type appropriate data
