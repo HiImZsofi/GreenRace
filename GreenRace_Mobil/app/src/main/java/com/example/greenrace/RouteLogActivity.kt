@@ -155,13 +155,11 @@ class RouteLogActivity : AppCompatActivity() {
         return summedGetOnStopList
     }
 
-    //TODO Add setGetOffStop adapter function
-    //TODO Add filtered getOffStop list with the currentGetOnStop being filtered out
-
     private fun setGetOffStopSpinnerAdapter(){
         //Filters out the currently selected get on stop
         val filteredSummedStops: List<Stop> = getSummedStopList().filter { stop -> stop != currentGetOnStop }
         val getOffStops: List<String> = setGetOnStopList(filteredSummedStops)
+
         //Set list with the line numbers
         //For the line spinner adapter
         val adapter = ArrayAdapter(
@@ -181,12 +179,6 @@ class RouteLogActivity : AppCompatActivity() {
                     id: Long
                 ) {
                     // handle item selection here
-                    val selectedItem = getOffStops[position]
-                    Toast.makeText(
-                        this@RouteLogActivity,
-                        "Selected item: $selectedItem",
-                        Toast.LENGTH_SHORT
-                    ).show()
                     currentGetOffStop = filteredSummedStops[position]
                     logRouteButton.isEnabled = true
                 }
@@ -222,11 +214,6 @@ class RouteLogActivity : AppCompatActivity() {
                 ) {
                     // handle item selection here
                     val selectedItem = lines[position]
-                    Toast.makeText(
-                        this@RouteLogActivity,
-                        "Selected item: $selectedItem",
-                        Toast.LENGTH_SHORT
-                    ).show()
                     getOnStopSpinner.isEnabled = true
                     currentLine =
                         lineNumberList.filter { route -> route.routeShortName == selectedItem }[0].routeId
@@ -280,12 +267,6 @@ class RouteLogActivity : AppCompatActivity() {
                 id: Long
             ) {
                 // handle item selection here
-                val selectedItem = types[position]
-                Toast.makeText(
-                    this@RouteLogActivity,
-                    "Selected item: $selectedItem",
-                    Toast.LENGTH_SHORT
-                ).show()
                 lineNumberSpinner.isEnabled = true
 
                 //Check if the lineNumberList if initialized
