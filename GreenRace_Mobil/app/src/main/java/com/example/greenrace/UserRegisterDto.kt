@@ -118,3 +118,15 @@ class RequestModelLogRoute @JsonCreator constructor(token:String, routeType:Int,
     @SerializedName("offStop")
     val getOffStop :String = getOffStop
 }
+
+class ResponseModelLogRoute @JsonCreator constructor(@JsonProperty("emission") emission:Emission)
+
+class Emission @JsonCreator constructor(@JsonProperty("finalEmission") finalEmission:Double, @JsonProperty("distance") distance:Double){
+    @JsonProperty("finalEmission")
+    @SerializedName("finalEmission")
+    val finalEmission : Double = finalEmission
+
+    @JsonProperty("distance")
+    @SerializedName("distance")
+    val distance : Double = distance
+}
