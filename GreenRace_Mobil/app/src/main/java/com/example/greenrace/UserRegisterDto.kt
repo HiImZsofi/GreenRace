@@ -93,5 +93,28 @@ class Stop @JsonCreator constructor(
     @JsonProperty("stoplon")
     @SerializedName("stoplon")
     val stopLon: String = stopLon
+}
 
+//This objects is used to store the data entered by the user
+//And when he clicks the log route button this object is sent to the server to store it in the database
+class RequestModelLogRoute @JsonCreator constructor(token:String, routeType:Int, routeId:String, getOnStop:String, getOffStop: String){
+    @JsonProperty("token")
+    @SerializedName("token")
+    val token :String = token
+
+    @JsonProperty("routeType")
+    @SerializedName("routeType")
+    val routeType :Int = routeType
+
+    @JsonProperty("route_id")
+    @SerializedName("route_id")
+    val routeId :String = routeId
+
+    @JsonProperty("onStop")
+    @SerializedName("onStop")
+    val getOnStop :String = getOnStop
+
+    @JsonProperty("offStop")
+    @SerializedName("offStop")
+    val getOffStop :String = getOffStop
 }
