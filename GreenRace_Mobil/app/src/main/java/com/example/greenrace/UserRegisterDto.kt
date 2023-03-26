@@ -47,13 +47,13 @@ class RouteData @JsonCreator constructor(
 )
 
 class Route @JsonCreator constructor(
-    @JsonProperty("route_id") routeId :String,
+    @JsonProperty("route_id") routeId: String,
     @JsonProperty("route_short_name") routeShortName: String,
     @JsonProperty("route_type") routeType: Int
 ) {
     @JsonProperty("route_id")
     @SerializedName("route_id")
-    val routeId:String = routeId
+    val routeId: String = routeId
 
     @JsonProperty("route_short_name")
     @SerializedName("route_short_name")
@@ -64,10 +64,10 @@ class Route @JsonCreator constructor(
     val routeType: Int = routeType
 }
 
-class RequestModelStopsData @JsonCreator constructor(lineId: String){
+class RequestModelStopsData @JsonCreator constructor(lineId: String) {
     @JsonProperty("lineid")
     @SerializedName("lineid")
-    val lineId:String = lineId
+    val lineId: String = lineId
 }
 
 //It's value is set to the result of the GET request to /get/routeData
@@ -97,36 +97,46 @@ class Stop @JsonCreator constructor(
 
 //This objects is used to store the data entered by the user
 //And when he clicks the log route button this object is sent to the server to store it in the database
-class RequestModelLogRoute @JsonCreator constructor(token:String, routeType:Int, routeId:String, getOnStop:String, getOffStop: String){
+class RequestModelLogRoute @JsonCreator constructor(
+    token: String,
+    routeType: Int,
+    routeId: String,
+    getOnStop: String,
+    getOffStop: String
+) {
     @JsonProperty("token")
     @SerializedName("token")
-    val token :String = token
+    val token: String = token
 
     @JsonProperty("routeType")
     @SerializedName("routeType")
-    val routeType :Int = routeType
+    val routeType: Int = routeType
 
     @JsonProperty("route_id")
     @SerializedName("route_id")
-    val routeId :String = routeId
+    val routeId: String = routeId
 
     @JsonProperty("onStop")
     @SerializedName("onStop")
-    val getOnStop :String = getOnStop
+    val getOnStop: String = getOnStop
 
     @JsonProperty("offStop")
     @SerializedName("offStop")
-    val getOffStop :String = getOffStop
+    val getOffStop: String = getOffStop
 }
 
-class ResponseModelLogRoute @JsonCreator constructor(@JsonProperty("emission") emission:Emission)
+class ResponseModelLogRoute @JsonCreator constructor(@JsonProperty("emission") emission: Emission)
 
-class Emission @JsonCreator constructor(@JsonProperty("finalEmission") finalEmission:Double, @JsonProperty("distance") distance:Double){
+//Stores the two values that the client gets from the server when they log a route
+class Emission @JsonCreator constructor(
+    @JsonProperty("finalEmission") finalEmission: Double,
+    @JsonProperty("distance") distance: Double
+) {
     @JsonProperty("finalEmission")
     @SerializedName("finalEmission")
-    val finalEmission : Double = finalEmission
+    val finalEmission: Double = finalEmission
 
     @JsonProperty("distance")
     @SerializedName("distance")
-    val distance : Double = distance
+    val distance: Double = distance
 }
