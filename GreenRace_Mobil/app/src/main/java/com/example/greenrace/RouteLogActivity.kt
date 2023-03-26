@@ -94,9 +94,9 @@ class RouteLogActivity : AppCompatActivity() {
         val summedStops: List<Stop>
         //TODO Fix the bug where the current get off stop is still in the get on stop list when it's first loaded
         //TODO It should be filtered out as well
-        if(this@RouteLogActivity::currentGetOffStop.isInitialized){
-            summedStops=getSummedStopList().filter { stop -> stop!=currentGetOffStop }
-        }else {
+        if (this@RouteLogActivity::currentGetOffStop.isInitialized) {
+            summedStops = getSummedStopList().filter { stop -> stop != currentGetOffStop }
+        } else {
             summedStops = getSummedStopList()
         }
         val getOnStops: List<String> = setGetOnStopList(summedStops)
@@ -155,9 +155,10 @@ class RouteLogActivity : AppCompatActivity() {
         return summedGetOnStopList
     }
 
-    private fun setGetOffStopSpinnerAdapter(){
+    private fun setGetOffStopSpinnerAdapter() {
         //Filters out the currently selected get on stop
-        val filteredSummedStops: List<Stop> = getSummedStopList().filter { stop -> stop != currentGetOnStop }
+        val filteredSummedStops: List<Stop> =
+            getSummedStopList().filter { stop -> stop != currentGetOnStop }
         val getOffStops: List<String> = setGetOnStopList(filteredSummedStops)
 
         //Set list with the line numbers
@@ -181,6 +182,7 @@ class RouteLogActivity : AppCompatActivity() {
                     // handle item selection here
                     currentGetOffStop = filteredSummedStops[position]
                     logRouteButton.isEnabled = true
+                    setOnLogRouteClick()
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -188,6 +190,36 @@ class RouteLogActivity : AppCompatActivity() {
                     logRouteButton.isEnabled = false
                 }
             }
+    }
+
+    private fun setVehicleTypeAdapter() {
+        val types = RouteLineType.values().map { it.printableType }
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, types)
+        vehicleTypeSpinner.adapter = adapter
+
+        vehicleTypeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                // handle item selection here
+                lineNumberSpinner.isEnabled = true
+
+                //Check if the lineNumberList if initialized
+                //If yes then reload the ArrayAdapter of the lineNumberSpinner
+                if (this@RouteLogActivity::lineNumberList.isInitialized) {
+                    setLineSpinnerAdapter()
+                    getStopsData()
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // handle case where no item is selected
+                lineNumberSpinner.isEnabled = false
+            }
+        }
     }
 
     //Updates the lines list
@@ -254,33 +286,9 @@ class RouteLogActivity : AppCompatActivity() {
         return lines
     }
 
-    private fun setVehicleTypeAdapter() {
-        val types = RouteLineType.values().map { it.printableType }
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, types)
-        vehicleTypeSpinner.adapter = adapter
-
-        vehicleTypeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                // handle item selection here
-                lineNumberSpinner.isEnabled = true
-
-                //Check if the lineNumberList if initialized
-                //If yes then reload the ArrayAdapter of the lineNumberSpinner
-                if (this@RouteLogActivity::lineNumberList.isInitialized) {
-                    setLineSpinnerAdapter()
-                    getStopsData()
-                }
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                // handle case where no item is selected
-                lineNumberSpinner.isEnabled = false
-            }
+    private fun setOnLogRouteClick() {
+        logRouteButton.setOnClickListener {
+            //TODO Make request and response handling
         }
     }
 }
