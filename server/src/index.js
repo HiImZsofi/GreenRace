@@ -5,6 +5,7 @@ import {
   insertNewUser,
   getPassQuery,
   getRouteNumbers,
+  insertNewRoute,
 } from "./queries.js";
 import {
   generateAccessToken,
@@ -196,12 +197,31 @@ app.post("/get/routeData", async (req, res) => {
 });
 
 app.post("/get/distance", async (req, res) => {
-  var token = req.body.token;
-  var emission = await getFinalEmission(
-    "3",
-    "3010",
-    "Kelenföld vasútállomás M",
-    "Bécsi út / Vörösvári út"
-  );
+  // var token = req.body.token;
+  // var routeType = req.body.routeType;
+  // var route_id = req.body.route_id;
+  // var onStop = req.body.onStop;
+  // var offStop = req.body.offStop;
+
+  var token =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6InRlc3RAdGVzdCIsImlhdCI6MTY3OTY3MDQwNH0.lBROJv04xnsalmV-Ev3y5lJub9o-WdknpKEyaHgYxQ8";
+  var routeType = "3";
+  var route_id = "3010";
+  var onStop = "Kelenföld vasútállomás M";
+  var offStop = "Bécsi út / Vörösvári út";
+
+  var emission = await getFinalEmission(routeType, route_id, onStop, offStop);
+  var user_id = jwt.decode(token).user_id;
+  try {
+    await insertNewRoute(
+      route_id,
+      user_id,
+      emission["finalEmission"],
+      emission["distance"]
+    );
+  } catch (error) {
+    throw error;
+  }
+
   res.send({ emission: emission });
 });
