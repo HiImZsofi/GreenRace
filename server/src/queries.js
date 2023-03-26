@@ -187,3 +187,18 @@ export function getStops() {
     );
   });
 }
+
+export function insertNewRoute(route_id, user_id, emission, distance) {
+  return new Promise((resolve, reject) => {
+    connection.query(
+      "INSERT INTO routes (route_id, user_id, emission, length) VALUES (?, ?, ?, ?)",
+      [route_id, user_id, emission, distance],
+      function (err, result) {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(200); //status code is 200 if insert was successful
+      }
+    );
+  });
+}
