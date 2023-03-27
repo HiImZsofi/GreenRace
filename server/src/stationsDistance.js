@@ -1,9 +1,6 @@
 import { setStopNames } from "./userStopsData.js";
 import * as turf from "@turf/turf";
 
-//hardcoded user strings until receiving data
-var userStop1 = "Kelenföld vasútállomás M";
-var userStop2 = "Bécsi út / Vörösvári út";
 var longerRoute;
 var stationIndexes;
 var stationsBetween;
@@ -21,7 +18,6 @@ async function getLongerRoute(userGivenId) {
 }
 
 function setStationIndexes(firstStop, secondStop) {
-  //console.log(longerRoute);
   //get the array index of chosen stations
   for (let index = 0; index < longerRoute.length; index++) {
     if (
@@ -34,7 +30,6 @@ function setStationIndexes(firstStop, secondStop) {
 
   //slice up array and only keep stations between the chosen ones
   stationsBetween = longerRoute.slice(stationIndexes[0], stationIndexes[1] + 1);
-  //console.log(stationsBetween);
 }
 
 export async function getDistance(userGivenId, firstStop, secondStop) {
@@ -54,26 +49,22 @@ export async function getDistance(userGivenId, firstStop, secondStop) {
       from_lat = parseFloat(stationsBetween[i].stoplat);
       from_lon = parseFloat(stationsBetween[i].stoplon);
       from = turf.point([from_lon, from_lat]);
-      //console.log(from);
 
       to_lat = parseFloat(stationsBetween[i + 1].stoplat);
       to_lon = parseFloat(stationsBetween[i + 1].stoplon);
       to = turf.point([to_lon, to_lat]);
 
-      //console.log(to_lat);
-
       distance = distance + turf.distance(from, to);
-      //console.log(distance);
       return distance;
     }
     //split coordinates into latitude and longitude then parse them
     from_lat = parseFloat(stationsBetween[i].stoplat);
     from_lon = parseFloat(stationsBetween[i].stoplon);
     from = turf.point([from_lon, from_lat]);
-    // console.log(from);
 
     to_lat = parseFloat(stationsBetween[i + 1].stoplat);
     to_lon = parseFloat(stationsBetween[i + 1].stoplon);
+
     //convert floats into actual coordinates for turf
     to = turf.point([to_lon, to_lat]);
 
@@ -81,4 +72,3 @@ export async function getDistance(userGivenId, firstStop, secondStop) {
     distance = distance + turf.distance(from, to);
   }
 }
-//getDistance("3010", userStop1, userStop2);
