@@ -33,15 +33,6 @@ data class ResponseModel(
     @JsonProperty("result") val message: String?
 )
 
-//class RouteData(){
-//    @get:JsonCreator
-//    @get:JsonProperty("routeData")
-//    private val routeData: ArrayList<Route>
-//        get() {
-//            return routeData
-//        }
-//}
-
 class RouteData @JsonCreator constructor(
     @JsonProperty("routeData") val routeData: List<Route>
 )
