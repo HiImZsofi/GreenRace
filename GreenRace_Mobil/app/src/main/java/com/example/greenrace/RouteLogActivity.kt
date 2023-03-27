@@ -290,8 +290,8 @@ class RouteLogActivity : AppCompatActivity() {
     }
 
     private fun setOnLogRouteClick() {
-        var finalEmission:Double=0.0;
-        var distance:Double=0.0;
+        var finalEmission: Double
+        var distance: Double
 
         logRouteButton.setOnClickListener {
             //TODO Make request and response handling
@@ -306,6 +306,7 @@ class RouteLogActivity : AppCompatActivity() {
                     startActivity(backToMap)
                     finish()
                 }
+                .setCancelable(false)
             // Create the AlertDialog object and return it
             emissionAlertDialog.create()
 
@@ -313,9 +314,9 @@ class RouteLogActivity : AppCompatActivity() {
                 object : Callback<ResponseModelLogRoute> {
                     override fun onResponse(call: Call<ResponseModelLogRoute>, response: Response<ResponseModelLogRoute>) {
                         //Array list of lines with the route types
-                        finalEmission = response.body()!!.emission.finalEmission
-                        distance = response.body()!!.emission.distance
-                        emissionAlertDialog.setMessage("Ezzel a $distance km-es utazással\n $finalEmission grammal kevesebb szén-dioxidot bocsátott ki mintha autóval tette volna meg ezt a távot")
+                        finalEmission = Math.round(response.body()!!.emission.finalEmission*100)/100.0
+                        distance = Math.round(response.body()!!.emission.distance*100)/100.0
+                        emissionAlertDialog.setMessage("Ezzel a ${distance} km-es utazással\n$finalEmission gramm szén-dioxidot spóroltál meg!")
                         emissionAlertDialog.show()
                     }
 
