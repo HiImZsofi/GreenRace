@@ -43,17 +43,17 @@ class ResponseModelUserPage @JsonCreator constructor(@JsonProperty("userData") v
 
 class UserPage @JsonCreator constructor(
     @JsonProperty("username") username: String,
-    @JsonProperty("picfilepath") picfilepath: String,
+    @JsonProperty("picfilepath") picfilepath: String?,
     @JsonProperty("points") points: Int
 ) {
     @JsonProperty("username")
     @SerializedName("username")
-    val username = username
+    val username: String = username
     @JsonProperty("picfilepath")
     @SerializedName("picfilepath")
-    val picfilepath = picfilepath
+    val picfilepath: String? = picfilepath
     @JsonProperty("points")
     @SerializedName("points")
-    val points = points
+    val points: Int = points
 }
 

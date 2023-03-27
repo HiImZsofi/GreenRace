@@ -15,5 +15,5 @@ interface ApiInterface {
 
     @Headers("Content-Type: application/json")
     @GET("userPage")
-    fun sendReqUser(@Header("authorization") token:String) :Call<ResponseModelUserPage>
+    fun sendReqUser(@Header("Authorization") token:String) :Call<ResponseModelUserPage>
 }
