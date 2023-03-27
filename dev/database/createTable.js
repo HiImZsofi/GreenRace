@@ -60,7 +60,7 @@ connection.query(
 
 // Create Route table
 connection.query(
-  "CREATE OR REPLACE TABLE Routes (route_id int PRIMARY KEY AUTO_INCREMENT, user_id int NOT NULL, emission int NOT NULL, length int)",
+  "CREATE OR REPLACE TABLE Routes (user_routeid int PRIMARY KEY AUTO_INCREMENT, route_id int NOT NULL, user_id int NOT NULL, emission int NOT NULL, length int)",
   function (err, result) {
     if (err) throw err;
     console.log("Table Routes created or modified");
