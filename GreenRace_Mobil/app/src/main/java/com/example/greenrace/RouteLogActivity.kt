@@ -22,6 +22,7 @@ class RouteLogActivity : AppCompatActivity() {
     private lateinit var lineNumberList: List<Route>
     private lateinit var lineStopVariants: Array<List<Stop>>
 
+    private lateinit var currentTypeCode:Int;
     private lateinit var currentLine: String
     private lateinit var currentGetOnStop: Stop
     private lateinit var currentGetOffStop: Stop
@@ -266,7 +267,7 @@ class RouteLogActivity : AppCompatActivity() {
     private fun setLineList(): ArrayList<String> {
         val lines: ArrayList<String> = ArrayList()
         val currentType = vehicleTypeSpinner.selectedItem
-        var currentTypeCode = -1
+        currentTypeCode = -1
 
         //Check the currently selected type
         //And set currentTypeCode to the appropriate type code from the RouteLineType enum class
@@ -287,8 +288,27 @@ class RouteLogActivity : AppCompatActivity() {
     }
 
     private fun setOnLogRouteClick() {
+        var finalEmission:Double;
+        var distance:Double;
+
         logRouteButton.setOnClickListener {
             //TODO Make request and response handling
+            val response = ServiceBuilder.buildService(ApiInterface::class.java)
+            val requestModelLogRoute = RequestModelLogRoute("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6InRlc3RAdGVzdCIsImlhdCI6MTY3OTY3MDQwNH0.lBROJv04xnsalmV-Ev3y5lJub9o-WdknpKEyaHgYxQ8", currentTypeCode, lineNumberList.filter { route -> route.routeShortName == currentLine }[0].routeId, currentGetOnStop.stopName, currentGetOffStop.stopName)
+
+            response.getDistance(requestModelLogRoute).enqueue(
+                object : Callback<ResponseModelLogRoute> {
+                    override fun onResponse(call: Call<ResponseModelLogRoute>, response: Response<ResponseModelLogRoute>) {
+                        //Array list of lines with the route types
+                        finalEmission = response.body()!!.emission.finalEmission
+                        distance = response.body()!!.emission.finalEmission
+                    }
+
+                    override fun onFailure(call: Call<ResponseModelLogRoute>, t: Throwable) {
+                        Log.e("Error", t.toString())
+                    }
+                }
+            )
         }
     }
 }
