@@ -22,7 +22,7 @@ class RouteLogActivity : AppCompatActivity() {
     private lateinit var lineNumberList: List<Route>
     private lateinit var lineStopVariants: Array<List<Stop>>
 
-    private lateinit var currentTypeCode:Int;
+    private var currentTypeCode:Int = -1
     private lateinit var currentLine: String
     private lateinit var currentGetOnStop: Stop
     private lateinit var currentGetOffStop: Stop
@@ -294,7 +294,7 @@ class RouteLogActivity : AppCompatActivity() {
         logRouteButton.setOnClickListener {
             //TODO Make request and response handling
             val response = ServiceBuilder.buildService(ApiInterface::class.java)
-            val requestModelLogRoute = RequestModelLogRoute("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6InRlc3RAdGVzdCIsImlhdCI6MTY3OTY3MDQwNH0.lBROJv04xnsalmV-Ev3y5lJub9o-WdknpKEyaHgYxQ8", currentTypeCode, lineNumberList.filter { route -> route.routeShortName == currentLine }[0].routeId, currentGetOnStop.stopName, currentGetOffStop.stopName)
+            val requestModelLogRoute = RequestModelLogRoute("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6InRlc3RAdGVzdCIsImlhdCI6MTY3OTY3MDQwNH0.lBROJv04xnsalmV-Ev3y5lJub9o-WdknpKEyaHgYxQ8", currentTypeCode, currentLine, currentGetOnStop.stopName, currentGetOffStop.stopName)
 
             response.getDistance(requestModelLogRoute).enqueue(
                 object : Callback<ResponseModelLogRoute> {
