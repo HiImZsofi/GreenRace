@@ -2,8 +2,8 @@ package com.example.greenrace
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var registerButton : Button
@@ -13,6 +13,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val intent = Intent(this@MainActivity, MapsActivity::class.java)
         startActivity(intent)
+        //Disable return to the main activity
+        finish()
 
         init()
 
