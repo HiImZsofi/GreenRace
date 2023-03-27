@@ -1,9 +1,11 @@
 package com.example.greenrace
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import retrofit2.Call
 import retrofit2.Callback
@@ -288,20 +290,33 @@ class RouteLogActivity : AppCompatActivity() {
     }
 
     private fun setOnLogRouteClick() {
-        var finalEmission:Double;
-        var distance:Double;
+        var finalEmission:Double=0.0;
+        var distance:Double=0.0;
 
         logRouteButton.setOnClickListener {
             //TODO Make request and response handling
             val response = ServiceBuilder.buildService(ApiInterface::class.java)
             val requestModelLogRoute = RequestModelLogRoute("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6InRlc3RAdGVzdCIsImlhdCI6MTY3OTY3MDQwNH0.lBROJv04xnsalmV-Ev3y5lJub9o-WdknpKEyaHgYxQ8", currentTypeCode, currentLine, currentGetOnStop.stopName, currentGetOffStop.stopName)
 
+            val emissionAlertDialog = AlertDialog.Builder(this@RouteLogActivity)
+            emissionAlertDialog.setTitle("Gratulálunk!")
+                .setPositiveButton("OK"
+                ) { dialog, id ->
+                    val backToMap = Intent(this@RouteLogActivity, MapsActivity::class.java)
+                    startActivity(backToMap)
+                    finish()
+                }
+            // Create the AlertDialog object and return it
+            emissionAlertDialog.create()
+
             response.getDistance(requestModelLogRoute).enqueue(
                 object : Callback<ResponseModelLogRoute> {
                     override fun onResponse(call: Call<ResponseModelLogRoute>, response: Response<ResponseModelLogRoute>) {
                         //Array list of lines with the route types
                         finalEmission = response.body()!!.emission.finalEmission
-                        distance = response.body()!!.emission.finalEmission
+                        distance = response.body()!!.emission.distance
+                        emissionAlertDialog.setMessage("Ezzel a $distance km-es utazással\n $finalEmission grammal kevesebb szén-dioxidot bocsátott ki mintha autóval tette volna meg ezt a távot")
+                        emissionAlertDialog.show()
                     }
 
                     override fun onFailure(call: Call<ResponseModelLogRoute>, t: Throwable) {
