@@ -286,6 +286,10 @@ class RouteLogActivity : AppCompatActivity() {
         return lines
     }
 
+    //Adds onClickListener to the route log button
+    //It sends the data to the server
+    //And then displays the response data(finalEmission, distance) in a dialog box
+    //If the OK button is clicked then it redirects the user to the MapsActivity
     private fun setOnLogRouteClick() {
         var finalEmission: Double
         var distance: Double
@@ -293,6 +297,7 @@ class RouteLogActivity : AppCompatActivity() {
         logRouteButton.setOnClickListener {
             val response = ServiceBuilder.buildService(ApiInterface::class.java)
             val requestModelLogRoute = RequestModelLogRoute(
+                //TODO fix token
                 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6InRlc3RAdGVzdCIsImlhdCI6MTY3OTY3MDQwNH0.lBROJv04xnsalmV-Ev3y5lJub9o-WdknpKEyaHgYxQ8",
                 currentTypeCode,
                 currentLine,
