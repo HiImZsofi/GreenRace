@@ -23,9 +23,8 @@ import com.example.greenrace.sharedPreferences.TokenUtils
 import com.example.greenrace.swipeTouchListener.OnSwipeTouchListener
 import com.google.android.material.navigation.NavigationView
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
-import javax.security.auth.callback.Callback
-import kotlin.math.log
 
 class MainActivity : AppCompatActivity() {
     // Declare variables and views
@@ -52,21 +51,25 @@ class MainActivity : AppCompatActivity() {
         val response = ServiceBuilder.buildService(ApiInterface::class.java)
         val tokenUtils = TokenUtils(this@MainActivity)
         val token = tokenUtils.getAccessToken()
-        if(token!=null){
-        response.sendReqUser("Bearer " + token).enqueue(
-           object: retrofit2.Callback<ResponseModelUserPage> {
+        val requestUserData = "Bearer " + token;
+
+        response.sendReqUser(requestUserData).enqueue(
+           object: Callback<ResponseModelUserPage> {
                override fun onResponse(
                    call: Call<ResponseModelUserPage>,
                    response: Response<ResponseModelUserPage>
                ) {
-                   Log.i("Token", token)
+                   if (token != null) {
+                       Log.i("Token", token)
+                   }
+                   //Log.i("userdata", response.body()!!.userpagedata.points.toString())
                }
 
                override fun onFailure(call: Call<ResponseModelUserPage>, t: Throwable) {
                    Log.i("Error", t.toString())
                }
            }
-        )}
+        )
 
     }
     // Set the page name and replace the fragment
