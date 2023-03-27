@@ -20,7 +20,6 @@ class RouteLogActivity : AppCompatActivity() {
     private lateinit var logRouteButton: Button
 
 
-    //TODO global stops variable
     private lateinit var lineNumberList: List<Route>
     private lateinit var lineStopVariants: Array<List<Stop>>
 
@@ -147,7 +146,6 @@ class RouteLogActivity : AppCompatActivity() {
     }
 
     //Make list of available getOnStops
-    //TODO Make one function that converts class typed lists to String lists
     private fun setGetOnStopList(summedStops: List<Stop>): List<String> {
         val summedGetOnStopList: ArrayList<String> = ArrayList()
 
@@ -294,7 +292,6 @@ class RouteLogActivity : AppCompatActivity() {
         var distance: Double
 
         logRouteButton.setOnClickListener {
-            //TODO Make request and response handling
             val response = ServiceBuilder.buildService(ApiInterface::class.java)
             val requestModelLogRoute = RequestModelLogRoute("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6InRlc3RAdGVzdCIsImlhdCI6MTY3OTY3MDQwNH0.lBROJv04xnsalmV-Ev3y5lJub9o-WdknpKEyaHgYxQ8", currentTypeCode, currentLine, currentGetOnStop.stopName, currentGetOffStop.stopName)
 
