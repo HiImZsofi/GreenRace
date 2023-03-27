@@ -114,6 +114,8 @@ app.post("/login", async (req, res) => {
     const user_ID = await getIDFromDB(email).catch((error) => {
       throw error;
     });
+
+    //using bcrypt built in function to compare the encrypted passwords to each other
     bcrypt.compare(password, passwordInDB).then((compareRes, compareErr) => {
       if (compareErr) throw compareErr;
       if (compareRes) {
@@ -180,37 +182,36 @@ app.post("/profpicset", async (req, res) => {
 
 //send back every line from the database
 app.get("/logRoute", async (req, res) => {
+  //request every line available for display
   let routeData = await getRouteNumbers().catch((err) => {
     throw err;
   });
-  console.log(routeData);
   res.send({ routeData: routeData });
 });
 
 app.post("/get/routeData", async (req, res) => {
   var stopNames = [];
+
+  //pass down the id coming from the user
   var userGivenId = req.body.lineid;
-  console.log(userGivenId);
-  stopNames = await setStopNames(userGivenId); //! usergivenid nem jó
-  // console.log(stopNames);
+
+  //fill up array with the stops for the chosen line
+  stopNames = await setStopNames(userGivenId);
+
+  //send the array back to display it on mobile
   res.send({ stopNames: stopNames });
 });
 
 app.post("/get/distance", async (req, res) => {
-  // var token = req.body.token;
-  // var routeType = req.body.routeType;
-  // var route_id = req.body.route_id;
-  // var onStop = req.body.onStop;
-  // var offStop = req.body.offStop;
-
-  var token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6InRlc3RAdGVzdCIsImlhdCI6MTY3OTY3MDQwNH0.lBROJv04xnsalmV-Ev3y5lJub9o-WdknpKEyaHgYxQ8";
-  var routeType = "3";
-  var route_id = "3010";
-  var onStop = "Kelenföld vasútállomás M";
-  var offStop = "Bécsi út / Vörösvári út";
+  var token = req.body.token;
+  var routeType = req.body.routeType;
+  var route_id = req.body.route_id;
+  var onStop = req.body.onStop;
+  var offStop = req.body.offStop;
 
   var emission = await getFinalEmission(routeType, route_id, onStop, offStop);
+
+  //get user id from the jwt token to store it in database
   var user_id = jwt.decode(token).user_id;
   try {
     await insertNewRoute(
