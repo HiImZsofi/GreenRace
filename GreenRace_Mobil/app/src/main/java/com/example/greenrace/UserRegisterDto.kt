@@ -125,7 +125,7 @@ class RequestModelLogRoute @JsonCreator constructor(
     val getOffStop: String = getOffStop
 }
 
-class ResponseModelLogRoute @JsonCreator constructor(@JsonProperty("emission") emission: Emission)
+class ResponseModelLogRoute @JsonCreator constructor(@JsonProperty("emission") val emission: Emission)
 
 //Stores the two values that the client gets from the server when they log a route
 class Emission @JsonCreator constructor(
