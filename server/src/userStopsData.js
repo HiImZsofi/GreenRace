@@ -11,20 +11,16 @@ const connection = mysql.createConnection({
   port: "3306",
 });
 
-//hardcoded string until I receive actual data
-// var userGivenId = "3010";
-
 //fetch data based on route ID from BKK API
 async function fetchData(userGivenId) {
   const res = await fetch(
     "https://futar.bkk.hu/api/query/v1/ws/otp/api/where/route-details?routeId=BKK_" +
       userGivenId +
-      "&date=20210707&related=false&appVersion=1.1.abc&version=2&includeReferences=true", //!!!Add key to query link
+      "&date=20210707&related=false&appVersion=1.1.abc&version=2&includeReferences=true",
     { "Content-Type": "application/json" }
   );
   var userRouteData = await res.json();
   console.log("Data fetched");
-  //console.log(userRouteData);
   return userRouteData;
 }
 
@@ -81,7 +77,7 @@ export async function setStopNames(userGivenId) {
       //if id in query matches with id in array push neccessary data into object array
       if (JSON.parse(JSON.stringify(queryRes[j]["stop_id"])) === stops1[i]) {
         stopNames1.push({
-          stopname: JSON.parse(JSON.stringify(queryRes[j]["stop_name"])),
+          stopname: JSON.parse(JSON.stringify(queryRes[j]["stop_name"])), //javascript experience
           stoplat: JSON.parse(JSON.stringify(queryRes[j]["stop_lat"])),
           stoplon: JSON.parse(JSON.stringify(queryRes[j]["stop_lon"])),
         });
@@ -102,5 +98,3 @@ export async function setStopNames(userGivenId) {
   }
   return [stopNames1, stopNames2];
 }
-
-//setStopNames("3010");
