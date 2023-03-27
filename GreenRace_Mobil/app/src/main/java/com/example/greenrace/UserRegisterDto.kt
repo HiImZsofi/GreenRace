@@ -44,7 +44,8 @@ class ResponseModelUserPage @JsonCreator constructor(@JsonProperty("userData") v
 class UserPage @JsonCreator constructor(
     @JsonProperty("username") username: String,
     @JsonProperty("picfilepath") picfilepath: String?,
-    @JsonProperty("points") points: Int
+    @JsonProperty("points") points: Int,
+    @JsonProperty("email") email: String
 ) {
     @JsonProperty("username")
     @SerializedName("username")
@@ -55,5 +56,8 @@ class UserPage @JsonCreator constructor(
     @JsonProperty("points")
     @SerializedName("points")
     val points: Int = points
+    @JsonProperty("email")
+    @SerializedName("email")
+    val email: String = email
 }
 
