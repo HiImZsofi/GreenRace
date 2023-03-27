@@ -24,5 +24,8 @@ interface ApiInterface {
     @POST("get/routeData")
     fun getStopsData(@Body requestModelStopsData: RequestModelStopsData): Call<StopsData>
 
+    @Headers("Content-Type: application/json")
+    @POST("get/distance")
+    fun getDistance(@Body requestModelLogRoute: RequestModelLogRoute):Call<ResponseModelLogRoute>
 
 }
