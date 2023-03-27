@@ -34,7 +34,7 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var mMap: GoogleMap
     private lateinit var mapFragment: SupportMapFragment
-    private lateinit var addRouteButton:Button
+    private lateinit var addRouteButton: Button
 
     private var lat = 0.0
     private var lng = 0.0
@@ -47,8 +47,8 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
 
-        addRouteButton=findViewById(R.id.addRoute)
-        addRouteButton.setOnClickListener{
+        addRouteButton = findViewById(R.id.addRoute)
+        addRouteButton.setOnClickListener {
             //Redirects the user to the route logging page
             //With the option to go back to the map activity
             val toRouteLogPage = Intent(this@MapsActivity, RouteLogActivity::class.java)

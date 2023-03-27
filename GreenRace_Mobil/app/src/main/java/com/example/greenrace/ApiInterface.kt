@@ -10,11 +10,11 @@ interface ApiInterface {
 
     @Headers("Content-Type: application/json")
     @POST("register")
-    fun sendReq(@Body requestModelRegistration: RequestModelRegistration) : Call<ResponseModel>
+    fun sendReq(@Body requestModelRegistration: RequestModelRegistration): Call<ResponseModel>
 
     @Headers("Content-Type: application/json")
     @POST("login")
-    fun sendReq(@Body requestModelLogin: RequestModelLogin) : Call<ResponseModel>
+    fun sendReq(@Body requestModelLogin: RequestModelLogin): Call<ResponseModel>
 
     @Headers("Content-Type: application/json")
     @GET("logRoute")
@@ -26,6 +26,6 @@ interface ApiInterface {
 
     @Headers("Content-Type: application/json")
     @POST("get/distance")
-    fun getDistance(@Body requestModelLogRoute: RequestModelLogRoute):Call<ResponseModelLogRoute>
+    fun getDistance(@Body requestModelLogRoute: RequestModelLogRoute): Call<ResponseModelLogRoute>
 
 }

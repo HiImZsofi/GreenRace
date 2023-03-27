@@ -23,7 +23,7 @@ class RouteLogActivity : AppCompatActivity() {
     private lateinit var lineNumberList: List<Route>
     private lateinit var lineStopVariants: Array<List<Stop>>
 
-    private var currentTypeCode:Int = -1
+    private var currentTypeCode: Int = -1
     private lateinit var currentLine: String
     private lateinit var currentGetOnStop: Stop
     private lateinit var currentGetOffStop: Stop
@@ -93,13 +93,12 @@ class RouteLogActivity : AppCompatActivity() {
 
     //Set the list for getOnStopSpinner
     private fun setGetOnStopSpinnerAdapter() {
-        val summedStops: List<Stop>
         //TODO Fix the bug where the current get off stop is still in the get on stop list when it's first loaded
         //TODO It should be filtered out as well
-        if (this@RouteLogActivity::currentGetOffStop.isInitialized) {
-            summedStops = getSummedStopList().filter { stop -> stop != currentGetOffStop }
+        val summedStops: List<Stop> = if (this@RouteLogActivity::currentGetOffStop.isInitialized) {
+            getSummedStopList().filter { stop -> stop != currentGetOffStop }
         } else {
-            summedStops = getSummedStopList()
+            getSummedStopList()
         }
         val getOnStops: List<String> = setGetOnStopList(summedStops)
         //Set list with the line numbers
@@ -293,12 +292,19 @@ class RouteLogActivity : AppCompatActivity() {
 
         logRouteButton.setOnClickListener {
             val response = ServiceBuilder.buildService(ApiInterface::class.java)
-            val requestModelLogRoute = RequestModelLogRoute("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6InRlc3RAdGVzdCIsImlhdCI6MTY3OTY3MDQwNH0.lBROJv04xnsalmV-Ev3y5lJub9o-WdknpKEyaHgYxQ8", currentTypeCode, currentLine, currentGetOnStop.stopName, currentGetOffStop.stopName)
+            val requestModelLogRoute = RequestModelLogRoute(
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6InRlc3RAdGVzdCIsImlhdCI6MTY3OTY3MDQwNH0.lBROJv04xnsalmV-Ev3y5lJub9o-WdknpKEyaHgYxQ8",
+                currentTypeCode,
+                currentLine,
+                currentGetOnStop.stopName,
+                currentGetOffStop.stopName
+            )
 
             val emissionAlertDialog = AlertDialog.Builder(this@RouteLogActivity)
             emissionAlertDialog.setTitle("Gratulálunk!")
-                .setPositiveButton("OK"
-                ) { dialog, id ->
+                .setPositiveButton(
+                    "OK"
+                ) { _, _ ->
                     val backToMap = Intent(this@RouteLogActivity, MapsActivity::class.java)
                     startActivity(backToMap)
                     finish()
@@ -309,11 +315,15 @@ class RouteLogActivity : AppCompatActivity() {
 
             response.getDistance(requestModelLogRoute).enqueue(
                 object : Callback<ResponseModelLogRoute> {
-                    override fun onResponse(call: Call<ResponseModelLogRoute>, response: Response<ResponseModelLogRoute>) {
+                    override fun onResponse(
+                        call: Call<ResponseModelLogRoute>,
+                        response: Response<ResponseModelLogRoute>
+                    ) {
                         //Array list of lines with the route types
-                        finalEmission = Math.round(response.body()!!.emission.finalEmission*100)/100.0
-                        distance = Math.round(response.body()!!.emission.distance*100)/100.0
-                        emissionAlertDialog.setMessage("Ezzel a ${distance} km-es utazással\n$finalEmission gramm szén-dioxidot spóroltál meg!")
+                        finalEmission =
+                            kotlin.math.round(response.body()!!.emission.finalEmission * 100) / 100.0
+                        distance = kotlin.math.round(response.body()!!.emission.distance * 100) / 100.0
+                        emissionAlertDialog.setMessage("Ezzel a $distance km-es utazással\n$finalEmission gramm szén-dioxidot spóroltál meg!")
                         emissionAlertDialog.show()
                     }
 
