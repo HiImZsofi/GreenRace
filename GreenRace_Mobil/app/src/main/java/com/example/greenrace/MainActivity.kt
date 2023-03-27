@@ -22,6 +22,9 @@ import com.example.greenrace.sharedPreferences.PageNum
 import com.example.greenrace.sharedPreferences.TokenUtils
 import com.example.greenrace.swipeTouchListener.OnSwipeTouchListener
 import com.google.android.material.navigation.NavigationView
+import retrofit2.Call
+import retrofit2.Response
+import javax.security.auth.callback.Callback
 import kotlin.math.log
 
 class MainActivity : AppCompatActivity() {
@@ -40,9 +43,31 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         init()
+        getdata()
         setUpDrawerLayout()
         setUpSwipeListener()
         setter()
+    }
+    private fun getdata(){
+        val response = ServiceBuilder.buildService(ApiInterface::class.java)
+        val tokenUtils = TokenUtils(this@MainActivity)
+        val token = tokenUtils.getAccessToken()
+        if(token!=null){
+        response.sendReqUser("Bearer " + token).enqueue(
+           object: retrofit2.Callback<ResponseModelUserPage> {
+               override fun onResponse(
+                   call: Call<ResponseModelUserPage>,
+                   response: Response<ResponseModelUserPage>
+               ) {
+                   Log.i("Token", token)
+               }
+
+               override fun onFailure(call: Call<ResponseModelUserPage>, t: Throwable) {
+                   Log.i("Error", t.toString())
+               }
+           }
+        )}
+
     }
     // Set the page name and replace the fragment
     private fun setter() {
@@ -106,33 +131,23 @@ class MainActivity : AppCompatActivity() {
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_point -> {
-                    val pageNum = PageNum(this@MainActivity)
-                    pageNum.savePageNum(0)
                     val intent = Intent(this@MainActivity, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
+                    navigateToPage(0, intent)
                     true
                 }
                 R.id.nav_rank -> {
-                    val pageNum = PageNum(this@MainActivity)
-                    pageNum.savePageNum(1)
                     val intent = Intent(this@MainActivity, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
+                    navigateToPage(1, intent)
                     true
                 }
                 R.id.nav_friend -> {
-                    val pageNum = PageNum(this@MainActivity)
-                    pageNum.savePageNum(2)
                     val intent = Intent(this@MainActivity, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
+                    navigateToPage(2, intent)
                     true
                 }
                 R.id.nav_map -> {
                     val intent = Intent(this@MainActivity, MapsActivity::class.java)
-                    startActivity(intent)
-                    finish()
+                    navigateToPage(null, intent)
                     true
                 }
                 R.id.nav_profile -> {
@@ -149,14 +164,22 @@ class MainActivity : AppCompatActivity() {
                     val pageNum = PageNum(this@MainActivity)
                     pageNum.clearPageNum()
                     val intent = Intent(this@MainActivity, LoginActivity::class.java)
-                    startActivity(intent)
-                    finish()
+                    navigateToPage(null, intent)
                     true
                 }
                 else -> false
             }
         }
 
+    }
+
+    fun navigateToPage(pageNum: Int?, intent: Intent) {
+        if(pageNum != null) {
+        val pageNumObj = PageNum(this@MainActivity)
+        pageNumObj.savePageNum(pageNum)
+        }
+        startActivity(intent)
+        finish()
     }
     fun openCloseDrawer(view: View){
         if (drawerLayout.isDrawerOpen(GravityCompat.END)) {

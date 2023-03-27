@@ -34,8 +34,8 @@ const FriendPage = () => {
         if (response.status !== 200) {
           navigate("/login", { replace: true });
         } else {
-          setUsername(data.username);
-          setPicFilePath(data.picfilepath);
+          setUsername(data.userData.username);
+          setPicFilePath(data.userData.picfilepath);
         }
       }
     );

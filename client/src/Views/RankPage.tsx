@@ -41,8 +41,8 @@ const RankPage = () => {
         if (response.status !== 200) {
           navigate("/login", { replace: true });
         } else {
-          setUsername(data.username);
-          setPicFilePath(data.picfilepath);
+          setUsername(data.userData.username);
+          setPicFilePath(data.userData.picfilepath);
         }
       }
     );
@@ -52,11 +52,11 @@ const RankPage = () => {
           .get("content-type")
           ?.includes("application/json");
         const rankdata = isJson && (await response.json());
-        for (let i = 0; i < rankdata.length; i++) {
-          if (rankdata[i] !== undefined) {
-            let username: string = rankdata[i].username;
-            let points:number = rankdata[i].points;
-            let picfilepath:string = rankdata[i].picfilepath;
+        for (let i = 0; i < rankdata.userData.length; i++) {
+          if (rankdata.userData[i] !== undefined) {
+            let username: string = rankdata.userData[i].username;
+            let points:number = rankdata.userData[i].points;
+            let picfilepath:string = rankdata.userData[i].picfilepath;
             let rang: Ranking = { username: username, points: points , picfilepath: picfilepath};
             Ranglist[i] = rang;
           }
