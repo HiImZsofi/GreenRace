@@ -45,13 +45,6 @@ const UserPage = () => {
     );
   };
 
-  //Converts the terrible typescript date format to something usable
-  function formatDate(date: Date): string {
-    const year = date.getFullYear().toString();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    return `${year}/${month}/${day}`;
-  }
 
   //Getting data form Server for the User Statistic Chart
   const chartDataHandler = async () => {
@@ -70,24 +63,11 @@ const UserPage = () => {
           .get("content-type")
           ?.includes("application/json");
         const data = isJson && (await response.json());
+        //setting chart data
         if(data !== undefined) {
-          //Get the date of the last Monday
-          const today = new Date();
-          let dayOfWeek = today.getDay()-1;
-          if (dayOfWeek < 0) {dayOfWeek = 6;}
-          let mondayDate = new Date(today.getTime() - dayOfWeek * 24 * 60 * 60 * 1000);
-          //Fill the ChartData with the data from the database
-          let pointlist = chartData;
-          for(let i = 0; i < 7; i++) {
-            let dayDate = formatDate(new Date(mondayDate .getTime() + i * 24 * 60 * 60 * 1000));
-            pointlist[i] = 0;
-            data.forEach((item: { date: Date; SUM: number; }) => {
-              let dataDate = formatDate(new Date(item.date));
-              if(dayDate == dataDate) {
-                pointlist[i] = item.SUM;
-              }
-            });
-          }
+          const pointlist = data.map((point:number, index:number) => {
+            return chartData[index] = point;
+          });
           setChartData(pointlist);
         }
       }
