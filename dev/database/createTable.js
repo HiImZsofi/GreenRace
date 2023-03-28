@@ -60,11 +60,11 @@ connection.query(
 
 // Create Route table
 connection.query(
-	"CREATE OR REPLACE TABLE Routes (user_routeid int PRIMARY KEY AUTO_INCREMENT, route_id VARCHAR(5) NOT NULL, user_id int NOT NULL, emission int NOT NULL, length int)",
-	function (err, result) {
-		if (err) throw err;
-		console.log("Table Routes created or modified");
-	}
+  "CREATE OR REPLACE TABLE Routes (user_routeid int PRIMARY KEY AUTO_INCREMENT, route_id VARCHAR(5) NOT NULL, user_id int NOT NULL, emission float NOT NULL, length float)",
+  function (err, result) {
+    if (err) throw err;
+    console.log("Table Routes created or modified");
+  }
 );
 
 connection.query(
@@ -76,7 +76,7 @@ connection.query(
 );
 
 connection.query(
-  "CREATE OR REPLACE TABLE StopsData (stop_data_id int PRIMARY KEY AUTO_INCREMENT, stop_id VARCHAR(10), stop_name VARCHAR(30), stop_lat VARCHAR(30), stop_lon VARCHAR(30))",
+  "CREATE OR REPLACE TABLE StopsData (stop_data_id int PRIMARY KEY AUTO_INCREMENT, stop_id VARCHAR(10), stop_name VARCHAR(60), stop_lat VARCHAR(30), stop_lon VARCHAR(30))",
   function (err, result) {
     if (err) throw err;
     console.log("Table StopsData created or modified");
