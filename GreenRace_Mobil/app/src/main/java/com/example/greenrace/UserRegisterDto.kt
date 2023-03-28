@@ -30,7 +30,12 @@ class RequestModelLogin(email: String, password: String) {
 
 //http response model
 data class ResponseModel(
-    @JsonProperty("result") val message: String?
+    @JsonProperty("result") val message: String?,
+    @JsonProperty("Authorization") val token: String
+)
+
+data class RegistrationResponseModel(
+    @JsonProperty("result") val message: String?,
 )
 
 class RouteData @JsonCreator constructor(
