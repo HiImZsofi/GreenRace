@@ -206,7 +206,7 @@ export function insertNewRoute(route_id, user_id, emission, distance) {
 export function getRouteData(user_id) {
   return new Promise((resolve, reject) => {
     connection.query(
-      "SELECT routes.user_id, routes.emission, routes.length, routedata.route_short_name FROM routes JOIN routedata ON routes.route_id = routedata.route_id WHERE routes.user_id = ?",
+      "SELECT routes.user_id, routes.emission, routes.length, routedata.route_short_name, routedata.route_type FROM routes JOIN routedata ON routes.route_id = routedata.route_id WHERE routes.user_id = ?",
       [user_id],
       function (err, result) {
         if (err || result.length == 0) return reject(err);
