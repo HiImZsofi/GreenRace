@@ -4,6 +4,8 @@ import {
   getIDFromDB,
   insertNewUser,
   getPassQuery,
+  getRouteNumbers,
+  insertNewRoute,
 } from "./queries.js";
 import {
   generateAccessToken,
@@ -12,12 +14,15 @@ import {
   saveProfpic,
   getChartData,
 } from "./callbackHandlers.js";
+import { setStopNames } from "./userStopsData.js";
+import { getFinalEmission } from "./emissionCalc.js";
 import express from "express";
 import bodyParser from "body-parser";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import { getDistance } from "./stationsDistance.js";
 
 //server port
 const PORT = process.env.PORT || 3001;
@@ -109,6 +114,8 @@ app.post("/login", async (req, res) => {
     const user_ID = await getIDFromDB(email).catch((error) => {
       throw error;
     });
+
+    //using bcrypt built in function to compare the encrypted passwords to each other
     bcrypt.compare(password, passwordInDB).then((compareRes, compareErr) => {
       if (compareErr) throw compareErr;
       if (compareRes) {
@@ -171,4 +178,51 @@ app.post("/settings", async (req, res) => {
 //ProfpicSetter route POST request
 app.post("/profpicset", async (req, res) => {
   saveProfpic(req, res);
+});
+
+//send back every line from the database
+app.get("/logRoute", async (req, res) => {
+  //request every line available for display
+  let routeData = await getRouteNumbers().catch((err) => {
+    throw err;
+  });
+  res.send({ routeData: routeData });
+});
+
+app.post("/get/routeData", async (req, res) => {
+  var stopNames = [];
+
+  //pass down the id coming from the user
+  var userGivenId = req.body.lineid;
+
+  //fill up array with the stops for the chosen line
+  stopNames = await setStopNames(userGivenId);
+
+  //send the array back to display it on mobile
+  res.send({ stopNames: stopNames });
+});
+
+app.post("/get/distance", async (req, res) => {
+  var token = req.body.token;
+  var routeType = req.body.routeType;
+  var route_id = req.body.route_id;
+  var onStop = req.body.onStop;
+  var offStop = req.body.offStop;
+
+  var emission = await getFinalEmission(routeType, route_id, onStop, offStop);
+
+  //get user id from the jwt token to store it in database
+  var user_id = jwt.decode(token).user_id;
+  try {
+    await insertNewRoute(
+      route_id,
+      user_id,
+      emission["finalEmission"],
+      emission["distance"]
+    );
+  } catch (error) {
+    throw error;
+  }
+
+  res.send({ emission: emission });
 });

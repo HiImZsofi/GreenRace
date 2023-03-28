@@ -4,6 +4,7 @@ package com.example.greenrace
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+
 import android.security.keystore.UserNotAuthenticatedException
 import android.util.Log
 import android.view.View
@@ -43,6 +44,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val intent = Intent(this@MainActivity, MapsActivity::class.java)
+        startActivity(intent)
+        //Disable return to the main activity
+        finish()
 
         init()
         getData { username, email, picfilepath ->
