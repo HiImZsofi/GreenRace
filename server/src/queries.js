@@ -114,16 +114,16 @@ export function changeProfpic(id, picfilepath) {
 }
 
 export function getUserDataFromDB(user_ID) {
-  return new Promise((resolve, rejects) => {
-    connection.query(
-      "SELECT username, picfilepath, points FROM users WHERE user_ID = ?",
-      [user_ID],
-      function (err, result) {
-        if (err || result.length == 0) return rejects(err);
-        return resolve(result[0]);
-      }
-    );
-  });
+	return new Promise((resolve, rejects) => {
+		connection.query(
+			"SELECT username, picfilepath, points, email FROM users WHERE user_ID = ?",
+			[user_ID],
+			function (err, result) {
+				if (err || result.length == 0) return rejects(err);
+				return resolve(result[0]);
+			}
+		);
+	});
 }
 
 export function getUserStatisticsFromDB(user_ID, date) {

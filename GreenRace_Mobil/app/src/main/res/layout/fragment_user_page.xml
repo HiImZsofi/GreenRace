@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UserPageFragment">
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:id="@+id/ponts_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="0 Zöldpont-od van"
+        android:textSize="30dp"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="5dp"
+        android:text="Ez 1000 szenyezésnek felel meg"
+        android:textColor="@color/black"
+        android:textSize="20dp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:text="Elért eredmények:"
+        android:textColor="@color/black"
+        android:textSize="25dp" />
+   <TextView
+       android:layout_width="match_parent"
+       android:layout_height="200dp"
+       android:gravity="center"
+       android:layout_marginTop="5dp"
+       android:background="@color/whiteCardColor"
+       android:text="achivement_placeholder"
+       android:textColor="@color/black"
+       android:textSize="30dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:text="Pointjaid az elmúlt héten:"
+        android:textColor="@color/black"
+        android:textSize="25dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:gravity="center"
+        android:layout_marginTop="5dp"
+        android:background="@color/whiteCardColor"
+        android:text="chart_placeholder"
+        android:textColor="@color/black"
+        android:textSize="30dp"/>
+
+
+</LinearLayout>

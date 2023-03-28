@@ -37,9 +37,9 @@ const UserPage = () => {
         if (response.status !== 200) {
           navigate("/login", { replace: true });
         } else {
-          setUsername(data.username);
-          setPicfilepath(data.picfilepath);
-          setPoints(data.points);
+          setUsername(data.userData.username);
+          setPicfilepath(data.userData.picfilepath);
+          setPoints(data.userData.points);
         }
       }
     );

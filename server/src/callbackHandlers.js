@@ -66,7 +66,7 @@ export function authorizeUserGetRequest(req, res, type) {
 						break;
 				}
 				res.statusCode = 200;
-				res.send(authorizedData);
+				res.send({userData: authorizedData});
 				console.log("200 Successful request");
 			}
 		}
