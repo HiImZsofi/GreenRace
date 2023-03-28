@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.example.greenrace.sharedPreferences.TokenUtils
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -140,8 +141,7 @@ class RouteLogActivity : AppCompatActivity() {
 
     //Get a combined of the stops in a Stop typed List
     private fun getSummedStopList(): List<Stop> {
-        return lineStopVariants[0].plus(lineStopVariants[1])
-            .distinctBy { stop -> stop.stopName } as ArrayList<Stop>
+        return lineStopVariants.flatMap { it }.distinctBy { stop->stop.stopName }
     }
 
     //Make list of available getOnStops
@@ -298,7 +298,7 @@ class RouteLogActivity : AppCompatActivity() {
             val response = ServiceBuilder.buildService(ApiInterface::class.java)
             val requestModelLogRoute = RequestModelLogRoute(
                 //TODO fix token
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6InRlc3RAdGVzdCIsImlhdCI6MTY3OTY3MDQwNH0.lBROJv04xnsalmV-Ev3y5lJub9o-WdknpKEyaHgYxQ8",
+                TokenUtils(this@RouteLogActivity).getAccessToken()!!,
                 currentTypeCode,
                 currentLine,
                 currentGetOnStop.stopName,
