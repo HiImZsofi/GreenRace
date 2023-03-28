@@ -114,16 +114,16 @@ export function changeProfpic(id, picfilepath) {
 }
 
 export function getUserDataFromDB(user_ID) {
-	return new Promise((resolve, rejects) => {
-		connection.query(
-			"SELECT username, picfilepath, points, email FROM users WHERE user_ID = ?",
-			[user_ID],
-			function (err, result) {
-				if (err || result.length == 0) return rejects(err);
-				return resolve(result[0]);
-			}
-		);
-	});
+  return new Promise((resolve, rejects) => {
+    connection.query(
+      "SELECT username, picfilepath, points, email FROM users WHERE user_ID = ?",
+      [user_ID],
+      function (err, result) {
+        if (err || result.length == 0) return rejects(err);
+        return resolve(result[0]);
+      }
+    );
+  });
 }
 
 export function getUserStatisticsFromDB(user_ID, date) {
@@ -198,6 +198,19 @@ export function insertNewRoute(route_id, user_id, emission, distance) {
           return reject(err);
         }
         return resolve(200); //status code is 200 if insert was successful
+      }
+    );
+  });
+}
+
+export function getRouteData(user_id) {
+  return new Promise((resolve, reject) => {
+    connection.query(
+      "SELECT routes.user_id, routes.emission, routes.length, routedata.route_short_name FROM routes JOIN routedata ON routes.route_id = routedata.route_id WHERE routes.user_id = ?",
+      [user_id],
+      function (err, result) {
+        if (err || result.length == 0) return reject(err);
+        return resolve(result);
       }
     );
   });
