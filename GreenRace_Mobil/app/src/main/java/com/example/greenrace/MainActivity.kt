@@ -115,8 +115,8 @@ class MainActivity : AppCompatActivity() {
         }
         usernameHeader?.text = username.toString()
         emailHeader?.text = email.toString()
-        val drawableResId = resources.getIdentifier(picfilepath, "drawable", packageName)
-        if (drawableResId != 0) {
+        if (picfilepath != "") {
+            val drawableResId = resources.getIdentifier(picfilepath?.split(".")?.get(0), "drawable", packageName)
             profilepicHeader?.setImageResource(drawableResId)
         } else {
             profilepicHeader?.setImageResource(R.drawable.npic)
