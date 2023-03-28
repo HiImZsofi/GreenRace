@@ -143,6 +143,14 @@ class RequestModelUserPage @JsonCreator constructor(authorization: String) {
 }
 
 class ResponseModelUserPage @JsonCreator constructor(@JsonProperty("userData") val userpagedata: UserPage)
+class ResponseModelUserPageChart @JsonCreator constructor(@JsonProperty("chartdata") val userpagechartdata: UserPageChart)
+class UserPageChart @JsonCreator constructor(
+    @JsonProperty("chartdata") chartdata: IntArray,
+){
+    @JsonProperty("chartdata")
+    @SerializedName("chartdata")
+    val chartdata: IntArray = chartdata
+}
 
 class UserPage @JsonCreator constructor(
     @JsonProperty("username") username: String,
