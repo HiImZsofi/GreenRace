@@ -63,11 +63,11 @@ class RegisterActivity : AppCompatActivity() {
                 registrationUsername.setBackgroundResource(R.drawable.email_normal)
 
                 response.sendReq(requestModelRegistration).enqueue(
-                    object : Callback<ResponseModel> {
+                    object : Callback<RegistrationResponseModel> {
                         //callback for a response
                         override fun onResponse(
-                            call: Call<ResponseModel>,
-                            response: Response<ResponseModel>
+                            call: Call<RegistrationResponseModel>,
+                            response: Response<RegistrationResponseModel>
                         ) {
                             //if email is already taken catch 500 response code
                             if (response.code() == 500) {
@@ -90,7 +90,7 @@ class RegisterActivity : AppCompatActivity() {
                         }
 
                         //response failure call
-                        override fun onFailure(call: Call<ResponseModel>, t: Throwable) {
+                        override fun onFailure(call: Call<RegistrationResponseModel>, t: Throwable) {
                             /*startActivity(regSuccessful)
                                 finish()
                                 registrationEmail.setBackgroundResource(R.drawable.email_normal)
