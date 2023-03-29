@@ -9,10 +9,10 @@ export async function firstLoggedRouteAchievement(user_Id) {
 	});
 	if (getUserLoggedRoutes.length > 1) {
 		//returns true for completion if the number of routes logged is 0
-		return { completed: true };
+		return { completed: true, progress: 100 };
 	} else {
 		//returns false for completion if the number of routes logged is 0
-		return { completed: false };
+		return { completed: false, progress: 0 };
 	}
 }
 
