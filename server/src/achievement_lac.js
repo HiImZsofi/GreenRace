@@ -55,3 +55,20 @@ export async function atLeastThreeDifferentTypesTravelledOn(user_Id){
 		? { completed: true, progress: 100 }
 		: { completed: false, progress: (types.size / 3) * 100 };
 }
+
+//Is awarded when the user logs a route where the travelled distance is at least 10 kms
+export async function atLeastTenKilometersInOneLog(user_Id) {
+	//*Achievement ID: 8
+	const getUserLoggedRoutes = await getRouteData(user_Id).catch((err) => {
+		return { completed: false };
+	});
+
+	let completedStatus = { completed: false, progress: 0 };
+
+	getUserLoggedRoutes.forEach((route) => {
+		if (route.length >= 10) {
+			completedStatus = { completed: true, progress: 100 };
+		}
+	});
+	return completedStatus;
+}
