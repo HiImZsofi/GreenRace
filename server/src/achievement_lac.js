@@ -2,7 +2,7 @@ import { getRouteData } from "./queries.js";
 
 //First logged route achievement
 export async function firstLoggedRouteAchievement(user_Id) {
-	//*Achievement ID: 2
+	//*Achievement ID: 1
 	var getUserLoggedRoutes = await getRouteData(user_Id).catch((err) => {
 		//returns false for completion if the number of routes logged is 0
 		return { completed: false };
@@ -38,7 +38,7 @@ export async function atLeastThreeKilometersLoggedAchievement(user_Id) {
 }
 
 //Is awarded when the user has logged routes with at least 3 different vehicle types
-export async function atLeastThreeDifferentTypesTravelledOn(user_Id){
+export async function atLeastThreeDifferentTypesTravelledOn(user_Id) {
 	//*Achievement ID: 4
 	const getUserLoggedRoutes = await getRouteData(user_Id);
 
@@ -58,7 +58,7 @@ export async function atLeastThreeDifferentTypesTravelledOn(user_Id){
 
 //Is awarded when the user logs a route where the travelled distance is at least 10 kms
 export async function atLeastTenKilometersInOneLog(user_Id) {
-	//*Achievement ID: 8
+	//*Achievement ID: 7
 	const getUserLoggedRoutes = await getRouteData(user_Id).catch((err) => {
 		return { completed: false };
 	});
@@ -78,7 +78,7 @@ export async function atLeastTenKilometersInOneLog(user_Id) {
 //?Maybe turn it into one function with 3kms travelled function
 //Awarded when the user's sum of logged routes totals up to 50 or more
 export async function travelFiftyKilometers(user_Id) {
-	//*Achievement ID: 10
+	//*Achievement ID: 9
 
 	const getUserLoggedRoutes = await getRouteData(user_Id).catch((err) => {
 		return { completed: false };
@@ -87,10 +87,12 @@ export async function travelFiftyKilometers(user_Id) {
 	let sum = 0;
 
 	getUserLoggedRoutes.forEach((route) => {
-		sum+=route.length
+		sum += route.length;
 	});
 
 	//If true the return true for the value of the completed key
 	//If not then return false with the current progress
-	return sum>=50 ? {completed: true, progress: 100} : { completed:false, progress: (sum/50)*100}
+	return sum >= 50
+		? { completed: true, progress: 100 }
+		: { completed: false, progress: (sum / 50) * 100 };
 }
