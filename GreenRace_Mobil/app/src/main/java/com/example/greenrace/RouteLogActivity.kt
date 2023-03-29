@@ -209,6 +209,7 @@ class RouteLogActivity : AppCompatActivity() {
 
                 //Check if the lineNumberList if initialized
                 //If yes then reload the ArrayAdapter of the lineNumberSpinner
+                getData()
                 if (this@RouteLogActivity::lineNumberList.isInitialized) {
                     setLineSpinnerAdapter()
                 }
