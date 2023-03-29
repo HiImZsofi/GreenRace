@@ -33,8 +33,8 @@ export async function atLeastThreeKilometersLoggedAchievement(user_Id) {
 	//Return false if the sum is less than 3
 	//and also calculate the current progress if the latter is true
 	return sum >= 3
-		? console.log({ completed: true, progress: 100 })
-		: console.log({ completed: false, progress: (sum / 3.0) * 100 });
+		? { completed: true, progress: 100 }
+		: { completed: false, progress: (sum / 3.0) * 100 };
 }
 
 //Is awarded when the user has logged routes with at least 3 different vehicle types
