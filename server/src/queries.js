@@ -219,7 +219,7 @@ export function getRouteData(user_id) {
 export function insertNewAchievement(achievement_id, user_id) {
   return new Promise((resolve, reject) => {
     connection.query(
-      "INSERT INTO completions (user_id, achivement_id, completion_date) VALUES (?, ?, GETDATE())",
+      "INSERT INTO completions (user_id, achivement_id, completion_date) VALUES (?, ?, CURRENT_DATE())",
       [user_id, achievement_id],
       function (err, result) {
         if (err) {
