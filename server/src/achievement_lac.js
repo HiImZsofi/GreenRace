@@ -36,3 +36,16 @@ export async function atLeastThreeKilometersLoggedAchievement(user_Id) {
 		? console.log({ completed: true, progress: 100 })
 		: console.log({ completed: false, progress: (sum / 3.0) * 100 });
 }
+
+//Is awarded when the user has logged routes with at least 3 different vehicle types
+export async function atLeastThreeDifferentTypesTravelledOn(user_Id){
+	//*Achievement ID: 4
+	const getUserLoggedRoutes = await getRouteData(user_Id);
+
+	const types = getUserLoggedRoutes.reduce((types, obj) => {
+		types.add(obj.route_type);
+		return types;
+	}, new Set());
+
+	return types.size >=3 ? {completed: true, progress: 100}:{completed:false, progress: (types.size/3)*100}
+}
