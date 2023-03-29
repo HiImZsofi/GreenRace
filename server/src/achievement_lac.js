@@ -42,10 +42,16 @@ export async function atLeastThreeDifferentTypesTravelledOn(user_Id){
 	//*Achievement ID: 4
 	const getUserLoggedRoutes = await getRouteData(user_Id);
 
+	//Calculate the number of different types logged
+	//The size contains the count of the types of transport
 	const types = getUserLoggedRoutes.reduce((types, obj) => {
 		types.add(obj.route_type);
 		return types;
 	}, new Set());
 
-	return types.size >=3 ? {completed: true, progress: 100}:{completed:false, progress: (types.size/3)*100}
+	//If the size is 3 or more then it returns true for the completed key's value
+	//If it is less than that then returns false with the current progress
+	return types.size >= 3
+		? { completed: true, progress: 100 }
+		: { completed: false, progress: (types.size / 3) * 100 };
 }
