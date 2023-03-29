@@ -16,7 +16,11 @@ import {
 } from "./callbackHandlers.js";
 import { setStopNames } from "./userStopsData.js";
 import { getFinalEmission } from "./emissionCalc.js";
-import { first500gEmission } from "./achivementZso.js";
+import {
+  first500gEmission,
+  atLeast2kgEmission,
+  onceOnEveryVehicleType,
+} from "./achivementZso.js";
 import express from "express";
 import bodyParser from "body-parser";
 import bcrypt from "bcrypt";
@@ -235,9 +239,11 @@ app.get("/check/completion", async (req, res) => {
 
   try {
     var firstAchivement = await first500gEmission(user_id);
+    var fifthAchivement = await atLeast2kgEmission(user_id);
+    var sixthAchivement = await onceOnEveryVehicleType(user_id);
   } catch (error) {
     throw error;
   }
   //TODO az összes completiont berakni egy arraybe és azt visszaküldeni
-  res.send({ isCompleted: firstAchivement });
+  res.send({ isCompleted: sixthAchivement });
 });
