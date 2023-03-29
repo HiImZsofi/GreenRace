@@ -1,59 +1,73 @@
 package com.example.greenrace
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.ImageView
+import android.widget.ListView
+import android.widget.TextView
+import com.example.greenrace.sharedPreferences.TokenUtils
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [RankPageFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class RankPageFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
+    private lateinit var rankList: ListView
+    private lateinit var rankItemList: List<RankItem>
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_rank_page, container, false)
     }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        rankList = view.findViewById(R.id.rankListView)
+        getData()
+    }
+    private fun getData() {
+        val response = ServiceBuilder.buildService(ApiInterface::class.java)
+        val tokenUtils = TokenUtils(requireContext())
+        val token = tokenUtils.getAccessToken()
+        val requestUserData = "Bearer $token"
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment RankPageFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            RankPageFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+        response.getRankData(requestUserData).enqueue(
+            object : Callback<ResponseModelRankList> {
+                override fun onResponse(
+                    call: Call<ResponseModelRankList>,
+                    response: Response<ResponseModelRankList>
+                ) {
+                    rankItemList = response.body()?.rankpagedata!!
+                    setRankListAdapter()
+                }
+
+                override fun onFailure(call: Call<ResponseModelRankList>, t: Throwable) {
+                    Log.i("Error", t.toString())
                 }
             }
+        )
+    }
+
+    private fun setRankListAdapter() {
+        val adapter = object : ArrayAdapter<RankItem>(requireContext(),R.layout.ranklist_item,rankItemList){
+            override fun getView(postion: Int,convertView: View?, parent: ViewGroup):View{
+                val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.ranklist_item, parent, false)
+                val item = getItem(postion)
+
+                val packageName = "com.example.greenrace"
+                if (item?.picfilepath != null) {
+                    val drawableResId = resources.getIdentifier(item?.picfilepath?.split(".")?.get(0), "drawable", packageName)
+                    view.findViewById<ImageView>(R.id.rank_profpic).setImageResource(drawableResId)
+                } else {
+                    view.findViewById<ImageView>(R.id.rank_profpic).setImageResource(R.drawable.npic)
+                }
+                view.findViewById<TextView>(R.id.rank_username).text = item?.username
+                view.findViewById<TextView>(R.id.rank_points).text = (item?.points.toString() + "p")
+
+                return view
+            }
+        }
+        rankList.adapter = adapter
     }
 }
