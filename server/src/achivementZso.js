@@ -1,4 +1,5 @@
 import { getRouteData, insertNewAchievement } from "./queries.js";
+import { setStopNames } from "./userStopsData.js";
 
 var routeData;
 var completion;
@@ -68,4 +69,10 @@ export async function onceOnEveryVehicleType(user_id) {
 
   completion = (vehicleTypes.length / 5) * 100;
   return { completed: false, progress: completion };
+}
+
+export async function fromOneEndToAnother() {
+  //*8 id
+  routeData = await getRouteData(user_id);
+  //! modify query to send back route id
 }
