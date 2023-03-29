@@ -16,6 +16,7 @@ import {
 } from "./callbackHandlers.js";
 import { setStopNames } from "./userStopsData.js";
 import { getFinalEmission } from "./emissionCalc.js";
+import { first500gEmission } from "./achivementZso.js";
 import express from "express";
 import bodyParser from "body-parser";
 import bcrypt from "bcrypt";
@@ -225,4 +226,18 @@ app.post("/get/distance", async (req, res) => {
   }
 
   res.send({ emission: emission });
+});
+
+app.get("/check/completion", async (req, res) => {
+  var token = req.headers.token;
+
+  var user_id = jwt.decode(token).user_id;
+
+  try {
+    var firstAchivement = await first500gEmission(user_id);
+  } catch (error) {
+    throw error;
+  }
+  //TODO az összes completiont berakni egy arraybe és azt visszaküldeni
+  res.send({ isCompleted: firstAchivement });
 });
