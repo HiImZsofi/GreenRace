@@ -33,7 +33,7 @@ connection.query(
 
 // Create achivements table
 connection.query(
-  "CREATE OR REPLACE TABLE Achivements (achivement_ID int PRIMARY KEY AUTO_INCREMENT)",
+  "CREATE OR REPLACE TABLE Achivements (achivement_ID int PRIMARY KEY AUTO_INCREMENT, title VARCHAR(30), description VARCHAR(255))",
   function (err, result) {
     if (err) throw err;
     console.log("Table Achivements created or modified");
@@ -48,15 +48,6 @@ connection.query(
     console.log("Table Completions created or modified");
   }
 );
-
-// Create Vehicles table
-// connection.query(
-//   "CREATE OR REPLACE TABLE Vehicles (vehicle_id int PRIMARY KEY AUTO_INCREMENT, vehicle_type VARCHAR(30) NOT NULL, model VARCHAR(255), emission int NOT NULL)",
-//   function (err, result) {
-//     if (err) throw err;
-//     console.log("Table Vehicles created or modified");
-//   }
-// );
 
 // Create Route table
 connection.query(
