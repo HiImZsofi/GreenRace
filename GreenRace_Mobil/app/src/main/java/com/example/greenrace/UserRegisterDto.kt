@@ -143,13 +143,15 @@ class RequestModelUserPage @JsonCreator constructor(authorization: String) {
 }
 
 class ResponseModelUserPage @JsonCreator constructor(@JsonProperty("userData") val userpagedata: UserPage)
-class ResponseModelUserPageChart @JsonCreator constructor(@JsonProperty("chartdata") val userpagechartdata: UserPageChart)
+class ResponseModelUserPageChart @JsonCreator constructor(@JsonProperty("chartdata") val userpagechartdata: List<UserPageChart>)
+
+class ResponseModelRankList @JsonCreator constructor(@JsonProperty("userData") val rankpagedata: List<RankItem>)
 class UserPageChart @JsonCreator constructor(
-    @JsonProperty("chartdata") chartdata: IntArray,
+    @JsonProperty("chartdata") chartdata: Int,
 ){
     @JsonProperty("chartdata")
     @SerializedName("chartdata")
-    val chartdata: IntArray = chartdata
+    val chartdata: Int = chartdata
 }
 
 class UserPage @JsonCreator constructor(
@@ -170,4 +172,20 @@ class UserPage @JsonCreator constructor(
     @JsonProperty("email")
     @SerializedName("email")
     val email: String = email
+}
+
+class RankItem @JsonCreator constructor(
+    @JsonProperty("username") username: String,
+    @JsonProperty("picfilepath") picfilepath: String?,
+    @JsonProperty("points") points: Int,
+) {
+    @JsonProperty("username")
+    @SerializedName("username")
+    val username: String = username
+    @JsonProperty("picfilepath")
+    @SerializedName("picfilepath")
+    val picfilepath: String? = picfilepath
+    @JsonProperty("points")
+    @SerializedName("points")
+    val points: Int = points
 }
