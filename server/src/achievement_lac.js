@@ -22,10 +22,16 @@ export async function atLeastThreeKilometersLoggedAchievement(user_Id) {
 	let getUserLoggedRoutes = await getRouteData(user_Id).catch((err) => {
 		return { completed: false };
 	});
+
+	//The sum of the distance travelled based on the logged routes
 	let sum = 0;
 	getUserLoggedRoutes.forEach((element) => {
 		sum += element.length;
 	});
+
+	//Return true with a 100% progess if the sum is more than 3 kms
+	//Return false if the sum is less than 3
+	//and also calculate the current progress if the latter is true
 	return sum >= 3
 		? console.log({ completed: true, progress: 100 })
 		: console.log({ completed: false, progress: (sum / 3.0) * 100 });
