@@ -63,10 +63,12 @@ export async function atLeastTenKilometersInOneLog(user_Id) {
 		return { completed: false };
 	});
 
+	//Sets the initial status for the completion which is false
 	let completedStatus = { completed: false, progress: 0 };
 
 	getUserLoggedRoutes.forEach((route) => {
 		if (route.length >= 10) {
+			//Sets the completion status to true if the route l
 			completedStatus = { completed: true, progress: 100 };
 		}
 	});
