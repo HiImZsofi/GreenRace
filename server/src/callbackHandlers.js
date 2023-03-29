@@ -85,16 +85,6 @@ function formatDate(date) {
 export function getChartData(req, res, type) {
   const header = req.headers["authorization"];
 
-  //make sure if token header is not undefined
-  if (header !== undefined) {
-    const bearer = header.split(" "); //separate request token from bearer
-    const token = bearer[1];
-    req.token = token;
-  } else {
-    //if undefined return forbidden status code
-    res.statusCode = 403;
-  }
-
 	//make sure if token header is not undefined
 	if (header !== undefined) {
 		const bearer = header.split(" "); //separate request token from bearer
