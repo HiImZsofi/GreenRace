@@ -74,3 +74,23 @@ export async function atLeastTenKilometersInOneLog(user_Id) {
 	});
 	return completedStatus;
 }
+
+//?Maybe turn it into one function with 3kms travelled function
+//Awarded when the user's sum of logged routes totals up to 50 or more
+export async function travelFiftyKilometers(user_Id) {
+	//*Achievement ID: 10
+
+	const getUserLoggedRoutes = await getRouteData(user_Id).catch((err) => {
+		return { completed: false };
+	});
+
+	let sum = 0;
+
+	getUserLoggedRoutes.forEach((route) => {
+		sum+=route.length
+	});
+
+	//If true the return true for the value of the completed key
+	//If not then return false with the current progress
+	return sum>=50 ? {completed: true, progress: 100} : { completed:false, progress: (sum/50)*100}
+}
