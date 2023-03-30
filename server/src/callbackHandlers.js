@@ -110,7 +110,7 @@ export function getChartData(req, res, type) {
     			const MonDayDate = new Date(today.getTime() - dayOfWeek * 24 * 60 * 60 * 1000); // Date of last Monday
 				//Get Data from database
 				try {
-					authorizedData = await getUserStatisticsFromDB(jwt.decode(req.token).user_id, MonDayDate);
+					authorizedData = await getUserStatisticsFromDB(jwt.decode(req.token).user_id);
 				  } catch (error) {
 					authorizedData = null;
 				  }// Return te Sum of points in the last week using User_Id and date of last Monday
@@ -128,7 +128,7 @@ export function getChartData(req, res, type) {
 				}
 				}
 				res.statusCode = 200;
-				res.send({chartdata: datalist});//Return a Number list for the Frontend
+				res.send({authorizedData});//Return a Number list for the Frontend
 				console.log("200 Successful request");
 			}
 		}
