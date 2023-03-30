@@ -1,5 +1,6 @@
 import { getRouteData, insertNewAchievement } from "./queries.js";
 import { setStopNames } from "./userStopsData.js";
+import { getLongerRoute } from "./stationsDistance.js";
 
 var routeData;
 var completion;
@@ -71,8 +72,31 @@ export async function onceOnEveryVehicleType(user_id) {
   return { completed: false, progress: completion };
 }
 
-export async function fromOneEndToAnother() {
+export async function fromOneEndToAnother(user_id) {
   //*8 id
   routeData = await getRouteData(user_id);
-  //! modify query to send back route id
+  var linestops;
+  // var lineStops = await getLongerRoute(
+  //   routeData[routeData.length - 1].route_id
+  // );
+  // console.log(lineStops);
+
+  let completedStatus = { completed: false, progress: "0" };
+
+  for (let i = 0; i < routeData.length; i++) {
+    linestops = await getLongerRoute(routeData[i].route_id);
+    for (let j = 0; j < linestops.length; j++) {
+      if (
+        routeData[i].onstop == linestops[0].stopname &&
+        routeData[i].offstop == linestops[linestops.length - 1].stopname
+      ) {
+        await insertNewAchievement("8", routeData[0].user_id).catch((err) => {
+          throw err;
+        });
+        return { completed: true, progess: "100" };
+      }
+    }
+  }
+
+  return completedStatus;
 }
