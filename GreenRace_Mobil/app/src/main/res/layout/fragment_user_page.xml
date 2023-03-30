@@ -48,19 +48,16 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_marginTop="20dp"
-        android:text="Pointjaid az elmúlt héten:"
+        android:text="Legutóbbi 10 utad:"
         android:textColor="@color/black"
         android:textSize="25dp" />
 
-    <TextView
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/user_barChart"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:gravity="center"
+        android:layout_weight="1"
         android:layout_marginTop="5dp"
-        android:background="@color/whiteCardColor"
-        android:text="chart_placeholder"
-        android:textColor="@color/black"
-        android:textSize="30dp"/>
-
+        android:layout_marginBottom="20dp"/>
 
 </LinearLayout>
