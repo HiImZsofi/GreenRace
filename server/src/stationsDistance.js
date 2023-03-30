@@ -6,7 +6,7 @@ var stationIndexes;
 var stationsBetween;
 
 //return with the longer array so every station will be included
-async function getLongerRoute(userGivenId) {
+export async function getLongerRoute(userGivenId) {
   var stopNames = await setStopNames(userGivenId);
   if (stopNames[0].length > stopNames[1].length) {
     return stopNames[0];
