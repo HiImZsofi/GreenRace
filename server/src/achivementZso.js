@@ -76,10 +76,6 @@ export async function fromOneEndToAnother(user_id) {
   //*8 id
   routeData = await getRouteData(user_id);
   var linestops;
-  // var lineStops = await getLongerRoute(
-  //   routeData[routeData.length - 1].route_id
-  // );
-  // console.log(lineStops);
 
   let completedStatus = { completed: false, progress: "0" };
 
@@ -99,4 +95,25 @@ export async function fromOneEndToAnother(user_id) {
   }
 
   return completedStatus;
+}
+
+export async function suburbanRailwayTraveller(user_id) {
+  //*12 id
+  routeData = await getRouteData(user_id);
+  var hevlist = [];
+
+  for (let i = 0; i < routeData.length; i++) {
+    if (routeData[i].route_type === 109) {
+      if (!hevlist.includes(routeData[i].route_id)) {
+        hevlist.push(routeData[i].route_id);
+      }
+    }
+  }
+
+  if (hevlist.length == 5) {
+    return { completed: true, progress: "100" };
+  } else {
+    completion = (hevlist.length / 5) * 100;
+    return { completed: false, progress: completion };
+  }
 }
