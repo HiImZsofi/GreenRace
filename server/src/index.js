@@ -20,6 +20,7 @@ import {
   first500gEmission,
   atLeast2kgEmission,
   onceOnEveryVehicleType,
+  fromOneEndToAnother,
 } from "./achivementZso.js";
 import express from "express";
 import bodyParser from "body-parser";
@@ -223,7 +224,9 @@ app.post("/get/distance", async (req, res) => {
       route_id,
       user_id,
       emission["finalEmission"],
-      emission["distance"]
+      emission["distance"],
+      onStop,
+      offStop
     );
   } catch (error) {
     throw error;
@@ -241,9 +244,10 @@ app.get("/check/completion", async (req, res) => {
     var firstAchivement = await first500gEmission(user_id);
     var fifthAchivement = await atLeast2kgEmission(user_id);
     var sixthAchivement = await onceOnEveryVehicleType(user_id);
+    var eighthAchivement = await fromOneEndToAnother(user_id);
   } catch (error) {
     throw error;
   }
   //TODO az összes completiont berakni egy arraybe és azt visszaküldeni
-  res.send({ isCompleted: sixthAchivement });
+  res.send({ isCompleted: eighthAchivement });
 });
