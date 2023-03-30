@@ -123,12 +123,48 @@ export async function kingOfTheBudaRiverBank(user_id) {
 				getStops[getStops.length - 1].stopname ===
 					getUserLoggedRoutes[i].offstop
 			) {
-				return console.log({ completed: true, progress: 100 });
+				return { completed: true, progress: 100 };
 			}
 		}
 	}
 
 	//Return with the value of false for the completed key
 	//if no route is found where the user went from one end of line 19 to the other
-	return console.log({ completed: false, progress: 0 });
+	return { completed: false, progress: 0 };
+}
+
+//?Maybe combine with the kingOfTheBudaRiverBank function with params
+//Is awarded when the user logged a route where they went from one end of line 2 to the other
+export async function kingOfThePestRiverBank(user_id) {
+	//*Achievement ID: 11
+
+	const getUserLoggedRoutes = await getRouteData(user_id).catch((err) => {
+		return { completed: false };
+	});
+
+	let getStops;
+
+	for (let i = 0; i < getUserLoggedRoutes.length; i++) {
+		//Get all of the stops for the current line id
+		getStops = await getLongerRoute(getUserLoggedRoutes[i].route_id);
+
+		//Check if the current line is the line 2
+		if (getUserLoggedRoutes[i].route_id === "3020") {
+			//Check if the logged get on and off stops are the two ends of the line
+			if (
+				(getStops[0].stopname === getUserLoggedRoutes[i].onstop ||
+					getStops[0].stopname === getUserLoggedRoutes[i].offstop) &&
+				(getStops[getStops.length - 1].stopname ===
+					getUserLoggedRoutes[i].onstop ||
+					getStops[getStops.length - 1].stopname ===
+						getUserLoggedRoutes[i].offstop)
+			) {
+				return { completed: true, progress: 100 };
+			}
+		}
+	}
+
+	//Return with the value of false for the completed key
+	//if no route is found where the user went from one end of line 19 to the other
+	return { completed: false, progress: 0 };
 }
