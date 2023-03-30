@@ -188,11 +188,11 @@ export function getStops() {
   });
 }
 
-export function insertNewRoute(route_id, user_id, emission, distance) {
+export function insertNewRoute(route_id, user_id, emission, distance, date) {
   return new Promise((resolve, reject) => {
     connection.query(
-      "INSERT INTO routes (route_id, user_id, emission, length) VALUES (?, ?, ?, ?)",
-      [route_id, user_id, emission, distance],
+      "INSERT INTO routes (route_id, user_id, emission, length, date) VALUES (?, ?, ?, ?, ?)",
+      [route_id, user_id, emission, distance, date],
       function (err, result) {
         if (err) {
           return reject(err);

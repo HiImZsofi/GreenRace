@@ -210,7 +210,7 @@ app.post("/get/distance", async (req, res) => {
   var offStop = req.body.offStop;
 
   var emission = await getFinalEmission(routeType, route_id, onStop, offStop);
-
+  const now = new Date();
   //get user id from the jwt token to store it in database
   var user_id = jwt.decode(token).user_id;
   try {
@@ -218,7 +218,8 @@ app.post("/get/distance", async (req, res) => {
       route_id,
       user_id,
       emission["finalEmission"],
-      emission["distance"]
+      emission["distance"],
+      now
     );
   } catch (error) {
     throw error;

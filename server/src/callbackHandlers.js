@@ -128,7 +128,7 @@ export function getChartData(req, res, type) {
 				}
 				}
 				res.statusCode = 200;
-				res.send(datalist);//Return a Number list for the Frontend
+				res.send({chartdata: datalist});//Return a Number list for the Frontend
 				console.log("200 Successful request");
 			}
 		}
