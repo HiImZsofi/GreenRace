@@ -116,12 +116,12 @@ export async function kingOfTheBudaRiverBank(user_id) {
 		if (getUserLoggedRoutes[i].route_id === "3190") {
 			//Check if the logged get on and off stops are the two ends of the line
 			if (
-				getStops[0].stopname === getUserLoggedRoutes[i].onstop ||
-				(getStops[0].stopname === getUserLoggedRoutes[i].offstop &&
+				(getStops[0].stopname === getUserLoggedRoutes[i].onstop ||
+					getStops[0].stopname === getUserLoggedRoutes[i].offstop) &&
+				(getStops[getStops.length - 1].stopname ===
+					getUserLoggedRoutes[i].onstop ||
 					getStops[getStops.length - 1].stopname ===
-						getUserLoggedRoutes[i].onstop) ||
-				getStops[getStops.length - 1].stopname ===
-					getUserLoggedRoutes[i].offstop
+						getUserLoggedRoutes[i].offstop)
 			) {
 				return { completed: true, progress: 100 };
 			}
@@ -132,6 +132,8 @@ export async function kingOfTheBudaRiverBank(user_id) {
 	//if no route is found where the user went from one end of line 19 to the other
 	return { completed: false, progress: 0 };
 }
+
+kingOfTheBudaRiverBank(1);
 
 //?Maybe combine with the kingOfTheBudaRiverBank function with params
 //Is awarded when the user logged a route where they went from one end of line 2 to the other
