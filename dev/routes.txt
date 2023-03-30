@@ -253,7 +253,6 @@ BKK,3120,12,,0,"Angyalföld kocsiszín / Rákospalota, Kossuth utca",FFD800,0000
 BKK,3140,14,,0,"Lehel tér M / Káposztásmegyer, Megyeri út",FFD800,000000,29
 BKK,3170,17,,0,Savoya Park / Bécsi út / Vörösvári út,FFD800,000000,33
 BKK,3190,19,,0,Bécsi út / Vörösvári út / Kelenföld vasútállomás M,FFD800,000000,34
-BKK,3191,19,,0,Bécsi út / Vörösvári út / Batthyány tér M+H,FFD800,000000,35
 BKK,3230,23,,0,Jászai Mari tér / Keleti pályaudvar M,FFD800,000000,41
 BKK,3240,24,,0,Keleti pályaudvar M / Közvágóhíd H,FFD800,000000,42
 BKK,3280,28,,0,Blaha Lujza tér M / Izraelita temető,FFD800,000000,46
