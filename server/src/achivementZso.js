@@ -83,8 +83,10 @@ export async function fromOneEndToAnother(user_id) {
     linestops = await getLongerRoute(routeData[i].route_id);
     for (let j = 0; j < linestops.length; j++) {
       if (
-        routeData[i].onstop == linestops[0].stopname &&
-        routeData[i].offstop == linestops[linestops.length - 1].stopname
+        (linestops[0].stopname === routeData[i].onstop ||
+          linestops[0].stopname === routeData[i].offstop) &&
+        (linestops[linestops.length - 1].stopname === routeData[i].onstop ||
+          linestops[linestops.length - 1].stopname === routeData[i].offstop)
       ) {
         await insertNewAchievement("8", routeData[0].user_id).catch((err) => {
           throw err;
