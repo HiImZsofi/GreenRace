@@ -3,6 +3,7 @@ package com.example.greenrace
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.google.gson.annotations.SerializedName
+import java.util.Date
 
 //user info data model
 
@@ -143,17 +144,17 @@ class RequestModelUserPage @JsonCreator constructor(authorization: String) {
 }
 
 class ResponseModelUserPage @JsonCreator constructor(@JsonProperty("userData") val userpagedata: UserPage)
-class ResponseModelUserPageChart @JsonCreator constructor(@JsonProperty("chartdata") val userpagechartdata: List<UserPageChart>)
+class ResponseModelUserPageChart @JsonCreator constructor(@JsonProperty("chartdata") val userpagechartdata: List<ChartData>)
 
 class ResponseModelRankList @JsonCreator constructor(@JsonProperty("userData") val rankpagedata: List<RankItem>)
-class UserPageChart @JsonCreator constructor(
-    @JsonProperty("chartdata") chartdata: Int,
-){
-    @JsonProperty("chartdata")
-    @SerializedName("chartdata")
-    val chartdata: Int = chartdata
-}
 
+class ChartData @JsonCreator constructor(
+    @JsonProperty("emission") emission: Double
+){
+    @JsonProperty("emission")
+    @SerializedName("emission")
+    val emission: Double = emission
+}
 class UserPage @JsonCreator constructor(
     @JsonProperty("username") username: String,
     @JsonProperty("picfilepath") picfilepath: String?,
