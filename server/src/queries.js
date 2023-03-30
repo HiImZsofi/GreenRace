@@ -188,11 +188,18 @@ export function getStops() {
   });
 }
 
-export function insertNewRoute(route_id, user_id, emission, distance) {
+export function insertNewRoute(
+  route_id,
+  user_id,
+  emission,
+  distance,
+  onStop,
+  offStop
+) {
   return new Promise((resolve, reject) => {
     connection.query(
-      "INSERT INTO routes (route_id, user_id, emission, length) VALUES (?, ?, ?, ?)",
-      [route_id, user_id, emission, distance],
+      "INSERT INTO routes (route_id, user_id, emission, length, onstop, offstop) VALUES (?, ?, ?, ?, ?, ?)",
+      [route_id, user_id, emission, distance, onStop, offStop],
       function (err, result) {
         if (err) {
           return reject(err);
@@ -206,7 +213,7 @@ export function insertNewRoute(route_id, user_id, emission, distance) {
 export function getRouteData(user_id) {
   return new Promise((resolve, reject) => {
     connection.query(
-      "SELECT routes.user_id, routes.emission, routes.length, routedata.route_short_name, routedata.route_type FROM routes JOIN routedata ON routes.route_id = routedata.route_id WHERE routes.user_id = ?",
+      "SELECT routes.user_id, routes.emission, routes.length, routes.onstop, routes.offstop, routedata.route_short_name, routedata.route_type, routedata.route_id FROM routes JOIN routedata ON routes.route_id = routedata.route_id WHERE routes.user_id = ?",
       [user_id],
       function (err, result) {
         if (err || result.length == 0) return reject(err);
