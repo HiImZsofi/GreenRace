@@ -21,6 +21,7 @@ import {
   atLeast2kgEmission,
   onceOnEveryVehicleType,
   fromOneEndToAnother,
+  suburbanRailwayTraveller,
 } from "./achivementZso.js";
 import express from "express";
 import bodyParser from "body-parser";
@@ -245,6 +246,7 @@ app.get("/check/completion", async (req, res) => {
     var fifthAchivement = await atLeast2kgEmission(user_id);
     var sixthAchivement = await onceOnEveryVehicleType(user_id);
     var eighthAchivement = await fromOneEndToAnother(user_id);
+    var twelvethAchievement = await suburbanRailwayTraveller(user_id);
   } catch (error) {
     throw error;
   }
