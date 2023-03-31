@@ -44,4 +44,8 @@ interface ApiInterface {
     @Headers("Content-Type: application/json")
     @GET("rankPage")
     fun getRankData(@Header("authorization") token: String) : Call<ResponseModelRankList>
+
+    @Headers("Content-Type: application/json")
+    @GET("routePage")
+    fun getLoggedRoutes(@Header("authorization") token: String) : Call<ResponseModelLoggedRoutes>
 }
