@@ -24,6 +24,10 @@ interface ApiInterface {
     @Headers("Content-Type: application/json")
     @POST("get/distance")
     fun getDistance(@Body requestModelLogRoute: RequestModelLogRoute): Call<ResponseModelLogRoute>
+
+    @Headers("Content-Type: application/json")
+    @GET("check/completion")
+    fun getAchievements(@Header("token") requestModelAchievements: RequestModelAchievements) : Call<ResponseModelAchievements>
     
      @Headers("Content-Type: application/json")
     @GET("userPage")
