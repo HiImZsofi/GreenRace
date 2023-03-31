@@ -126,6 +126,19 @@ export function getUserDataFromDB(user_ID) {
 	});
 }
 
+export function getUserRoutes(user_ID) {
+  return new Promise((resolve, rejects) => {
+    connection.query(
+      "SELECT emission, length, date FROM routes WHERE user_ID = ?",
+      [user_ID],
+      function (err, result) {
+        if (err || result.length == 0) return rejects(err);
+        return resolve(result);
+      }
+    );
+  });
+}
+
 export function getUserStatisticsFromDB(user_ID) {
   return new Promise((resolve, rejects) => {
     connection.query(
@@ -202,3 +215,6 @@ export function insertNewRoute(route_id, user_id, emission, distance, date) {
     );
   });
 }
+
+
+

@@ -146,8 +146,8 @@ app.get("/userPage", (req, res) => {
 
 //Friend page route
 //Authorize user
-app.get("/friendPage", (req, res) => {
-  authorizeUserGetRequest(req, res);
+app.get("/routePage", (req, res) => {
+  authorizeUserGetRequest(req, res, "route");
 });
 
 //Rank page route

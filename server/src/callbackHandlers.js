@@ -2,6 +2,7 @@
 import {
   changePassword,
   changeUsername,
+  getUserRoutes,
   getUserDataFromDB,
   getRankListFromDB,
   getPassWithIDQuery,
@@ -60,7 +61,11 @@ export function authorizeUserGetRequest(req, res, type) {
 							jwt.decode(req.token).user_id
 						);
 						break;
-					//TODO add friend case
+					case "route":
+              authorizedData = await getUserRoutes(
+                jwt.decode(req.token).user_id
+              );
+            break;
 					default:
 						authorizedData = { error: "Wrong type" };
 						break;
@@ -72,14 +77,6 @@ export function authorizeUserGetRequest(req, res, type) {
 		}
 	);
 }
-
-//Converts the terrible typescript date format to something usable  
-function formatDate(date) {
-    const year = date.getFullYear().toString();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    return `${year}/${month}/${day}`;
-  }
 
 //User Chart Data
 export function getChartData(req, res, type) {
