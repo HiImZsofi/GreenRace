@@ -16,6 +16,20 @@ import {
 } from "./callbackHandlers.js";
 import { setStopNames } from "./userStopsData.js";
 import { getFinalEmission } from "./emissionCalc.js";
+import {
+  firstLoggedRouteAchievement,
+  first500gEmission,
+  atLeastThreeKilometersLoggedAchievement,
+  atLeastThreeDifferentTypesTravelledOn,
+  atLeast2kgEmission,
+  onceOnEveryVehicleType,
+  atLeastTenKilometersInOneLog,
+  fromOneEndToAnother,
+  travelFiftyKilometers,
+  kingOfTheBudaRiverBank,
+  kingOfThePestRiverBank,
+  suburbanRailwayTraveller,
+} from "./achievements.js";
 import express from "express";
 import bodyParser from "body-parser";
 import bcrypt from "bcrypt";
@@ -146,8 +160,8 @@ app.get("/userPage", (req, res) => {
 
 //Friend page route
 //Authorize user
-app.get("/friendPage", (req, res) => {
-  authorizeUserGetRequest(req, res);
+app.get("/routePage", (req, res) => {
+  authorizeUserGetRequest(req, res, "route");
 });
 
 //Rank page route
@@ -210,7 +224,7 @@ app.post("/get/distance", async (req, res) => {
   var offStop = req.body.offStop;
 
   var emission = await getFinalEmission(routeType, route_id, onStop, offStop);
-
+  const now = new Date();
   //get user id from the jwt token to store it in database
   var user_id = jwt.decode(token).user_id;
   try {
@@ -218,11 +232,41 @@ app.post("/get/distance", async (req, res) => {
       route_id,
       user_id,
       emission["finalEmission"],
-      emission["distance"]
+      emission["distance"],
+      onStop,
+      offStop,
+      now
     );
   } catch (error) {
     throw error;
   }
 
   res.send({ emission: emission });
+});
+
+app.get("/check/completion", async (req, res) => {
+  var token = req.headers.token;
+
+  var user_id = jwt.decode(token).user_id;
+  var completionArray = [];
+
+  try {
+    completionArray.push(
+      await firstLoggedRouteAchievement(user_id),
+      await first500gEmission(user_id),
+      await atLeastThreeKilometersLoggedAchievement(user_id),
+      await atLeastThreeDifferentTypesTravelledOn(user_id),
+      await atLeast2kgEmission(user_id),
+      await onceOnEveryVehicleType(user_id),
+      await atLeastTenKilometersInOneLog(user_id),
+      await fromOneEndToAnother(user_id),
+      await travelFiftyKilometers(user_id),
+      await kingOfTheBudaRiverBank(user_id),
+      await kingOfThePestRiverBank(user_id),
+      await suburbanRailwayTraveller(user_id)
+    );
+  } catch (error) {
+    throw error;
+  }
+  res.send({ achievements: completionArray });
 });

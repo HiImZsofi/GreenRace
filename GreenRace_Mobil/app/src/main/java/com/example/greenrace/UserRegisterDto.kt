@@ -143,12 +143,70 @@ class RequestModelUserPage @JsonCreator constructor(authorization: String) {
 }
 
 class ResponseModelUserPage @JsonCreator constructor(@JsonProperty("userData") val userpagedata: UserPage)
+class ResponseModelUserPageChart @JsonCreator constructor(@JsonProperty("chartdata") val userpagechartdata: List<ChartData>)
 
+class ResponseModelRankList @JsonCreator constructor(@JsonProperty("userData") val rankpagedata: List<RankItem>)
+
+class ChartData @JsonCreator constructor(
+    @JsonProperty("emission") emission: Double
+){
+    @JsonProperty("emission")
+    @SerializedName("emission")
+    val emission: Double = emission
+}
 class UserPage @JsonCreator constructor(
     @JsonProperty("username") username: String,
     @JsonProperty("picfilepath") picfilepath: String?,
     @JsonProperty("points") points: Int,
     @JsonProperty("email") email: String
+) {
+    @JsonProperty("username")
+    @SerializedName("username")
+    val username: String = username
+
+    @JsonProperty("picfilepath")
+    @SerializedName("picfilepath")
+    val picfilepath: String? = picfilepath
+
+    @JsonProperty("points")
+    @SerializedName("points")
+    val points: Int = points
+
+    @JsonProperty("email")
+    @SerializedName("email")
+    val email: String = email
+}
+
+class ResponseModelAchievements @JsonCreator constructor(@JsonProperty("achievements") val achievements: List<Achievement>)
+
+class Achievement @JsonCreator constructor(
+    @JsonProperty("name") name: String,
+    @JsonProperty("description") description: String,
+    @JsonProperty("completed") completed: Boolean,
+    @JsonProperty("progress") progress: Int
+) {
+    @JsonProperty("name")
+    @SerializedName("name")
+    val name: String = name
+
+    @JsonProperty("description")
+    @SerializedName("description")
+    val description: String = description
+
+    @JsonProperty("completed")
+    @SerializedName("completed")
+    val completed: Boolean = completed
+
+    @JsonProperty("progress")
+    @SerializedName("progress")
+    val progress: Int = progress
+
+}
+
+class RankItem @JsonCreator constructor(
+    @JsonProperty("username") username: String,
+    @JsonProperty("picfilepath") picfilepath: String?,
+    @JsonProperty("points") points: Int,
 ) {
     @JsonProperty("username")
     @SerializedName("username")
@@ -159,9 +217,6 @@ class UserPage @JsonCreator constructor(
     @JsonProperty("points")
     @SerializedName("points")
     val points: Int = points
-    @JsonProperty("email")
-    @SerializedName("email")
-    val email: String = email
 }
 
 class RequestModelSettingsPage @JsonCreator constructor(

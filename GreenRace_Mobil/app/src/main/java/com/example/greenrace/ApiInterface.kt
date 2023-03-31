@@ -24,6 +24,10 @@ interface ApiInterface {
     @Headers("Content-Type: application/json")
     @POST("get/distance")
     fun getDistance(@Body requestModelLogRoute: RequestModelLogRoute): Call<ResponseModelLogRoute>
+
+    @Headers("Content-Type: application/json")
+    @GET("check/completion")
+    fun getAchievements(@Header("token") token: String) : Call<ResponseModelAchievements>
     
     @Headers("Content-Type: application/json")
     @GET("userPage")
@@ -32,4 +36,12 @@ interface ApiInterface {
     @Headers("Content-Type: application/json")
     @POST("/settings")
     fun sendSettings(@Header("Authorization") token: String, @Body requestModelSettingsPage: RequestModelSettingsPage) : Call<RegistrationResponseModel>
+
+    @Headers("Content-Type: application/json")
+    @GET("chartData")
+    fun sendReqChartData(@Header("authorization") token:String) :Call<ResponseModelUserPageChart>
+
+    @Headers("Content-Type: application/json")
+    @GET("rankPage")
+    fun getRankData(@Header("authorization") token: String) : Call<ResponseModelRankList>
 }

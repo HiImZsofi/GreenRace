@@ -6,8 +6,20 @@
     tools:context=".RankPageFragment">
 
     <TextView
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:id="@+id/ponts_textview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="RankPage" />
+        android:layout_height="wrap_content"
+        android:text="Rank Lista:"
+        android:textSize="30dp"
+        android:textColor="@color/black"/>
+
+    <ListView
+        android:id="@+id/rankListView"
+        android:layout_marginTop="70dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/ranklist_item"/>
 
 </FrameLayout>

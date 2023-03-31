@@ -114,23 +114,36 @@ export function changeProfpic(id, picfilepath) {
 }
 
 export function getUserDataFromDB(user_ID) {
-	return new Promise((resolve, rejects) => {
-		connection.query(
-			"SELECT username, picfilepath, points, email FROM users WHERE user_ID = ?",
-			[user_ID],
-			function (err, result) {
-				if (err || result.length == 0) return rejects(err);
-				return resolve(result[0]);
-			}
-		);
-	});
-}
-
-export function getUserStatisticsFromDB(user_ID, date) {
   return new Promise((resolve, rejects) => {
     connection.query(
-      "SELECT sum(emission) as SUM, date FROM `routes` WHERE user_id = ? && date > ? GROUP BY date",
-      [user_ID, date],
+      "SELECT username, picfilepath, points, email FROM users WHERE user_ID = ?",
+      [user_ID],
+      function (err, result) {
+        if (err || result.length == 0) return rejects(err);
+        return resolve(result[0]);
+      }
+    );
+  });
+}
+
+export function getUserRoutes(user_ID) {
+  return new Promise((resolve, rejects) => {
+    connection.query(
+      "SELECT emission, length, date FROM routes WHERE user_ID = ?",
+      [user_ID],
+      function (err, result) {
+        if (err || result.length == 0) return rejects(err);
+        return resolve(result);
+      }
+    );
+  });
+}
+
+export function getUserStatisticsFromDB(user_ID) {
+  return new Promise((resolve, rejects) => {
+    connection.query(
+      "SELECT emission FROM `routes` WHERE user_id = ? ORDER BY date, emission DESC LIMIT 10",
+      [user_ID],
       function (err, result) {
         if (err || result.length == 0) return rejects(err);
         return resolve(result);
@@ -188,11 +201,18 @@ export function getStops() {
   });
 }
 
-export function insertNewRoute(route_id, user_id, emission, distance) {
+export function insertNewRoute(
+  route_id,
+  user_id,
+  emission,
+  distance,
+  onStop,
+  offStop
+) {
   return new Promise((resolve, reject) => {
     connection.query(
-      "INSERT INTO routes (route_id, user_id, emission, length) VALUES (?, ?, ?, ?)",
-      [route_id, user_id, emission, distance],
+      "INSERT INTO routes (route_id, user_id, emission, length, onstop, offstop) VALUES (?, ?, ?, ?, ?, ?)",
+      [route_id, user_id, emission, distance, onStop, offStop],
       function (err, result) {
         if (err) {
           return reject(err);
@@ -202,3 +222,34 @@ export function insertNewRoute(route_id, user_id, emission, distance) {
     );
   });
 }
+
+export function getRouteData(user_id) {
+  return new Promise((resolve, reject) => {
+    connection.query(
+      "SELECT routes.user_id, routes.emission, routes.length, routes.onstop, routes.offstop, routedata.route_short_name, routedata.route_type, routedata.route_id FROM routes JOIN routedata ON routes.route_id = routedata.route_id WHERE routes.user_id = ?",
+      [user_id],
+      function (err, result) {
+        if (err || result.length == 0) return reject(err);
+        return resolve(result);
+      }
+    );
+  });
+}
+
+export function insertNewAchievement(achievement_id, user_id) {
+  return new Promise((resolve, reject) => {
+    connection.query(
+      "INSERT INTO completions (user_id, achivement_id, completion_date) VALUES (?, ?, CURRENT_DATE())",
+      [user_id, achievement_id],
+      function (err, result) {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(200); //status code is 200 if insert was successful
+      }
+    );
+  });
+}
+
+
+

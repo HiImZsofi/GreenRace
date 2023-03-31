@@ -90,7 +90,6 @@ class MainActivity : AppCompatActivity() {
                         val email = response.body()?.userpagedata?.email
                         val picfilepath = response.body()?.userpagedata?.picfilepath
                         callback(username, email, picfilepath)
-                        Log.i("kep", "$picfilepath")
                     }
                 }
 

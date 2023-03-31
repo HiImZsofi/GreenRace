@@ -6,9 +6,7 @@
     android:configChanges="orientation|screenSize">
 
     <!-- Always include this permission -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
-    <!-- Include only if your app benefits from precise location access. -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- Include only if your app benefits from precise location access. -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <uses-feature android:name="android.hardware.location.gps" />
@@ -27,6 +25,9 @@
         android:theme="@style/Theme.GreenRace"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".AchievementsActivity"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -68,4 +69,5 @@
             android:name=".SettingsActivity"
             android:exported="false" />
     </application>
+
 </manifest>
