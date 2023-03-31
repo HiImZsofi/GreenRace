@@ -45,11 +45,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //val intent = Intent(this@MainActivity, MapsActivity::class.java)
-        //startActivity(intent)
-        //Disable return to the main activity
-        //finish()
-
         init()
         getData { username, email, picfilepath ->
             this@MainActivity.username = username

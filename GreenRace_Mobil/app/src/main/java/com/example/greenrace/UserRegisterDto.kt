@@ -3,7 +3,6 @@ package com.example.greenrace
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.google.gson.annotations.SerializedName
-import java.util.Date
 
 //user info data model
 
