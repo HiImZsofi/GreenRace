@@ -85,16 +85,6 @@ function formatDate(date) {
 export function getChartData(req, res, type) {
   const header = req.headers["authorization"];
 
-  //make sure if token header is not undefined
-  if (header !== undefined) {
-    const bearer = header.split(" "); //separate request token from bearer
-    const token = bearer[1];
-    req.token = token;
-  } else {
-    //if undefined return forbidden status code
-    res.statusCode = 403;
-  }
-
 	//make sure if token header is not undefined
 	if (header !== undefined) {
 		const bearer = header.split(" "); //separate request token from bearer
@@ -114,31 +104,13 @@ export function getChartData(req, res, type) {
 				res.sendStatus(403);
 				console.log("403 Forbidden request");
 			} else {
-				//Get the date of the last Monday
-    			const today = new Date(); //Date of today
-    			const dayOfWeek = (today.getDay() + 6) % 7; //How many day passed since last Monday
-    			const MonDayDate = new Date(today.getTime() - dayOfWeek * 24 * 60 * 60 * 1000); // Date of last Monday
-				//Get Data from database
 				try {
-					authorizedData = await getUserStatisticsFromDB(jwt.decode(req.token).user_id, MonDayDate);
+					authorizedData = await getUserStatisticsFromDB(jwt.decode(req.token).user_id);
 				  } catch (error) {
 					authorizedData = null;
-				  }// Return te Sum of points in the last week using User_Id and date of last Monday
-				let datalist = [];
-				if (authorizedData == null) {//Tests if Querry empty
-					datalist = [0,0,0,0,0,0,0];//If empty sets every number to 0
-				}else{	
-				for(let i = 0; i < 7; i++) {//Loops through the days of the week
-					let dayDate = formatDate(new Date(MonDayDate .getTime() + i * 24 * 60 * 60 * 1000));//Date of X day	
-					datalist[i] = 0;//Sets default value to 0	
-					authorizedData.forEach(data => {//Loops through the days in the database
-						let dataDate = formatDate(new Date(data.date));//Date y from the database
-						if(dayDate == dataDate) {datalist[i] = data.SUM;}//If date x and y the same set that day value for the value int the database
-					});
-				}
-				}
+				  }
 				res.statusCode = 200;
-				res.send(datalist);//Return a Number list for the Frontend
+				res.send({chartdata: authorizedData});
 				console.log("200 Successful request");
 			}
 		}

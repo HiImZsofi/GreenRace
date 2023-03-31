@@ -45,11 +45,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val intent = Intent(this@MainActivity, MapsActivity::class.java)
-        startActivity(intent)
-        //Disable return to the main activity
-        finish()
-
         init()
         getData { username, email, picfilepath ->
             this@MainActivity.username = username
@@ -95,7 +90,6 @@ class MainActivity : AppCompatActivity() {
                         val email = response.body()?.userpagedata?.email
                         val picfilepath = response.body()?.userpagedata?.picfilepath
                         callback(username, email, picfilepath)
-                        Log.i("kep", "$picfilepath")
                     }
                 }
 
