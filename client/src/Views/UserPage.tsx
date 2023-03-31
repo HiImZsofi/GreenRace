@@ -45,42 +45,12 @@ const UserPage = () => {
     );
   };
 
-
-  //Getting data form Server for the User Statistic Chart
-  const chartDataHandler = async () => {
-    const token = localStorage.getItem("key");
-    const requestOptions = {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token, 
-      },
-      withCredentials: true,
-    };
-    fetch("http://localhost:3001/chartData", requestOptions).then(
-      async (response) => {
-        const isJson = response.headers
-          .get("content-type")
-          ?.includes("application/json");
-        const data = isJson && (await response.json());
-        //setting chart data
-        if(data !== undefined) {
-          const pointlist = data.map((point:number, index:number) => {
-            return chartData[index] = point;
-          });
-          setChartData(pointlist);
-        }
-      }
-    );
-  };
-
   function handleResize() {
     setWindowSize(window.innerWidth);
   }
 
   useEffect(() => {
 		authenticationHandler();
-    chartDataHandler();
     if (dark == "false"){
       document.body.className = "body-dark body-zoom";
     } else {
@@ -111,7 +81,7 @@ const UserPage = () => {
           />
         </div>
         <div className="Chart">
-          <GreenChart chartData={chartData}/>
+          <GreenChart/>
         </div>
       </div>
     </div>

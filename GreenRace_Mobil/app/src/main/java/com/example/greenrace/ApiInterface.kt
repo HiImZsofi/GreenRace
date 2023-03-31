@@ -31,5 +31,13 @@ interface ApiInterface {
     
      @Headers("Content-Type: application/json")
     @GET("userPage")
-    fun sendReqUser(@Header("Authorization") token:String) :Call<ResponseModelUserPage>
+    fun sendReqUser(@Header("authorization") token:String) :Call<ResponseModelUserPage>
+
+    @Headers("Content-Type: application/json")
+    @GET("chartData")
+    fun sendReqChartData(@Header("authorization") token:String) :Call<ResponseModelUserPageChart>
+
+    @Headers("Content-Type: application/json")
+    @GET("rankPage")
+    fun getRankData(@Header("authorization") token: String) : Call<ResponseModelRankList>
 }

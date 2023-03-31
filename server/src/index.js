@@ -160,8 +160,8 @@ app.get("/userPage", (req, res) => {
 
 //Friend page route
 //Authorize user
-app.get("/friendPage", (req, res) => {
-  authorizeUserGetRequest(req, res);
+app.get("/routePage", (req, res) => {
+  authorizeUserGetRequest(req, res, "route");
 });
 
 //Rank page route
@@ -224,7 +224,7 @@ app.post("/get/distance", async (req, res) => {
   var offStop = req.body.offStop;
 
   var emission = await getFinalEmission(routeType, route_id, onStop, offStop);
-
+  const now = new Date();
   //get user id from the jwt token to store it in database
   var user_id = jwt.decode(token).user_id;
   try {
@@ -234,7 +234,8 @@ app.post("/get/distance", async (req, res) => {
       emission["finalEmission"],
       emission["distance"],
       onStop,
-      offStop
+      offStop,
+      now
     );
   } catch (error) {
     throw error;

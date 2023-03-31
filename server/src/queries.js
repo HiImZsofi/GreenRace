@@ -126,11 +126,24 @@ export function getUserDataFromDB(user_ID) {
   });
 }
 
-export function getUserStatisticsFromDB(user_ID, date) {
+export function getUserRoutes(user_ID) {
   return new Promise((resolve, rejects) => {
     connection.query(
-      "SELECT sum(emission) as SUM, date FROM `routes` WHERE user_id = ? && date > ? GROUP BY date",
-      [user_ID, date],
+      "SELECT emission, length, date FROM routes WHERE user_ID = ?",
+      [user_ID],
+      function (err, result) {
+        if (err || result.length == 0) return rejects(err);
+        return resolve(result);
+      }
+    );
+  });
+}
+
+export function getUserStatisticsFromDB(user_ID) {
+  return new Promise((resolve, rejects) => {
+    connection.query(
+      "SELECT emission FROM `routes` WHERE user_id = ? ORDER BY date, emission DESC LIMIT 10",
+      [user_ID],
       function (err, result) {
         if (err || result.length == 0) return rejects(err);
         return resolve(result);
@@ -237,3 +250,6 @@ export function insertNewAchievement(achievement_id, user_id) {
     );
   });
 }
+
+
+
