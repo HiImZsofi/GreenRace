@@ -61,7 +61,8 @@
                 android:hint="@string/settingNewPw"
                 android:maxLines="1"
                 android:textColorHint="@color/whiteTextColor"
-                android:textColor="@color/whiteTextColor"/>
+                android:textColor="@color/whiteTextColor"
+                android:inputType="textPassword"/>
 
             <!--edit text for current user password !required-->
             <EditText
