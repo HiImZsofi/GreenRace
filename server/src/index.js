@@ -17,12 +17,19 @@ import {
 import { setStopNames } from "./userStopsData.js";
 import { getFinalEmission } from "./emissionCalc.js";
 import {
+  firstLoggedRouteAchievement,
   first500gEmission,
+  atLeastThreeKilometersLoggedAchievement,
+  atLeastThreeDifferentTypesTravelledOn,
   atLeast2kgEmission,
   onceOnEveryVehicleType,
+  atLeastTenKilometersInOneLog,
   fromOneEndToAnother,
+  travelFiftyKilometers,
+  kingOfTheBudaRiverBank,
+  kingOfThePestRiverBank,
   suburbanRailwayTraveller,
-} from "./achivementZso.js";
+} from "./achievements.js";
 import express from "express";
 import bodyParser from "body-parser";
 import bcrypt from "bcrypt";
@@ -240,16 +247,25 @@ app.get("/check/completion", async (req, res) => {
   var token = req.headers.token;
 
   var user_id = jwt.decode(token).user_id;
+  var completionArray = [];
 
   try {
-    var firstAchivement = await first500gEmission(user_id);
-    var fifthAchivement = await atLeast2kgEmission(user_id);
-    var sixthAchivement = await onceOnEveryVehicleType(user_id);
-    var eighthAchivement = await fromOneEndToAnother(user_id);
-    var twelvethAchievement = await suburbanRailwayTraveller(user_id);
+    completionArray.push(
+      await firstLoggedRouteAchievement(user_id),
+      await first500gEmission(user_id),
+      await atLeastThreeKilometersLoggedAchievement(user_id),
+      await atLeastThreeDifferentTypesTravelledOn(user_id),
+      await atLeast2kgEmission(user_id),
+      await onceOnEveryVehicleType(user_id),
+      await atLeastTenKilometersInOneLog(user_id),
+      await fromOneEndToAnother(user_id),
+      await travelFiftyKilometers(user_id),
+      await kingOfTheBudaRiverBank(user_id),
+      await kingOfThePestRiverBank(user_id),
+      await suburbanRailwayTraveller(user_id)
+    );
   } catch (error) {
     throw error;
   }
-  //TODO az összes completiont berakni egy arraybe és azt visszaküldeni
-  res.send({ isCompleted: eighthAchivement });
+  res.send({ achievements: completionArray });
 });
