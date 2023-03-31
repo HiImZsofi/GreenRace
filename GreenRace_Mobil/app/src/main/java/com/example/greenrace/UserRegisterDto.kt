@@ -167,9 +167,7 @@ class UserPage @JsonCreator constructor(
     val email: String = email
 }
 
-class RequestModelAchievements @JsonCreator constructor(token: String)
-
-class ResponseModelAchievements @JsonCreator constructor(@JsonProperty("achievements") achievements: List<Achievement>)
+class ResponseModelAchievements @JsonCreator constructor(@JsonProperty("achievements") val achievements: List<Achievement>)
 
 class Achievement @JsonCreator constructor(
     @JsonProperty("name") name: String,
