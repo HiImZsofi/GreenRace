@@ -45,11 +45,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val intent = Intent(this@MainActivity, MapsActivity::class.java)
-        startActivity(intent)
-        //Disable return to the main activity
-        finish()
-
         init()
         getData { username, email, picfilepath ->
             this@MainActivity.username = username
@@ -154,7 +149,8 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_settings -> {
-                    //TODO redirect to settings
+                    val settingsIntent = Intent(this@MainActivity, SettingsActivity::class.java)
+                    navigateToPage(null, settingsIntent)
                     true
                 }
                 R.id.nav_logout -> {
