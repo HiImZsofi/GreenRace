@@ -29,9 +29,13 @@ interface ApiInterface {
     @GET("check/completion")
     fun getAchievements(@Header("token") token: String) : Call<ResponseModelAchievements>
     
-     @Headers("Content-Type: application/json")
+    @Headers("Content-Type: application/json")
     @GET("userPage")
-    fun sendReqUser(@Header("authorization") token:String) :Call<ResponseModelUserPage>
+    fun sendReqUser(@Header("Authorization") token:String) :Call<ResponseModelUserPage>
+
+    @Headers("Content-Type: application/json")
+    @POST("/settings")
+    fun sendSettings(@Header("Authorization") token: String, @Body requestModelSettingsPage: RequestModelSettingsPage) : Call<RegistrationResponseModel>
 
     @Headers("Content-Type: application/json")
     @GET("chartData")

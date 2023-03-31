@@ -218,3 +218,19 @@ class RankItem @JsonCreator constructor(
     @SerializedName("points")
     val points: Int = points
 }
+
+class RequestModelSettingsPage @JsonCreator constructor(
+    @JsonProperty("newUsername") newusername: String,
+    @JsonProperty("newPassword") newpassword : String,
+    @JsonProperty("currentPassword") currentpassword: String
+) {
+    @JsonProperty("newUsername")
+    @SerializedName("newUsername")
+    val newusername : String = newusername
+    @JsonProperty("newPassword")
+    @SerializedName("newPassword")
+    val newpassword : String = newpassword
+    @JsonProperty("currentPassword")
+    @SerializedName("currentPassword")
+    val currentpassword : String = currentpassword
+}

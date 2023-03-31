@@ -11,4 +11,9 @@
     <string name="maps">maps</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="settings">Beállítások</string>
+    <string name="settingsUsername">Új felhasználónév</string>
+    <string name="settingNewPw">Új jelszó</string>
+    <string name="settingsCurrentPw">Jelenlegi jelszó</string>
+    <string name="cancel">Mégse</string>
 </resources>

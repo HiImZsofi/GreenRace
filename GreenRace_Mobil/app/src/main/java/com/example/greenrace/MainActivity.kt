@@ -148,7 +148,8 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_settings -> {
-                    //TODO redirect to settings
+                    val settingsIntent = Intent(this@MainActivity, SettingsActivity::class.java)
+                    navigateToPage(null, settingsIntent)
                     true
                 }
                 R.id.nav_logout -> {

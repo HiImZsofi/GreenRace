@@ -34,8 +34,8 @@ class RouteLogActivity : AppCompatActivity() {
         setContentView(R.layout.activity_route_log)
 
         initElements()
-        getData()
         setVehicleTypeAdapter()
+        getData()
     }
 
     private fun initElements() {
@@ -209,9 +209,9 @@ class RouteLogActivity : AppCompatActivity() {
 
                 //Check if the lineNumberList if initialized
                 //If yes then reload the ArrayAdapter of the lineNumberSpinner
+                getData()
                 if (this@RouteLogActivity::lineNumberList.isInitialized) {
                     setLineSpinnerAdapter()
-                    getStopsData()
                 }
             }
 
