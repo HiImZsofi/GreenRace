@@ -25,7 +25,11 @@ interface ApiInterface {
     @POST("get/distance")
     fun getDistance(@Body requestModelLogRoute: RequestModelLogRoute): Call<ResponseModelLogRoute>
     
-     @Headers("Content-Type: application/json")
+    @Headers("Content-Type: application/json")
     @GET("userPage")
     fun sendReqUser(@Header("Authorization") token:String) :Call<ResponseModelUserPage>
+
+    @Headers("Content-Type: application/json")
+    @POST("/settings")
+    fun sendSettings(@Header("Authorization") token: String, @Body requestModelSettingsPage: RequestModelSettingsPage) : Call<RegistrationResponseModel>
 }
