@@ -16,7 +16,6 @@ import retrofit2.Response
 
 class AchievementsActivity : AppCompatActivity() {
     private lateinit var achievementsView: ListView
-    private lateinit var achievement: LinearLayout
 
     private lateinit var achievementsList: List<Achievement>
 
@@ -28,6 +27,7 @@ class AchievementsActivity : AppCompatActivity() {
         getAchievementData()
     }
 
+    //GETs the progress for each achievement for the current user from the backend
     private fun getAchievementData() {
         val response = ServiceBuilder.buildService(ApiInterface::class.java)
         val token: String = TokenUtils(this@AchievementsActivity).getAccessToken()!!
@@ -37,6 +37,7 @@ class AchievementsActivity : AppCompatActivity() {
                     call: Call<ResponseModelAchievements>,
                     response: Response<ResponseModelAchievements>
                 ) {
+                    //Store the achievements
                     achievementsList = response.body()!!.achievements
                     setAchievementsListViewAdapter()
                 }
@@ -48,6 +49,9 @@ class AchievementsActivity : AppCompatActivity() {
         )
     }
 
+    //Set the achievements list as the list used by the adapter of the AchievementsListView
+    //It sets the name, progress, status of the achievement
+    // and the achievement description if you hold down one of the list items
     private fun setAchievementsListViewAdapter() {
         val adapter = object : ArrayAdapter<Achievement>(
             this@AchievementsActivity,
