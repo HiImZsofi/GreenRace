@@ -1,35 +1,36 @@
 //Imports
 import {
-  changePassword,
-  changeUsername,
-  getUserRoutes,
-  getUserDataFromDB,
-  getRankListFromDB,
-  getPassWithIDQuery,
-  getUserStatisticsFromDB,
-  changeProfpic,
+	changePassword,
+	changeUsername,
+	getUserRoutes,
+	getUserDataFromDB,
+	getRankListFromDB,
+	getPassWithIDQuery,
+	getUserStatisticsFromDB,
+	changeProfpic,
+	getRouteData,
 } from "./queries.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 //jwt token sign function
 export function generateAccessToken(user_ID, email) {
-  let secretKey = "secret";
-  return jwt.sign(
-    { user_id: user_ID, email: email },
-    secretKey,
-    { algorithm: "HS256" },
-    {
-      expiresIn: "1h",
-      issuer: "http://localhost:3001",
-    }
-  );
+	let secretKey = "secret";
+	return jwt.sign(
+		{ user_id: user_ID, email: email },
+		secretKey,
+		{ algorithm: "HS256" },
+		{
+			expiresIn: "1h",
+			issuer: "http://localhost:3001",
+		}
+	);
 }
 
 //User authorization
 //Can be called in the callback of a route with the req and res params
 export function authorizeUserGetRequest(req, res, type) {
-  const header = req.headers["authorization"];
+	const header = req.headers["authorization"];
 
 	//make sure if token header is not undefined
 	if (header !== undefined) {
@@ -40,7 +41,7 @@ export function authorizeUserGetRequest(req, res, type) {
 		//if undefined return forbidden status code
 		res.statusCode = 403;
 	}
-	
+
 	jwt.verify(
 		req.token,
 		"secret",
@@ -54,7 +55,9 @@ export function authorizeUserGetRequest(req, res, type) {
 					case "user":
 						authorizedData = await getUserDataFromDB(
 							jwt.decode(req.token).user_id
-						).catch(err => {throw err;});
+						).catch((err) => {
+							throw err;
+						});
 						break;
 					case "rank":
 						authorizedData = await getRankListFromDB(
@@ -62,16 +65,23 @@ export function authorizeUserGetRequest(req, res, type) {
 						);
 						break;
 					case "route":
-              authorizedData = await getUserRoutes(
-                jwt.decode(req.token).user_id
-              );
-            break;
+						authorizedData = await getRouteData(jwt.decode(req.token).user_id);
+						let filteredAuthorizedData = [];
+						authorizedData.forEach((route) => {
+							filteredAuthorizedData.push({
+								line: route.route_short_name,
+								date: route.date,
+								emission: route.emission,
+							});
+						});
+						authorizedData = filteredAuthorizedData;
+						break;
 					default:
 						authorizedData = { error: "Wrong type" };
 						break;
 				}
 				res.statusCode = 200;
-				res.send({userData: authorizedData});
+				res.send({ userData: authorizedData });
 				console.log("200 Successful request");
 			}
 		}
