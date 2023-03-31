@@ -30,47 +30,63 @@ class SettingsActivity: AppCompatActivity() {
         val response = ServiceBuilder.buildService(ApiInterface::class.java)
 
         settingsConfirmButton.setOnClickListener{
-            val settingsPageRequest = RequestModelSettingsPage(settingsNewUsername.text.toString(), settingsNewPassword.text.toString(), settingsCurrentPassword.text.toString())
-            val tokenUtils = TokenUtils(this)
-            val token = tokenUtils.getAccessToken()
-            val requestToken = "Bearer $token"
-
-            response.sendSettings(requestToken, settingsPageRequest).enqueue(
-                object : Callback<RegistrationResponseModel> {
-                    override fun onResponse(
-                        call: Call<RegistrationResponseModel>,
-                        response: Response<RegistrationResponseModel>
-                    ) {
-                        if(response.code() == 404){
-                            val tokenInvalid = Intent(this@SettingsActivity, LoginActivity::class.java)
-                            startActivity(tokenInvalid)
-                            finish()
-                        }
-                        else if(response.code() == 500){
-                            settingsNewPassword.setBackgroundResource(R.drawable.email_error)
-                            settingsCurrentPassword.setBackgroundResource(R.drawable.email_error)
-                            Toast.makeText(this@SettingsActivity, "Hiba történt a kérés feldolgozása során.", Toast.LENGTH_SHORT).show()
-                        }
-                        else if(response.code() == 200){
-                            Toast.makeText(this@SettingsActivity, "A felhasználói fiók sikeresen frissítve!", Toast.LENGTH_SHORT).show()
-                            val updateSuccessful = Intent(this@SettingsActivity, MainActivity::class.java)
-                            startActivity(updateSuccessful)
-                            finish()
-                        }
-                    }
-
-                    override fun onFailure(call: Call<RegistrationResponseModel>, t: Throwable) {
-                        Log.i("Error", t.toString())
-                    }
-                }
-            )
+            settingsDataHandler(response)
         }
 
         settingsBack.setOnClickListener{
-            val returnIntent = Intent(this@SettingsActivity, MainActivity::class.java)
-            startActivity(returnIntent)
-            finish()
+            cancelIntent()
         }
+    }
+
+    private fun settingsDataHandler(response: ApiInterface) {
+        val settingsPageRequest = RequestModelSettingsPage(
+            settingsNewUsername.text.toString(),
+            settingsNewPassword.text.toString(),
+            settingsCurrentPassword.text.toString()
+        )
+        val tokenUtils = TokenUtils(this)
+        val token = tokenUtils.getAccessToken()
+        val requestToken = "Bearer $token"
+
+        response.sendSettings(requestToken, settingsPageRequest).enqueue(
+            object : Callback<RegistrationResponseModel> {
+                override fun onResponse(
+                    call: Call<RegistrationResponseModel>,
+                    response: Response<RegistrationResponseModel>
+                ) {
+                    if (response.code() == 404) {
+                        val tokenInvalid = Intent(this@SettingsActivity, LoginActivity::class.java)
+                        startActivity(tokenInvalid)
+                        finish()
+                    } else if (response.code() == 500) {
+                        settingsNewPassword.setBackgroundResource(R.drawable.email_error)
+                        settingsCurrentPassword.setBackgroundResource(R.drawable.email_error)
+                        Toast.makeText(
+                            this@SettingsActivity,
+                            "Hiba történt a kérés feldolgozása során.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else if (response.code() == 200) {
+                        Toast.makeText(
+                            this@SettingsActivity,
+                            "A felhasználói fiók sikeresen frissítve!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        cancelIntent()
+                    }
+                }
+
+                override fun onFailure(call: Call<RegistrationResponseModel>, t: Throwable) {
+                    Log.i("Error", t.toString())
+                }
+            }
+        )
+    }
+
+    private fun cancelIntent() {
+        val returnIntent = Intent(this@SettingsActivity, MainActivity::class.java)
+        startActivity(returnIntent)
+        finish()
     }
 
     fun init() {
