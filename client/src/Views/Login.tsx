@@ -38,8 +38,8 @@ const Login = () => {
     ) {
       setEmailErr(true);
       setPasswordErr(true);
-      setEmailErrMsg("Invalid input");
-      setPasswordErrMsg("Invalid input");
+      setEmailErrMsg("Mező nem lehet Üres!");
+      setPasswordErrMsg("Mező nem lehet Üres!");
     } else {
       //Send POST request to the server
       const requestOptions = {
@@ -67,14 +67,14 @@ const Login = () => {
 						navigate("/userPage", { replace: true });
 					} else if (response.status == 404) {
 						setEmailErr(true);
-						setEmailErrMsg("Wrong email address");
+						setEmailErrMsg("Hibás email");
 						setPasswordErr(true);
-						setPasswordErrMsg("Invalid password");
+						setPasswordErrMsg("Hibás jelszó");
 					} else if (response.status == 401) {
 						setEmailErr(false);
 						setEmailErrMsg("");
 						setPasswordErr(true);
-						setPasswordErrMsg("Invalid password");
+						setPasswordErrMsg("Hibás jelszó");
 					} else {
 						// get error message from body or default to response status
 						const error = (data && data.message) || response.status;

@@ -45,10 +45,16 @@ const Register = () => {
 			setEmailErr(true);
 			setUsernameErr(true);
 			setPasswordErr(true);
-			setEmailErrMsg("Invalid input");
-			setUsernameErrMsg("Invalid input");
-			setPasswordErrMsg("Invalid input");
+			setEmailErrMsg("Mező nem lehet Üres!");
+			setUsernameErrMsg("Mező nem lehet Üres!");
+			setPasswordErrMsg("Mező nem lehet Üres!");
 		} else {
+			const emailRegex: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+			if (emailRegex.test(email)){
+				setUsernameErr(false);
+				setPasswordErr(false);
+				setUsernameErrMsg("");
+				setPasswordErrMsg("");
 			//Send POST request to the server
 			const requestOptions = {
 				method: "POST",
@@ -70,7 +76,7 @@ const Register = () => {
 						navigate("/login", { replace: true });
 					} else if (response.status == 500) {
 						setEmailErr(true);
-						setEmailErrMsg("Email already in use");
+						setEmailErrMsg("Foglalt email!");
 					} else {
 						// get error message from body or default to response status
 						const error = (data && data.message) || response.status;
@@ -80,6 +86,14 @@ const Register = () => {
 				.catch((error) => {
 					console.error("There was an error!", error);
 				});
+			} else {
+				setUsernameErr(false);
+				setPasswordErr(false);
+				setUsernameErrMsg("");
+				setPasswordErrMsg("");
+				setEmailErr(true);
+				setEmailErrMsg("Nem megfelelő email");
+			}
 		}
 	};
 	useEffect(() => {
