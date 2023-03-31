@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:name="MyNavigationService"
-    android:foregroundServiceType="location">
+    android:foregroundServiceType="location"
+    android:configChanges="orientation|screenSize">
 
     <!-- Always include this permission -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -62,6 +63,9 @@
         </activity>
         <activity
             android:name=".RouteLogActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SettingsActivity"
             android:exported="false" />
     </application>
 </manifest>
