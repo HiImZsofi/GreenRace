@@ -75,6 +75,17 @@
             android:layout_height="wrap_content"
             android:text="Utazás hozzáadása"
             android:id="@+id/logRouteButton"
-            android:layout_gravity="bottom"/>
+            android:layout_gravity="bottom"
+            android:backgroundTint="@color/green_700"/>
     </LinearLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mégse"
+        android:id="@+id/logRouteRedirect"
+        android:layout_gravity="center_horizontal"
+        android:backgroundTint="@color/white"
+        android:textColor="@color/green_700"
+        android:layout_marginTop="30dp"
+        android:gravity="center" />
 </androidx.appcompat.widget.LinearLayoutCompat>
