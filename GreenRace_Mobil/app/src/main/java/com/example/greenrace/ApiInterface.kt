@@ -23,7 +23,7 @@ interface ApiInterface {
 
     @Headers("Content-Type: application/json")
     @POST("get/distance")
-    fun getDistance(@Body requestModelLogRoute: RequestModelLogRoute): Call<ResponseModelLogRoute>
+    fun getDistance(@Header("token") token: String, @Body requestModelLogRoute: RequestModelLogRoute): Call<ResponseModelLogRoute>
 
     @Headers("Content-Type: application/json")
     @GET("check/completion")
