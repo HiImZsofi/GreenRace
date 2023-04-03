@@ -122,11 +122,6 @@ class RouteLogActivity : AppCompatActivity() {
                 ) {
                     // handle item selection here
                     val selectedItem = getOnStops[position]
-                    Toast.makeText(
-                        this@RouteLogActivity,
-                        "Selected item: $selectedItem",
-                        Toast.LENGTH_SHORT
-                    ).show()
                     currentGetOnStop = summedStops[position]
                     getOffStopSpinner.isEnabled = true
                     setGetOffStopSpinnerAdapter()
