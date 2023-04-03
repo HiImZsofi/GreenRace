@@ -16,9 +16,9 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class LoggedRoutesListActivity : AppCompatActivity() {
-    private lateinit var loggedRoutesView:ListView
+    private lateinit var loggedRoutesView: ListView
 
-    private lateinit var loggedRoutes : List<LoggedRoute>
+    private lateinit var loggedRoutes: List<LoggedRoute>
 
     //TODO Refactor code readability
     //TODO Fix styling of the date
@@ -67,13 +67,20 @@ class LoggedRoutesListActivity : AppCompatActivity() {
                 val item = getItem(postion)
 
 
-                view.findViewById<TextView>(R.id.loggedRouteDate).text = simpleDateFormat.format(item?.date)
+                view.findViewById<TextView>(R.id.loggedRouteDate).text =
+                    simpleDateFormat.format(item?.date)
                 view.findViewById<TextView>(R.id.loggedRouteLineNumber).text = item?.line
-                view.findViewById<TextView>(R.id.loggedRouteEmission).text = item?.emission.toString()
+                view.findViewById<TextView>(R.id.loggedRouteEmission).text =
+                    item?.emission.toString()
 
                 return view
             }
         }
+
+        val headerView = LayoutInflater.from(this@LoggedRoutesListActivity)
+            .inflate(R.layout.logged_routes_list_item, null)
+        loggedRoutesView.addHeaderView(headerView)
+
         loggedRoutesView.adapter = adapter
     }
 
