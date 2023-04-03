@@ -7,7 +7,6 @@ import {
 	getRouteNumbers,
 	insertNewRoute,
 	addPoints,
-  getPoints,
 } from "./queries.js";
 import {
 	generateAccessToken,
@@ -239,8 +238,7 @@ app.post("/get/distance", async (req, res) => {
 			offStop,
 			now
 		);
-		const points = await getPoints(user_id) + Math.round(emission.finalEmission / 10);
-		await addPoints(user_id, points);
+		await addPoints(user_id, emission.finalEmission / 10);
 	} catch (error) {
 		throw error;
 	}
