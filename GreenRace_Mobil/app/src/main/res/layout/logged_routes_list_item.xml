@@ -10,12 +10,14 @@
         android:id="@+id/loggedRoutesListItem"
         tools:ignore="MissingConstraints">
         <TextView
+            android:layout_marginStart="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/loggedRouteDate"
             android:text="Dátum"
             android:textSize="18sp"
-            android:layout_weight="0.333"/>
+            android:layout_weight="0.333"
+            android:textColor="@color/black"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -23,16 +25,19 @@
             android:text="Járat"
             android:textSize="18sp"
             android:layout_weight="0.333"
-            android:textAlignment="center"/>
+            android:textAlignment="center"
+            android:textColor="@color/black"/>
 
         <TextView
+            android:layout_marginEnd="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/loggedRouteEmission"
             android:text="Kibocsátás"
             android:textSize="18sp"
             android:layout_weight="0.333"
-            android:textAlignment="textEnd"/>
+            android:textAlignment="textEnd"
+            android:textColor="@color/black"/>
 
 
     </LinearLayout>

@@ -29,10 +29,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var buttonOpenDrawer: ImageButton
 
-    private var menulist: List<String> = listOf("Pontjaim", "Rangsor", "Barátok")
+    private var menulist: List<String> = listOf("Pontjaim", "Rangsor", "Utak")
     private var pagenumber: Int = 0
-    //TODO change friend page to logged routes list
-    private var fragmentlist: List<Fragment> = listOf(UserPageFragment(), RankPageFragment(), FriendPageFragment())
+    private var fragmentlist: List<Fragment> = listOf(UserPageFragment(), RankPageFragment(), RouteLogedPageFragment())
 
     private var username: String? = null
     private var email: String? = null

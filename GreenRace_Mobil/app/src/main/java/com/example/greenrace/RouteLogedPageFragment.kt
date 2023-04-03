@@ -1,39 +1,47 @@
 package com.example.greenrace
 
+import android.content.Context
 import android.icu.text.SimpleDateFormat
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.ListView
+import android.widget.TextView
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
 import com.example.greenrace.sharedPreferences.TokenUtils
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class LoggedRoutesListActivity : AppCompatActivity() {
+
+class RouteLogedPageFragment : Fragment() {
     private lateinit var loggedRoutesView: ListView
 
     private lateinit var loggedRoutes: List<LoggedRoute>
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_logged_routes_list)
-
-        initElements()
+    private lateinit var mContext: Context
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mContext = context
+    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_routeloged_page, container, false)
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        loggedRoutesView = view.findViewById(R.id.loggedRoutesList)
         getLoggedRoutesData()
     }
-
 
     //Get list of the logged routes of the current user
     //Then store it in a LoggedRoute type list
     private fun getLoggedRoutesData() {
         val response = ServiceBuilder.buildService(ApiInterface::class.java)
-        val token: String = TokenUtils(this@LoggedRoutesListActivity).getAccessToken()!!
+        val token: String = TokenUtils(requireContext()).getAccessToken()!!
         response.getLoggedRoutes("Bearer $token").enqueue(
             object : Callback<ResponseModelLoggedRoutes> {
                 override fun onResponse(
@@ -57,7 +65,7 @@ class LoggedRoutesListActivity : AppCompatActivity() {
         val simpleDateFormat = SimpleDateFormat("yyyy.MM.dd")
 
         val adapter = object : ArrayAdapter<LoggedRoute>(
-            this@LoggedRoutesListActivity,
+            requireContext(),
             R.layout.logged_routes_list_item,
             loggedRoutes
         ) {
@@ -81,14 +89,10 @@ class LoggedRoutesListActivity : AppCompatActivity() {
         //Add a header view to the listview to mark the names of the columns
         //It uses the logged_routes_list_item with hardcoded strings
         // so the formatting matches the list items
-        val headerView = LayoutInflater.from(this@LoggedRoutesListActivity)
+        val headerView = LayoutInflater.from(requireContext())
             .inflate(R.layout.logged_routes_list_item, null)
         loggedRoutesView.addHeaderView(headerView)
 
         loggedRoutesView.adapter = adapter
-    }
-
-    private fun initElements() {
-        loggedRoutesView = findViewById(R.id.loggedRoutesList)
     }
 }
