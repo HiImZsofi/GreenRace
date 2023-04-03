@@ -19,7 +19,7 @@ class RouteLogActivity : AppCompatActivity() {
     private lateinit var getOnStopSpinner: Spinner
     private lateinit var getOffStopSpinner: Spinner
     private lateinit var logRouteButton: Button
-
+    private lateinit var routeLogRedirect: Button
 
     private lateinit var lineNumberList: List<Route>
     private lateinit var lineStopVariants: Array<List<Stop>>
@@ -36,6 +36,7 @@ class RouteLogActivity : AppCompatActivity() {
         initElements()
         setVehicleTypeAdapter()
         getData()
+        redirectToMain()
     }
 
     private fun initElements() {
@@ -45,12 +46,21 @@ class RouteLogActivity : AppCompatActivity() {
         getOnStopSpinner = findViewById(R.id.getOnStopSpinner)
         getOffStopSpinner = findViewById(R.id.getOffStopSpinner)
         logRouteButton = findViewById(R.id.logRouteButton)
+        routeLogRedirect = findViewById(R.id.logRouteRedirect)
 
         //Disable input fields and submit button
         //So the user has to fill them in one by one from the top down
         getOnStopSpinner.isEnabled = false
         getOffStopSpinner.isEnabled = false
         logRouteButton.isEnabled = false
+    }
+
+    private fun redirectToMain(){
+        routeLogRedirect.setOnClickListener{
+            val mainIntent = Intent(this@RouteLogActivity, MainActivity::class.java)
+            startActivity(mainIntent)
+            finish()
+        }
     }
 
     //Gets BKK line data from the backend
@@ -122,11 +132,6 @@ class RouteLogActivity : AppCompatActivity() {
                 ) {
                     // handle item selection here
                     val selectedItem = getOnStops[position]
-                    Toast.makeText(
-                        this@RouteLogActivity,
-                        "Selected item: $selectedItem",
-                        Toast.LENGTH_SHORT
-                    ).show()
                     currentGetOnStop = summedStops[position]
                     getOffStopSpinner.isEnabled = true
                     setGetOffStopSpinnerAdapter()
@@ -298,7 +303,6 @@ class RouteLogActivity : AppCompatActivity() {
             val response = ServiceBuilder.buildService(ApiInterface::class.java)
             val requestModelLogRoute = RequestModelLogRoute(
                 //TODO fix token
-                TokenUtils(this@RouteLogActivity).getAccessToken()!!,
                 currentTypeCode,
                 currentLine,
                 currentGetOnStop.stopName,
@@ -318,7 +322,7 @@ class RouteLogActivity : AppCompatActivity() {
             // Create the AlertDialog object and return it
             emissionAlertDialog.create()
 
-            response.getDistance(requestModelLogRoute).enqueue(
+            response.getDistance(TokenUtils(this@RouteLogActivity).getAccessToken()!!, requestModelLogRoute).enqueue(
                 object : Callback<ResponseModelLogRoute> {
                     override fun onResponse(
                         call: Call<ResponseModelLogRoute>,

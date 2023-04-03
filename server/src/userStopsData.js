@@ -41,6 +41,17 @@ async function formatStopArrays(userGivenId) {
     bothRoutes.push(element.stopIds);
   });
 
+  if (userGivenId === "0100") {
+    var route1 = bothRoutes[0];
+    stops1 = [];
+
+    for (let j = 0; j < route1.length; j++) {
+      stops1.push(route1[j].slice(4));
+    }
+
+    return stops1;
+  }
+
   //split the two arrays into two lines
   var route1 = bothRoutes[0];
   var route2 = bothRoutes[1];
@@ -66,6 +77,30 @@ var stopNames2;
 //*The userGivenId is sent from the client when a new line is selected
 //*It is used to return the proper stops for the selected line
 export async function setStopNames(userGivenId) {
+  if (userGivenId === "0100") {
+    var xdbusz = await formatStopArrays(userGivenId);
+    stopNames1 = [];
+
+    var queryRes = await getStops().catch((err) => {
+      throw err;
+    });
+
+    for (let i = 0; i < stops1.length; i++) {
+      for (let j = 0; j < queryRes.length; j++) {
+        //if id in query matches with id in array push neccessary data into object array
+        if (JSON.parse(JSON.stringify(queryRes[j]["stop_id"])) === stops1[i]) {
+          stopNames1.push({
+            stopname: JSON.parse(JSON.stringify(queryRes[j]["stop_name"])), //javascript experience
+            stoplat: JSON.parse(JSON.stringify(queryRes[j]["stop_lat"])),
+            stoplon: JSON.parse(JSON.stringify(queryRes[j]["stop_lon"])),
+          });
+        }
+      }
+    }
+
+    return [stopNames1];
+  }
+
   await formatStopArrays(userGivenId);
   stopNames1 = [];
   stopNames2 = [];

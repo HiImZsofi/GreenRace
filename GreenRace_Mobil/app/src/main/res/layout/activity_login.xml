@@ -96,7 +96,7 @@
                     android:textAllCaps="false"
                     android:textColor="@color/whiteTextColor"
                     android:layout_gravity="end"
-                    android:layout_marginStart="30dp"
+                    android:layout_marginStart="20dp"
                     />
             </LinearLayout>
 

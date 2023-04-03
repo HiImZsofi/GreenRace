@@ -8,7 +8,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Jármű típusa"
+        android:text="@string/vehicleType"
         android:textSize="20sp"/>
 
     <Spinner
@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="false"
-        android:contentDescription="Jármű típusa"
+        android:contentDescription="@string/vehicleType"
         android:minHeight="48dp"
         android:tooltipText="Jármű típusa"
         android:layout_marginBottom="35dp"/>
@@ -24,7 +24,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Járat szám"
+        android:text="@string/vehicleNumber"
         android:textSize="20sp"/>
     <Spinner
         android:layout_width="match_parent"
@@ -32,14 +32,14 @@
         android:clickable="false"
         android:minHeight="48dp"
         android:tooltipText="Járat szám"
-        android:contentDescription="Járat szám"
+        android:contentDescription="@string/vehicleNumber"
         android:id="@+id/lineNumberSpinner"
         android:layout_marginBottom="35dp"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Induló megálló"
+        android:text="@string/startingStop"
         android:textSize="20sp"/>
     <Spinner
         android:layout_width="match_parent"
@@ -47,14 +47,14 @@
         android:clickable="false"
         android:minHeight="48dp"
         android:tooltipText="Induló megálló"
-        android:contentDescription="Induló megálló"
+        android:contentDescription="@string/startingStop"
         android:id="@+id/getOnStopSpinner"
         android:layout_marginBottom="35dp"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Leszállás megálló"
+        android:text="@string/endingStop"
         android:textSize="20sp"
         />
     <Spinner
@@ -63,7 +63,7 @@
         android:clickable="false"
         android:minHeight="48dp"
         android:tooltipText="Leszállás megálló"
-        android:contentDescription="Leszállás megálló"
+        android:contentDescription="@string/endingStop"
         android:id="@+id/getOffStopSpinner"
         android:layout_marginBottom="35dp"/>
     <LinearLayout
@@ -73,8 +73,19 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Utazás hozzáadása"
+            android:text="@string/addRoute"
             android:id="@+id/logRouteButton"
-            android:layout_gravity="bottom"/>
+            android:layout_gravity="bottom"
+            android:backgroundTint="@color/green_700"/>
     </LinearLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cancel"
+        android:id="@+id/logRouteRedirect"
+        android:layout_gravity="center_horizontal"
+        android:backgroundTint="@color/white"
+        android:textColor="@color/green_700"
+        android:layout_marginTop="30dp"
+        android:gravity="center" />
 </androidx.appcompat.widget.LinearLayoutCompat>

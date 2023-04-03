@@ -3,6 +3,7 @@ package com.example.greenrace
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.google.gson.annotations.SerializedName
+import java.util.*
 
 //user info data model
 
@@ -94,16 +95,11 @@ class Stop @JsonCreator constructor(
 //This objects is used to store the data entered by the user
 //And when he clicks the log route button this object is sent to the server to store it in the database
 class RequestModelLogRoute @JsonCreator constructor(
-    token: String,
     routeType: Int,
     routeId: String,
     getOnStop: String,
     getOffStop: String
 ) {
-    @JsonProperty("token")
-    @SerializedName("token")
-    val token: String = token
-
     @JsonProperty("routeType")
     @SerializedName("routeType")
     val routeType: Int = routeType
@@ -149,11 +145,12 @@ class ResponseModelRankList @JsonCreator constructor(@JsonProperty("userData") v
 
 class ChartData @JsonCreator constructor(
     @JsonProperty("emission") emission: Double
-){
+) {
     @JsonProperty("emission")
     @SerializedName("emission")
     val emission: Double = emission
 }
+
 class UserPage @JsonCreator constructor(
     @JsonProperty("username") username: String,
     @JsonProperty("picfilepath") picfilepath: String?,
@@ -163,15 +160,44 @@ class UserPage @JsonCreator constructor(
     @JsonProperty("username")
     @SerializedName("username")
     val username: String = username
+
     @JsonProperty("picfilepath")
     @SerializedName("picfilepath")
     val picfilepath: String? = picfilepath
+
     @JsonProperty("points")
     @SerializedName("points")
     val points: Int = points
+
     @JsonProperty("email")
     @SerializedName("email")
     val email: String = email
+}
+
+class ResponseModelAchievements @JsonCreator constructor(@JsonProperty("achievements") val achievements: List<Achievement>)
+
+class Achievement @JsonCreator constructor(
+    @JsonProperty("name") name: String,
+    @JsonProperty("description") description: String,
+    @JsonProperty("completed") completed: Boolean,
+    @JsonProperty("progress") progress: Int
+) {
+    @JsonProperty("name")
+    @SerializedName("name")
+    val name: String = name
+
+    @JsonProperty("description")
+    @SerializedName("description")
+    val description: String = description
+
+    @JsonProperty("completed")
+    @SerializedName("completed")
+    val completed: Boolean = completed
+
+    @JsonProperty("progress")
+    @SerializedName("progress")
+    val progress: Int = progress
+
 }
 
 class RankItem @JsonCreator constructor(
@@ -182,10 +208,58 @@ class RankItem @JsonCreator constructor(
     @JsonProperty("username")
     @SerializedName("username")
     val username: String = username
+
     @JsonProperty("picfilepath")
     @SerializedName("picfilepath")
     val picfilepath: String? = picfilepath
+
     @JsonProperty("points")
     @SerializedName("points")
     val points: Int = points
+}
+
+class RequestModelProfilepicSetter @JsonCreator constructor(
+    @JsonProperty("picfilepath") picfilepath: String
+) {
+    @JsonProperty("picfilepath")
+    @SerializedName("picfilepath")
+    val picfilepath: String = picfilepath
+}
+
+class RequestModelSettingsPage @JsonCreator constructor(
+    @JsonProperty("newUsername") newusername: String,
+    @JsonProperty("newPassword") newpassword: String,
+    @JsonProperty("currentPassword") currentpassword: String
+) {
+    @JsonProperty("newUsername")
+    @SerializedName("newUsername")
+    val newusername: String = newusername
+
+    @JsonProperty("newPassword")
+    @SerializedName("newPassword")
+    val newpassword: String = newpassword
+
+    @JsonProperty("currentPassword")
+    @SerializedName("currentPassword")
+    val currentpassword: String = currentpassword
+}
+
+class ResponseModelLoggedRoutes @JsonCreator constructor(@JsonProperty("userData") val loggedRoutes: List<LoggedRoute>)
+
+class LoggedRoute @JsonCreator constructor(
+    @JsonProperty("line") line: String,
+    @JsonProperty("date") date: Date,
+    @JsonProperty("emission") emission: Double
+) {
+    @JsonProperty("line")
+    @SerializedName("line")
+    val line: String = line
+
+    @JsonProperty("date")
+    @SerializedName("date")
+    val date: Date = date
+
+    @JsonProperty("emission")
+    @SerializedName("emission")
+    val emission: Double = emission
 }

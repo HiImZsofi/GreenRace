@@ -1,11 +1,8 @@
 // Imports
 package com.example.greenrace
 
-import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
-
-import android.security.keystore.UserNotAuthenticatedException
 import android.util.Log
 import android.view.View
 import android.widget.ImageButton
@@ -32,9 +29,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var buttonOpenDrawer: ImageButton
 
-    private var menulist: List<String> = listOf("Pontjaim", "Rangsor", "Barátok")
+    private var menulist: List<String> = listOf("Pontjaim", "Rangsor", "Utak")
     private var pagenumber: Int = 0
-    private var fragmentlist: List<Fragment> = listOf(UserPageFragment(), RankPageFragment(), FriendPageFragment())
+    private var fragmentlist: List<Fragment> = listOf(UserPageFragment(), RankPageFragment(), RouteLogedPageFragment())
 
     private var username: String? = null
     private var email: String? = null
@@ -133,7 +130,7 @@ class MainActivity : AppCompatActivity() {
                     navigateToPage(1, intent)
                     true
                 }
-                R.id.nav_friend -> {
+                R.id.nav_logged_routes -> {
                     val intent = Intent(this@MainActivity, MainActivity::class.java)
                     navigateToPage(2, intent)
                     true
@@ -144,11 +141,13 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_profile -> {
-                    //TODO redirect to profile picture setter
+                    val intent = Intent(this@MainActivity, ProfpicSetterActivity::class.java)
+                    navigateToPage(null, intent)
                     true
                 }
                 R.id.nav_settings -> {
-                    //TODO redirect to settings
+                    val settingsIntent = Intent(this@MainActivity, SettingsActivity::class.java)
+                    navigateToPage(null, settingsIntent)
                     true
                 }
                 R.id.nav_logout -> {
@@ -170,7 +169,6 @@ class MainActivity : AppCompatActivity() {
             pageNumObj.savePageNum(pageNum)
         }
         startActivity(intent)
-        finish()
     }
     fun openCloseDrawer(view: View){
         if (drawerLayout.isDrawerOpen(GravityCompat.END)) {

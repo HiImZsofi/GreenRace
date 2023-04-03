@@ -15,14 +15,14 @@ export async function getFinalEmission(type, lineId, getOnStop, getOffStop) {
 
   //only calculating two data if the vehicle type is bus
   if (type == 3) {
-    var carEmission = parseInt(distance) * CAR_EMISSION;
-    var busEmission = parseInt(distance) * BUS_EMISSION;
+    var carEmission = distance * CAR_EMISSION;
+    var busEmission = distance * BUS_EMISSION;
     var finalEmission = carEmission - busEmission;
 
     return { finalEmission: finalEmission, distance: distance };
   } else {
     //return with car emission only if vehicle is not a bus because electric vehicle emission is 0 anyway
-    var carEmission = parseInt(distance) * CAR_EMISSION;
+    var carEmission = distance * CAR_EMISSION;
     return { finalEmission: carEmission, distance: distance };
   }
 }
