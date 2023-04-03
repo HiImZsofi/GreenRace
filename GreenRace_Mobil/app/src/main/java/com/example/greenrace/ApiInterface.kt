@@ -27,7 +27,7 @@ interface ApiInterface {
 
     @Headers("Content-Type: application/json")
     @GET("check/completion")
-    fun getAchievements(@Header("token") token: String) : Call<ResponseModelAchievements>
+    fun getAchievements(@Header("Authorization") token: String) : Call<ResponseModelAchievements>
     
     @Headers("Content-Type: application/json")
     @GET("userPage")
