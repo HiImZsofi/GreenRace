@@ -169,7 +169,6 @@ class MainActivity : AppCompatActivity() {
             pageNumObj.savePageNum(pageNum)
         }
         startActivity(intent)
-        finish()
     }
     fun openCloseDrawer(view: View){
         if (drawerLayout.isDrawerOpen(GravityCompat.END)) {

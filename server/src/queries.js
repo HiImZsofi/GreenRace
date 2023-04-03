@@ -212,7 +212,7 @@ export function insertNewRoute(
 ) {
   return new Promise((resolve, reject) => {
     connection.query(
-      "INSERT INTO routes (route_id, user_id, emission, length, onstop, offstop) VALUES (?, ?, ?, ?, ?, ?)",
+      "INSERT INTO routes (route_id, user_id, emission, length, onstop, offstop, date) VALUES (?, ?, ?, ?, ?, ?, CURRENT_DATE())",
       [route_id, user_id, emission, distance, onStop, offStop],
       function (err, result) {
         if (err) {
@@ -264,4 +264,3 @@ export function addPoints(user_id, pointsGained) {
 		);
 	});
 }
-

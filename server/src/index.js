@@ -218,32 +218,31 @@ app.post("/get/routeData", async (req, res) => {
 });
 
 app.post("/get/distance", async (req, res) => {
-	var token = req.body.token;
-	var routeType = req.body.routeType;
-	var route_id = req.body.route_id;
-	var onStop = req.body.onStop;
-	var offStop = req.body.offStop;
+  var token = req.headers.token;
+  var routeType = req.body.routeType;
+  var route_id = req.body.route_id;
+  var onStop = req.body.onStop;
+  var offStop = req.body.offStop;
 
-	var emission = await getFinalEmission(routeType, route_id, onStop, offStop);
-	const now = new Date();
-	//get user id from the jwt token to store it in database
-	var user_id = jwt.decode(token).user_id;
-	try {
-		await insertNewRoute(
-			route_id,
-			user_id,
-			emission["finalEmission"],
-			emission["distance"],
-			onStop,
-			offStop,
-			now
-		);
-		await addPoints(user_id, emission.finalEmission / 10);
-	} catch (error) {
-		throw error;
-	}
+  var emission = await getFinalEmission(routeType, route_id, onStop, offStop);
+  const now = new Date();
+  //get user id from the jwt token to store it in database
+  var user_id = jwt.decode(token).user_id;
+  try {
+    await insertNewRoute(
+      route_id,
+      user_id,
+      emission["finalEmission"],
+      emission["distance"],
+      onStop,
+      offStop
+    );
+    await addPoints(user_id, emission.finalEmission / 10);
+  } catch (error) {
+    throw error;
+  }
 
-	res.send({ emission: emission });
+  res.send({ emission: emission });
 });
 
 app.get("/check/completion", async (req, res) => {

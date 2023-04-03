@@ -16,4 +16,9 @@
     <string name="settingNewPw">Új jelszó</string>
     <string name="settingsCurrentPw">Jelenlegi jelszó</string>
     <string name="cancel">Mégse</string>
+    <string name="vehicleType">Jármű típusa</string>
+    <string name="vehicleNumber">Járat szám</string>
+    <string name="startingStop">Induló megálló</string>
+    <string name="endingStop">Leszállás megálló</string>
+    <string name="addRoute">Utazás hozzáadása</string>
 </resources>
