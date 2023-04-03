@@ -141,7 +141,8 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_profile -> {
-                    //TODO redirect to profile picture setter
+                    val intent = Intent(this@MainActivity, ProfpicSetterActivity::class.java)
+                    navigateToPage(null, intent)
                     true
                 }
                 R.id.nav_settings -> {
