@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoggedRoutesListActivity">
+    tools:context=".LoggedRoutesListActivity"
+    android:layout_margin="25sp"
+    android:layout_gravity="center">
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
