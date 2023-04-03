@@ -71,7 +71,7 @@ class LoggedRoutesListActivity : AppCompatActivity() {
                     simpleDateFormat.format(item?.date)
                 view.findViewById<TextView>(R.id.loggedRouteLineNumber).text = item?.line
                 view.findViewById<TextView>(R.id.loggedRouteEmission).text =
-                    item?.emission.toString()
+                    "${item?.emission.toString()} gramm"
 
                 return view
             }
