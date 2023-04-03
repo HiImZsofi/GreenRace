@@ -25,7 +25,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31" >
         <activity
-            android:name=".LoggedRoutesListActivity"
+            android:name=".ProfpicSetterActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
