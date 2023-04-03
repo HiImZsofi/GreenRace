@@ -20,9 +20,6 @@ class LoggedRoutesListActivity : AppCompatActivity() {
 
     private lateinit var loggedRoutes: List<LoggedRoute>
 
-    //TODO Refactor code readability
-    //TODO Fix styling of the date
-    //TODO Fix styling of the list
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_logged_routes_list)
@@ -31,6 +28,9 @@ class LoggedRoutesListActivity : AppCompatActivity() {
         getLoggedRoutesData()
     }
 
+
+    //Get list of the logged routes of the current user
+    //Then store it in a LoggedRoute type list
     private fun getLoggedRoutesData() {
         val response = ServiceBuilder.buildService(ApiInterface::class.java)
         val token: String = TokenUtils(this@LoggedRoutesListActivity).getAccessToken()!!
@@ -52,6 +52,7 @@ class LoggedRoutesListActivity : AppCompatActivity() {
         )
     }
 
+    //Set the list as an adapter for the list view
     private fun setLoggedRoutesListViewAdapter() {
         val simpleDateFormat = SimpleDateFormat("yyyy.MM.dd")
 
@@ -77,6 +78,9 @@ class LoggedRoutesListActivity : AppCompatActivity() {
             }
         }
 
+        //Add a header view to the listview to mark the names of the columns
+        //It uses the logged_routes_list_item with hardcoded strings
+        // so the formatting matches the list items
         val headerView = LayoutInflater.from(this@LoggedRoutesListActivity)
             .inflate(R.layout.logged_routes_list_item, null)
         loggedRoutesView.addHeaderView(headerView)
