@@ -245,9 +245,19 @@ app.post("/get/distance", async (req, res) => {
 });
 
 app.get("/check/completion", async (req, res) => {
-  var token = req.headers.token;
+  const header = req.headers["authorization"];
 
-  var user_id = jwt.decode(token).user_id;
+	//make sure if token header is not undefined
+	if (header !== undefined) {
+		const bearer = header.split(" "); //separate request token from bearer
+		const token = bearer[1];
+    var user_id = jwt.decode(token).user_id;
+		req.token = token;
+	} else {
+		//if undefined return forbidden status code
+		res.statusCode = 403;
+	}
+  
   var completionArray = [];
 
   try {
@@ -266,7 +276,9 @@ app.get("/check/completion", async (req, res) => {
       await suburbanRailwayTraveller(user_id)
     );
   } catch (error) {
-    throw error;
+    res.status=500
+    //throw error;
   }
+  console.log("finished")
   res.send({ achievements: completionArray });
 });
