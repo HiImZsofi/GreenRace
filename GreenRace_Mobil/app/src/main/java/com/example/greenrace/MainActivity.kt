@@ -1,11 +1,8 @@
 // Imports
 package com.example.greenrace
 
-import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
-
-import android.security.keystore.UserNotAuthenticatedException
 import android.util.Log
 import android.view.View
 import android.widget.ImageButton
@@ -34,6 +31,7 @@ class MainActivity : AppCompatActivity() {
 
     private var menulist: List<String> = listOf("Pontjaim", "Rangsor", "Barátok")
     private var pagenumber: Int = 0
+    //TODO change friend page to logged routes list
     private var fragmentlist: List<Fragment> = listOf(UserPageFragment(), RankPageFragment(), FriendPageFragment())
 
     private var username: String? = null
@@ -133,7 +131,7 @@ class MainActivity : AppCompatActivity() {
                     navigateToPage(1, intent)
                     true
                 }
-                R.id.nav_friend -> {
+                R.id.nav_logged_routes -> {
                     val intent = Intent(this@MainActivity, MainActivity::class.java)
                     navigateToPage(2, intent)
                     true
