@@ -234,8 +234,7 @@ app.post("/get/distance", async (req, res) => {
       emission["finalEmission"],
       emission["distance"],
       onStop,
-      offStop,
-      now
+      offStop
     );
   } catch (error) {
     throw error;
