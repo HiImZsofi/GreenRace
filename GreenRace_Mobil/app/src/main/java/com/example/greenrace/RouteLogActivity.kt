@@ -19,7 +19,7 @@ class RouteLogActivity : AppCompatActivity() {
     private lateinit var getOnStopSpinner: Spinner
     private lateinit var getOffStopSpinner: Spinner
     private lateinit var logRouteButton: Button
-
+    private lateinit var routeLogRedirect: Button
 
     private lateinit var lineNumberList: List<Route>
     private lateinit var lineStopVariants: Array<List<Stop>>
@@ -36,6 +36,7 @@ class RouteLogActivity : AppCompatActivity() {
         initElements()
         setVehicleTypeAdapter()
         getData()
+        redirectToMain()
     }
 
     private fun initElements() {
@@ -45,12 +46,21 @@ class RouteLogActivity : AppCompatActivity() {
         getOnStopSpinner = findViewById(R.id.getOnStopSpinner)
         getOffStopSpinner = findViewById(R.id.getOffStopSpinner)
         logRouteButton = findViewById(R.id.logRouteButton)
+        routeLogRedirect = findViewById(R.id.logRouteRedirect)
 
         //Disable input fields and submit button
         //So the user has to fill them in one by one from the top down
         getOnStopSpinner.isEnabled = false
         getOffStopSpinner.isEnabled = false
         logRouteButton.isEnabled = false
+    }
+
+    private fun redirectToMain(){
+        routeLogRedirect.setOnClickListener{
+            val mainIntent = Intent(this@RouteLogActivity, MainActivity::class.java)
+            startActivity(mainIntent)
+            finish()
+        }
     }
 
     //Gets BKK line data from the backend
