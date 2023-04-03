@@ -1,5 +1,6 @@
 package com.example.greenrace
 
+import android.icu.text.SimpleDateFormat
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -52,6 +53,8 @@ class LoggedRoutesListActivity : AppCompatActivity() {
     }
 
     private fun setLoggedRoutesListViewAdapter() {
+        val simpleDateFormat = SimpleDateFormat("yyyy.MM.dd")
+
         val adapter = object : ArrayAdapter<LoggedRoute>(
             this@LoggedRoutesListActivity,
             R.layout.logged_routes_list_item,
@@ -64,8 +67,8 @@ class LoggedRoutesListActivity : AppCompatActivity() {
                 val item = getItem(postion)
 
 
+                view.findViewById<TextView>(R.id.loggedRouteDate).text = simpleDateFormat.format(item?.date)
                 view.findViewById<TextView>(R.id.loggedRouteLineNumber).text = item?.line
-                view.findViewById<TextView>(R.id.loggedRouteDate).text = item?.date.toString()
                 view.findViewById<TextView>(R.id.loggedRouteEmission).text = item?.emission.toString()
 
                 return view
