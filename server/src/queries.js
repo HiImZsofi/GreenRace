@@ -252,5 +252,16 @@ export function insertNewAchievement(achievement_id, user_id) {
   });
 }
 
-
+export function addPoints(user_id, pointsGained) {
+	return new Promise((resolve, rejects) => {
+		connection.query(
+			`UPDATE users SET points = points + ? WHERE user_ID = ?`,
+			[pointsGained, user_id],
+			function (err) {
+				if (err) return rejects(err);
+				return resolve(200);
+			}
+		);
+	});
+}
 
