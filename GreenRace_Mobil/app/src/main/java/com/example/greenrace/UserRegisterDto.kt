@@ -223,6 +223,14 @@ class RankItem @JsonCreator constructor(
     val points: Int = points
 }
 
+class RequestModelProfilepicSetter @JsonCreator constructor(
+    @JsonProperty("picfilepath") picfilepath: String
+) {
+    @JsonProperty("picfilepath")
+    @SerializedName("picfilepath")
+    val picfilepath: String = picfilepath
+}
+
 class RequestModelSettingsPage @JsonCreator constructor(
     @JsonProperty("newUsername") newusername: String,
     @JsonProperty("newPassword") newpassword: String,

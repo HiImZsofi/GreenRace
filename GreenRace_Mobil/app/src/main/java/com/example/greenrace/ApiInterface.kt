@@ -38,6 +38,10 @@ interface ApiInterface {
     fun sendSettings(@Header("Authorization") token: String, @Body requestModelSettingsPage: RequestModelSettingsPage) : Call<RegistrationResponseModel>
 
     @Headers("Content-Type: application/json")
+    @POST("/profpicset")
+    fun sendProfilepic(@Header("Authorization") token: String, @Body requestModelProfilepicSetter : RequestModelProfilepicSetter ) :Call<RegistrationResponseModel>
+
+    @Headers("Content-Type: application/json")
     @GET("chartData")
     fun sendReqChartData(@Header("authorization") token:String) :Call<ResponseModelUserPageChart>
 
