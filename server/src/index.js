@@ -217,7 +217,7 @@ app.post("/get/routeData", async (req, res) => {
 });
 
 app.post("/get/distance", async (req, res) => {
-  var token = req.body.token;
+  var token = req.headers.token;
   var routeType = req.body.routeType;
   var route_id = req.body.route_id;
   var onStop = req.body.onStop;
