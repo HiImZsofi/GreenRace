@@ -1,13 +1,16 @@
 package com.example.greenrace
 
+import android.content.Context
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.greenrace.sharedPreferences.TokenUtils
@@ -19,7 +22,15 @@ import retrofit2.Response
 
 class UserPageFragment : Fragment() {
     private lateinit var pointsText: TextView
+    private lateinit var achievementsView: ListView
     private lateinit var barChart: com.github.mikephil.charting.charts.BarChart
+
+    private lateinit var mContext: Context
+    private lateinit var AchievementsList: List<Achievement>
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mContext = context
+    }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_user_page, container, false)
     }
@@ -27,7 +38,18 @@ class UserPageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         pointsText = view.findViewById(R.id.ponts_textview)
         barChart = view.findViewById(R.id.user_barChart)
+        achievementsView = view.findViewById(R.id.achievementList)
         getData()
+        getAchievementData(object : AchievementDataCallback {
+            override fun onAchievementDataReceived(achievementsList: List<Achievement>) {
+                AchievementsList = achievementsList
+                setAchievementsListViewAdapter()
+            }
+
+            override fun onFailure(errorMessage: String) {
+                Log.e("Error", errorMessage)
+            }
+        })
         getChartData()
     }
 
@@ -65,6 +87,67 @@ class UserPageFragment : Fragment() {
             }
         )
     }
+    interface AchievementDataCallback {
+        fun onAchievementDataReceived(achievementsList: List<Achievement>)
+        fun onFailure(errorMessage: String)
+    }
+    //GETs the progress for each achievement for the current user from the backend
+    private fun getAchievementData(callback: AchievementDataCallback) {
+        val response = ServiceBuilder.buildService(ApiInterface::class.java)
+        val tokenUtils = TokenUtils(requireContext())
+        val token = tokenUtils.getAccessToken()
+        val requestUserData = "Bearer $token"
+        response.getAchievements(requestUserData).enqueue(
+            object : Callback<ResponseModelAchievements> {
+                override fun onResponse(
+                    call: Call<ResponseModelAchievements>,
+                    response: Response<ResponseModelAchievements>
+                ) {
+                    //Store the achievements
+                    if (response.isSuccessful) {
+                        val achievements = response.body()?.achievements
+                        if (achievements != null) {
+                            callback.onAchievementDataReceived(achievements)
+                        }
+                    } else {
+                        callback.onFailure("Failed to get achievements: ${response.code()}")
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseModelAchievements>, t: Throwable) {
+                    callback.onFailure(t.toString())
+                }
+            }
+        )
+    }
+    //Set the achievements list as the list used by the adapter of the AchievementsListView
+    //It sets the name, progress, status of the achievement
+    // and the achievement description if you hold down one of the list items
+    fun setAchievementsListViewAdapter() {
+        if (isAdded()) {
+        val adapter = object : ArrayAdapter<Achievement>(
+            requireContext(),
+            R.layout.achievement_list_item,
+            AchievementsList
+        ) {
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun getView(postion: Int, convertView: View?, parent: ViewGroup): View {
+                val view = convertView ?: LayoutInflater.from(context)
+                    .inflate(R.layout.achievement_list_item, parent, false)
+                val item = getItem(postion)
+
+                view.findViewById<LinearLayout>(R.id.achievementListItem).tooltipText =
+                    item!!.description
+                view.findViewById<TextView>(R.id.achievementName).text = item?.name
+                view.findViewById<ProgressBar>(R.id.achievementProgress).progress = item!!.progress
+                view.findViewById<CheckBox>(R.id.achievementCompletion).isChecked = item.completed
+
+                return view
+            }
+        }
+        achievementsView.adapter = adapter
+    }}
+
     //No function yet
     private fun getChartData() {
         val response = ServiceBuilder.buildService(ApiInterface::class.java)
@@ -91,6 +174,7 @@ class UserPageFragment : Fragment() {
         )
     }
     private fun setChartData(chartdata: List<Number>){
+        if (isAdded()) {
         // Create a new data set and add the values to it
         val data = ArrayList<BarEntry>()
         for (i in 0 until chartdata.size) {
@@ -104,7 +188,7 @@ class UserPageFragment : Fragment() {
         barChart.data = barData
         barChart.setFitBars(true)
         barChart.invalidate()
-    }
+    }}
     private fun fillChartList(source: List<ChartData>): List<Double> {
         val target = mutableListOf<Double>()
         for (i in 0 until 10) {

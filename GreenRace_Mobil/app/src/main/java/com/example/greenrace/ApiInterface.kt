@@ -27,7 +27,7 @@ interface ApiInterface {
 
     @Headers("Content-Type: application/json")
     @GET("check/completion")
-    fun getAchievements(@Header("token") token: String) : Call<ResponseModelAchievements>
+    fun getAchievements(@Header("Authorization") token: String) : Call<ResponseModelAchievements>
     
     @Headers("Content-Type: application/json")
     @GET("userPage")
@@ -38,10 +38,18 @@ interface ApiInterface {
     fun sendSettings(@Header("Authorization") token: String, @Body requestModelSettingsPage: RequestModelSettingsPage) : Call<RegistrationResponseModel>
 
     @Headers("Content-Type: application/json")
+    @POST("/profpicset")
+    fun sendProfilepic(@Header("Authorization") token: String, @Body requestModelProfilepicSetter : RequestModelProfilepicSetter ) :Call<RegistrationResponseModel>
+
+    @Headers("Content-Type: application/json")
     @GET("chartData")
     fun sendReqChartData(@Header("authorization") token:String) :Call<ResponseModelUserPageChart>
 
     @Headers("Content-Type: application/json")
     @GET("rankPage")
     fun getRankData(@Header("authorization") token: String) : Call<ResponseModelRankList>
+
+    @Headers("Content-Type: application/json")
+    @GET("routePage")
+    fun getLoggedRoutes(@Header("authorization") token: String) : Call<ResponseModelLoggedRoutes>
 }

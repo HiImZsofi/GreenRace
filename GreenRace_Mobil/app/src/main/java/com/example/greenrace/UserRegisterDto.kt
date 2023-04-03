@@ -3,6 +3,7 @@ package com.example.greenrace
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.google.gson.annotations.SerializedName
+import java.util.*
 
 //user info data model
 
@@ -144,11 +145,12 @@ class ResponseModelRankList @JsonCreator constructor(@JsonProperty("userData") v
 
 class ChartData @JsonCreator constructor(
     @JsonProperty("emission") emission: Double
-){
+) {
     @JsonProperty("emission")
     @SerializedName("emission")
     val emission: Double = emission
 }
+
 class UserPage @JsonCreator constructor(
     @JsonProperty("username") username: String,
     @JsonProperty("picfilepath") picfilepath: String?,
@@ -206,26 +208,58 @@ class RankItem @JsonCreator constructor(
     @JsonProperty("username")
     @SerializedName("username")
     val username: String = username
+
     @JsonProperty("picfilepath")
     @SerializedName("picfilepath")
     val picfilepath: String? = picfilepath
+
     @JsonProperty("points")
     @SerializedName("points")
     val points: Int = points
 }
 
+class RequestModelProfilepicSetter @JsonCreator constructor(
+    @JsonProperty("picfilepath") picfilepath: String
+) {
+    @JsonProperty("picfilepath")
+    @SerializedName("picfilepath")
+    val picfilepath: String = picfilepath
+}
+
 class RequestModelSettingsPage @JsonCreator constructor(
     @JsonProperty("newUsername") newusername: String,
-    @JsonProperty("newPassword") newpassword : String,
+    @JsonProperty("newPassword") newpassword: String,
     @JsonProperty("currentPassword") currentpassword: String
 ) {
     @JsonProperty("newUsername")
     @SerializedName("newUsername")
-    val newusername : String = newusername
+    val newusername: String = newusername
+
     @JsonProperty("newPassword")
     @SerializedName("newPassword")
-    val newpassword : String = newpassword
+    val newpassword: String = newpassword
+
     @JsonProperty("currentPassword")
     @SerializedName("currentPassword")
-    val currentpassword : String = currentpassword
+    val currentpassword: String = currentpassword
+}
+
+class ResponseModelLoggedRoutes @JsonCreator constructor(@JsonProperty("userData") val loggedRoutes: List<LoggedRoute>)
+
+class LoggedRoute @JsonCreator constructor(
+    @JsonProperty("line") line: String,
+    @JsonProperty("date") date: Date,
+    @JsonProperty("emission") emission: Double
+) {
+    @JsonProperty("line")
+    @SerializedName("line")
+    val line: String = line
+
+    @JsonProperty("date")
+    @SerializedName("date")
+    val date: Date = date
+
+    @JsonProperty("emission")
+    @SerializedName("emission")
+    val emission: Double = emission
 }

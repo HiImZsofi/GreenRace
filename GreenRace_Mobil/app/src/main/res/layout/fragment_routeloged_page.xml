@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RouteLogedPageFragment">
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:id="@+id/ponts_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Korábbi utazások:"
+        android:textSize="30dp"
+        android:textColor="@color/black"/>
+
+    <ListView
+        android:layout_marginTop="70dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/loggedRoutesList"
+        tools:listitem="@layout/logged_routes_list_item"/>
+
+</FrameLayout>

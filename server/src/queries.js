@@ -126,6 +126,7 @@ export function getUserDataFromDB(user_ID) {
   });
 }
 
+//TODO remove if unused
 export function getUserRoutes(user_ID) {
   return new Promise((resolve, rejects) => {
     connection.query(
@@ -226,7 +227,7 @@ export function insertNewRoute(
 export function getRouteData(user_id) {
   return new Promise((resolve, reject) => {
     connection.query(
-      "SELECT routes.user_id, routes.emission, routes.length, routes.onstop, routes.offstop, routedata.route_short_name, routedata.route_type, routedata.route_id FROM routes JOIN routedata ON routes.route_id = routedata.route_id WHERE routes.user_id = ?",
+      "SELECT routes.user_id, routes.emission, routes.length, routes.date, routes.onstop, routes.offstop, routedata.route_short_name, routedata.route_type, routedata.route_id FROM routes JOIN routedata ON routes.route_id = routedata.route_id WHERE routes.user_id = ?",
       [user_id],
       function (err, result) {
         if (err || result.length == 0) return reject(err);
@@ -249,4 +250,17 @@ export function insertNewAchievement(achievement_id, user_id) {
       }
     );
   });
+}
+
+export function addPoints(user_id, pointsGained) {
+	return new Promise((resolve, rejects) => {
+		connection.query(
+			`UPDATE users SET points = points + ? WHERE user_ID = ?`,
+			[pointsGained, user_id],
+			function (err) {
+				if (err) return rejects(err);
+				return resolve(200);
+			}
+		);
+	});
 }

@@ -10,9 +10,9 @@
             android:icon="@drawable/ic_ranklist"
             android:title="Ranglista"/>
         <item
-            android:id="@+id/nav_friend"
-            android:icon="@drawable/ic_friends"
-            android:title="Barátok"/>
+            android:id="@+id/nav_logged_routes"
+            android:icon="@drawable/ic_routelog"
+            android:title="Korábbi utazások"/>
         <item
             android:id="@+id/nav_map"
             android:icon="@drawable/ic_map"
