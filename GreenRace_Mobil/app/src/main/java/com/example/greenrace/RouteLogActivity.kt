@@ -298,7 +298,6 @@ class RouteLogActivity : AppCompatActivity() {
             val response = ServiceBuilder.buildService(ApiInterface::class.java)
             val requestModelLogRoute = RequestModelLogRoute(
                 //TODO fix token
-                TokenUtils(this@RouteLogActivity).getAccessToken()!!,
                 currentTypeCode,
                 currentLine,
                 currentGetOnStop.stopName,
@@ -318,7 +317,7 @@ class RouteLogActivity : AppCompatActivity() {
             // Create the AlertDialog object and return it
             emissionAlertDialog.create()
 
-            response.getDistance(requestModelLogRoute).enqueue(
+            response.getDistance(TokenUtils(this@RouteLogActivity).getAccessToken()!!, requestModelLogRoute).enqueue(
                 object : Callback<ResponseModelLogRoute> {
                     override fun onResponse(
                         call: Call<ResponseModelLogRoute>,
