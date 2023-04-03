@@ -13,7 +13,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/achievementName"
-            android:text="Test"/>
+            android:text="Test"
+            android:layout_marginStart="20dp"/>
 
         <ProgressBar
 
@@ -31,6 +32,6 @@
                 android:layout_height="wrap_content"
                 android:clickable="false"
                 android:id="@+id/achievementCompletion"
-                android:checked="true"/>
+                android:checked="true" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

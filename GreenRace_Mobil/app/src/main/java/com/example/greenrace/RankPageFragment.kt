@@ -1,5 +1,6 @@
 package com.example.greenrace
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -18,6 +19,12 @@ import retrofit2.Response
 class RankPageFragment : Fragment() {
     private lateinit var rankList: ListView
     private lateinit var rankItemList: List<RankItem>
+
+    private lateinit var mContext: Context
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mContext = context
+    }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_rank_page, container, false)
     }
