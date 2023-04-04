@@ -82,6 +82,10 @@
 }
 
 /*UserPage*/
+.description {
+  font-size: 10px;
+}
+
 #pont-light {
   color: darkgreen;
 }
