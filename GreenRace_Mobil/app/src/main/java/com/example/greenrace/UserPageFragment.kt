@@ -181,10 +181,11 @@ class UserPageFragment : Fragment() {
             data.add(BarEntry(i.toFloat(), chartdata[i].toFloat()))
         }
         val dataSet = BarDataSet(data, "Pontok")
+            barChart.getDescription().setEnabled(false)
         dataSet.color = ContextCompat.getColor(requireContext(), R.color.teal_700)
 
         val barData = BarData(dataSet)
-            barChart.getDescription().setEnabled(false)
+
         barChart.data = barData
         barChart.setFitBars(true)
         barChart.invalidate()
