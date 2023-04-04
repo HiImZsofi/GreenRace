@@ -11,9 +11,9 @@
         android:id="@+id/ponts_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Korábbi utazások:"
-        android:textSize="30dp"
-        android:textColor="@color/black"/>
+        android:text="@string/kor_bbi_utaz_sok"
+        android:textSize="30sp"
+        />
 
     <ListView
         android:layout_marginTop="70dp"
