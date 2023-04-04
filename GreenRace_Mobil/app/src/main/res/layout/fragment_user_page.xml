@@ -18,11 +18,12 @@
         android:textColor="@color/black"/>
 
     <TextView
+        android:id="@+id/emission_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_marginTop="5dp"
-        android:text="Ez 1000 szenyezésnek felel meg"
+        android:text="Ez 0g szennyezésnek felel meg"
         android:textColor="@color/black"
         android:textSize="20dp" />
     <TextView
