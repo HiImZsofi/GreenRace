@@ -48,7 +48,8 @@
                 android:inputType="text"
                 android:maxLines="1"
                 android:textColorHint="@color/whiteTextColor"
-                android:textColor="@color/whiteTextColor"/>
+                android:textColor="@color/whiteTextColor"
+                android:autofillHints="" />
 
             <!--edit text for new user password-->
             <EditText
@@ -62,7 +63,8 @@
                 android:maxLines="1"
                 android:textColorHint="@color/whiteTextColor"
                 android:textColor="@color/whiteTextColor"
-                android:inputType="textPassword"/>
+                android:inputType="textPassword"
+                android:importantForAutofill="no" />
 
             <!--edit text for current user password !required-->
             <EditText
@@ -76,7 +78,8 @@
                 android:hint="@string/settingsCurrentPw"
                 android:inputType="textPassword"
                 android:textColorHint="@color/whiteTextColor"
-                android:textColor="@color/whiteTextColor"/>
+                android:textColor="@color/whiteTextColor"
+                android:autofillHints="password" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
