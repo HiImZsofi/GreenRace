@@ -18,12 +18,14 @@
         />
 
     <TextView
+        android:id="@+id/emission_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_marginTop="5dp"
         android:text="@string/ez_1000_szenyez_snek_felel_meg"
         android:textSize="20sp" />
+        
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

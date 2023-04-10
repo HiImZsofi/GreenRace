@@ -7,7 +7,7 @@ import Register from "./Views/Register";
 import UserSettings from "./Views/UserSettings";
 import UserPage from "./Views/UserPage";
 import RankPage from "./Views/RankPage";
-import FriendPage from "./Views/FriendPage";
+import RoutesPage from "./Views/RoutesPage";
 import ProfilePicSetter from "./Views/ProfilePicSetter";
 
 function App() {
@@ -22,7 +22,7 @@ function App() {
 					<Route path="/login" element={<Login />}></Route>
 					<Route path="/userPage" element={<UserPage />} />
 					<Route path="/rankPage" element={<RankPage />} />
-					<Route path="/friendPage" element={<FriendPage />} />
+					<Route path="/routesPage" element={<RoutesPage />} />
 					<Route path="/settings" element={<UserSettings />} />
 				</Routes>
 			</React.StrictMode>

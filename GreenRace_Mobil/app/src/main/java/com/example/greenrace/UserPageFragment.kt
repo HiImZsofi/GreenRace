@@ -23,6 +23,7 @@ import retrofit2.Response
 
 class UserPageFragment : Fragment() {
     private lateinit var pointsText: TextView
+    private lateinit var emissionText: TextView
     private lateinit var achievementsView: ListView
     private lateinit var barChart: com.github.mikephil.charting.charts.BarChart
 
@@ -44,6 +45,7 @@ class UserPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         pointsText = view.findViewById(R.id.ponts_textview)
+        emissionText = view.findViewById(R.id.emission_textview)
         barChart = view.findViewById(R.id.user_barChart)
         achievementsView = view.findViewById(R.id.achievementList)
         getData()
@@ -67,6 +69,7 @@ class UserPageFragment : Fragment() {
     private fun updateUserInfo(points: Int?) {
         var zpoint = getColoredString("Zöldpont", "#006400");
         pointsText.setText(Html.fromHtml(points.toString() + " " + zpoint + "-od van"))
+        emissionText.setText("Ez "+(points?.times(10)).toString()+"g szennyezésnek felel meg")
     }
 
     private fun getData() {
@@ -197,7 +200,8 @@ class UserPageFragment : Fragment() {
                 data.add(BarEntry(i.toFloat(), chartdata[i].toFloat()))
             }
 
-            val dataSet = BarDataSet(data, null)
+            val dataSet = BarDataSet(data, "Pontok")
+                barChart.getDescription().setEnabled(false)
             dataSet.color = ContextCompat.getColor(requireContext(), R.color.teal_700)
 
             val barData = BarData(dataSet)
@@ -213,9 +217,6 @@ class UserPageFragment : Fragment() {
                 barChart.setBorderColor(Color.WHITE)
                 barChart.setGridBackgroundColor(Color.WHITE)
             }
-
-            //TODO Fix bar chart text color
-
         }
     }
 
