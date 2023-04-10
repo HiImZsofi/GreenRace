@@ -4,7 +4,6 @@ import "./Pages.css";
 import NavMenu from "../components/NavBarLogic";
 import "bootstrap/dist/css/bootstrap.css";
 import { useNavigate } from "react-router-dom";
-import { Console } from "console";
 
 //Creating variables
 interface Routes {
