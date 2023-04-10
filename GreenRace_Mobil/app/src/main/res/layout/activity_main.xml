@@ -30,16 +30,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="Pontjaim"
+            android:text="@string/pontjaim"
             android:textAlignment="center"
-            android:textSize="40dp"/>
+            android:textSize="40sp"/>
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_alignParentRight="true"
             android:adjustViewBounds="true"
-            android:contentDescription="Kinyitás"
+            android:contentDescription="@string/kinyit_s"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_menu"
             android:id="@+id/open_button"/>

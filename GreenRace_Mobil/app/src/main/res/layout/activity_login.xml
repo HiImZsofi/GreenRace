@@ -52,7 +52,8 @@
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
                 android:textColorHint="@color/whiteTextColor"
-                android:textColor="@color/whiteTextColor"/>
+                android:textColor="@color/whiteTextColor"
+                android:autofillHints="emailAddress" />
 
             <!--edit text for user password-->
             <EditText
@@ -66,7 +67,8 @@
                 android:inputType="textPassword"
                 android:textColorHint="@color/whiteTextColor"
                 android:textColor="@color/whiteTextColor"
-                android:layout_marginBottom="20dp"/>
+                android:layout_marginBottom="20dp"
+                android:autofillHints="password" />
 
             <LinearLayout
                 android:layout_width="wrap_content"

@@ -13,14 +13,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/achievementName"
-            android:text="Test"
+            android:text="@string/test"
             android:layout_marginStart="20dp"/>
 
         <ProgressBar
-
             android:id="@+id/achievementProgress"
             style="@android:style/Widget.Material.ProgressBar.Horizontal"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:progress="25"
             android:paddingLeft="10dp"
