@@ -11,9 +11,9 @@
         android:id="@+id/ponts_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Rank Lista:"
-        android:textSize="30dp"
-        android:textColor="@color/black"/>
+        android:text="@string/rang_lista"
+        android:textSize="30sp"
+        />
 
     <ListView
         android:id="@+id/rankListView"

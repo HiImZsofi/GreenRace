@@ -1,6 +1,7 @@
 package com.example.greenrace
 
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -32,9 +33,15 @@ class UserPageFragment : Fragment() {
         super.onAttach(context)
         mContext = context
     }
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_user_page, container, false)
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         pointsText = view.findViewById(R.id.ponts_textview)
@@ -58,7 +65,8 @@ class UserPageFragment : Fragment() {
     private fun getColoredString(text: String, color: String): String? {
         return "<font color=$color>$text</font>"
     }
-    private fun updateUserInfo(points: Int?){
+
+    private fun updateUserInfo(points: Int?) {
         var zpoint = getColoredString("Zöldpont", "#006400");
         pointsText.setText(Html.fromHtml(points.toString() + " " + zpoint + "-od van"))
         emissionText.setText("Ez "+(points?.times(10)).toString()+"g szennyezésnek felel meg")
@@ -90,10 +98,12 @@ class UserPageFragment : Fragment() {
             }
         )
     }
+
     interface AchievementDataCallback {
         fun onAchievementDataReceived(achievementsList: List<Achievement>)
         fun onFailure(errorMessage: String)
     }
+
     //GETs the progress for each achievement for the current user from the backend
     private fun getAchievementData(callback: AchievementDataCallback) {
         val response = ServiceBuilder.buildService(ApiInterface::class.java)
@@ -123,33 +133,37 @@ class UserPageFragment : Fragment() {
             }
         )
     }
+
     //Set the achievements list as the list used by the adapter of the AchievementsListView
     //It sets the name, progress, status of the achievement
     // and the achievement description if you hold down one of the list items
     fun setAchievementsListViewAdapter() {
         if (isAdded()) {
-        val adapter = object : ArrayAdapter<Achievement>(
-            requireContext(),
-            R.layout.achievement_list_item,
-            AchievementsList
-        ) {
-            @RequiresApi(Build.VERSION_CODES.O)
-            override fun getView(postion: Int, convertView: View?, parent: ViewGroup): View {
-                val view = convertView ?: LayoutInflater.from(context)
-                    .inflate(R.layout.achievement_list_item, parent, false)
-                val item = getItem(postion)
+            val adapter = object : ArrayAdapter<Achievement>(
+                requireContext(),
+                R.layout.achievement_list_item,
+                AchievementsList
+            ) {
+                @RequiresApi(Build.VERSION_CODES.O)
+                override fun getView(postion: Int, convertView: View?, parent: ViewGroup): View {
+                    val view = convertView ?: LayoutInflater.from(context)
+                        .inflate(R.layout.achievement_list_item, parent, false)
+                    val item = getItem(postion)
 
-                view.findViewById<LinearLayout>(R.id.achievementListItem).tooltipText =
-                    item!!.description
-                view.findViewById<TextView>(R.id.achievementName).text = item?.name
-                view.findViewById<ProgressBar>(R.id.achievementProgress).progress = item!!.progress
-                view.findViewById<CheckBox>(R.id.achievementCompletion).isChecked = item.completed
+                    view.findViewById<LinearLayout>(R.id.achievementListItem).tooltipText =
+                        item!!.description
+                    view.findViewById<TextView>(R.id.achievementName).text = item?.name
+                    view.findViewById<ProgressBar>(R.id.achievementProgress).progress =
+                        item!!.progress
+                    view.findViewById<CheckBox>(R.id.achievementCompletion).isChecked =
+                        item.completed
 
-                return view
+                    return view
+                }
             }
+            achievementsView.adapter = adapter
         }
-        achievementsView.adapter = adapter
-    }}
+    }
 
     //No function yet
     private fun getChartData() {
@@ -159,41 +173,53 @@ class UserPageFragment : Fragment() {
         val requestChartData = "Bearer $token"
 
         response.sendReqChartData(requestChartData).enqueue(
-            object : Callback<ResponseModelUserPageChart>{
+            object : Callback<ResponseModelUserPageChart> {
                 override fun onResponse(
                     call: Call<ResponseModelUserPageChart>,
                     response: Response<ResponseModelUserPageChart>
-                ){
+                ) {
                     val chartdata = response.body()?.userpagechartdata
                     if (chartdata != null) {
                         val chartlist = fillChartList(chartdata)
                         setChartData(chartlist)
                     }
                 }
+
                 override fun onFailure(call: Call<ResponseModelUserPageChart>, t: Throwable) {
                     Log.e("Error", t.toString())
                 }
             }
         )
     }
-    private fun setChartData(chartdata: List<Number>){
+
+    private fun setChartData(chartdata: List<Number>) {
         if (isAdded()) {
-        // Create a new data set and add the values to it
-        val data = ArrayList<BarEntry>()
-        for (i in 0 until chartdata.size) {
-            data.add(BarEntry(i.toFloat(), chartdata[i].toFloat()))
+            // Create a new data set and add the values to it
+            val data = ArrayList<BarEntry>()
+            for (i in 0 until chartdata.size) {
+                data.add(BarEntry(i.toFloat(), chartdata[i].toFloat()))
+            }
+
+            val dataSet = BarDataSet(data, "Pontok")
+                barChart.getDescription().setEnabled(false)
+            dataSet.color = ContextCompat.getColor(requireContext(), R.color.teal_700)
+
+            val barData = BarData(dataSet)
+            barChart.data = barData
+            barChart.setFitBars(true)
+            barChart.invalidate()
+
+            if(resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES){
+                barChart.xAxis.textColor = Color.WHITE
+                dataSet.valueTextColor = Color.WHITE
+                barChart.axisLeft.textColor = Color.WHITE
+                barChart.axisRight.textColor = Color.WHITE
+                barChart.setBorderColor(Color.WHITE)
+                barChart.setGridBackgroundColor(Color.WHITE)
+            }
         }
-        val dataSet = BarDataSet(data, "Pontok")
-            barChart.getDescription().setEnabled(false)
-        dataSet.color = ContextCompat.getColor(requireContext(), R.color.teal_700)
+    }
 
-        val barData = BarData(dataSet)
-
-        barChart.data = barData
-        barChart.setFitBars(true)
-        barChart.invalidate()
-
-    }}
     private fun fillChartList(source: List<ChartData>): List<Double> {
         val target = mutableListOf<Double>()
         for (i in 0 until 10) {
@@ -205,6 +231,7 @@ class UserPageFragment : Fragment() {
         }
         return target
     }
+
     private fun getEntryList(chartdata: List<Number>): List<Entry> {
         val entries = mutableListOf<Entry>()
         for ((index, value) in chartdata.withIndex()) {

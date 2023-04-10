@@ -13,9 +13,9 @@
         android:id="@+id/ponts_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="0 Zöldpont-od van"
-        android:textSize="30dp"
-        android:textColor="@color/black"/>
+        android:text="@string/_0_z_ldpont_od_van"
+        android:textSize="30sp"
+        />
 
     <TextView
         android:id="@+id/emission_textview"
@@ -23,17 +23,16 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_marginTop="5dp"
-        android:text="Ez 0g szennyezésnek felel meg"
-        android:textColor="@color/black"
-        android:textSize="20dp" />
+        android:text="@string/ez_1000_szenyez_snek_felel_meg"
+        android:textSize="20sp" />
+        
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_marginTop="20dp"
-        android:text="Elért eredmények:"
-        android:textColor="@color/black"
-        android:textSize="25dp" />
+        android:text="@string/el_rt_eredm_nyek"
+        android:textSize="25sp" />
     <ListView
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
@@ -46,9 +45,8 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_marginTop="20dp"
-        android:text="Legutóbbi 10 utad:"
-        android:textColor="@color/black"
-        android:textSize="25dp" />
+        android:text="@string/legut_bbi_10_utad"
+        android:textSize="25sp" />
 
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/user_barChart"

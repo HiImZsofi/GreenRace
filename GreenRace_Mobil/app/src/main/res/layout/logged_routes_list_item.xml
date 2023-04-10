@@ -14,30 +14,30 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/loggedRouteDate"
-            android:text="Dátum"
+            android:text="@string/date"
             android:textSize="18sp"
             android:layout_weight="0.333"
-            android:textColor="@color/black"/>
+            />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/loggedRouteLineNumber"
-            android:text="Járat"
+            android:text="@string/line"
             android:textSize="18sp"
             android:layout_weight="0.333"
             android:textAlignment="center"
-            android:textColor="@color/black"/>
+            />
 
         <TextView
             android:layout_marginEnd="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/loggedRouteEmission"
-            android:text="Kibocsátás"
+            android:text="@string/emission"
             android:textSize="18sp"
             android:layout_weight="0.333"
             android:textAlignment="textEnd"
-            android:textColor="@color/black"/>
+            />
 
 
     </LinearLayout>

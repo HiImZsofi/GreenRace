@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/myView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:background="@drawable/backgroundright"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    android:gravity="center_vertical"
-    android:id="@+id/myView">
+    app:layout_constraintTop_toTopOf="parent">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -27,6 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
             <TextView
                 android:id="@+id/registrationHeader"
                 style="@style/parent"
@@ -47,11 +49,12 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="10dp"
+                android:autofillHints="username"
                 android:hint="@string/username"
                 android:inputType="text"
                 android:maxLines="1"
-                android:textColorHint="@color/whiteTextColor"
-                android:textColor="@color/whiteTextColor"/>
+                android:textColor="@color/whiteTextColor"
+                android:textColorHint="@color/whiteTextColor" />
 
             <!--edit text for user name-->
             <EditText
@@ -61,11 +64,12 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="10dp"
+                android:autofillHints="emailAddress"
                 android:hint="@string/email"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
-                android:textColorHint="@color/whiteTextColor"
-                android:textColor="@color/whiteTextColor"/>
+                android:textColor="@color/whiteTextColor"
+                android:textColorHint="@color/whiteTextColor" />
 
             <!--edit text for user password-->
             <EditText
@@ -76,10 +80,11 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="20dp"
+                android:autofillHints="password"
                 android:hint="@string/password"
                 android:inputType="textPassword"
-                android:textColorHint="@color/whiteTextColor"
-                android:textColor="@color/whiteTextColor"/>
+                android:textColor="@color/whiteTextColor"
+                android:textColorHint="@color/whiteTextColor" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -90,13 +95,14 @@
                     android:id="@+id/regToLoginText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/reqDoesNotExist"
                     android:layout_gravity="start"
-                    android:textColor="@color/teal_700"
-                    android:textSize="15sp"
                     android:layout_marginStart="13dp"
                     android:clickable="true"
-                    android:focusable="true" />
+                    android:focusable="true"
+                    android:minHeight="48dp"
+                    android:text="@string/reqDoesNotExist"
+                    android:textColor="@color/teal_700"
+                    android:textSize="15sp" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/registrationConfirmButton"
@@ -107,17 +113,13 @@
                     android:layout_marginTop="@dimen/loginViewsMargin"
                     android:layout_marginEnd="20dp"
                     android:background="@drawable/button_item"
+                    android:minHeight="48dp"
                     android:text="@string/confirm"
                     android:textAllCaps="false"
                     android:textColor="@color/whiteTextColor"
-                    />
+                    tools:ignore="TextSizeCheck" />
             </LinearLayout>
-
-
-
-
         </LinearLayout>
-
 
 
     </androidx.cardview.widget.CardView>
