@@ -81,7 +81,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/cancel"
+        android:text="@string/back"
         android:id="@+id/logRouteRedirect"
         android:layout_gravity="center_horizontal"
         android:backgroundTint="@color/white"
