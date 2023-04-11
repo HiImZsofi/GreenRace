@@ -2,6 +2,8 @@ package com.example.greenrace
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
@@ -27,6 +29,7 @@ import retrofit2.Response
 
 class UserPageFragment : Fragment() {
     private lateinit var pointsText: TextView
+    private lateinit var emissionText: TextView
     private lateinit var achievementsView: ListView
     private lateinit var barChart: com.github.mikephil.charting.charts.BarChart
 
@@ -37,12 +40,19 @@ class UserPageFragment : Fragment() {
         super.onAttach(context)
         mContext = context
     }
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_user_page, container, false)
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         pointsText = view.findViewById(R.id.ponts_textview)
+        emissionText = view.findViewById(R.id.emission_textview)
         barChart = view.findViewById(R.id.user_barChart)
         achievementsView = view.findViewById(R.id.achievementList)
 
@@ -54,9 +64,11 @@ class UserPageFragment : Fragment() {
     private fun getColoredString(text: String, color: String): String? {
         return "<font color=$color>$text</font>"
     }
-    private fun updateUserInfo(points: Int?){
+
+    private fun updateUserInfo(points: Int?) {
         var zpoint = getColoredString("Zöldpont", "#006400");
         pointsText.setText(Html.fromHtml(points.toString() + " " + zpoint + "-od van"))
+        emissionText.setText("Ez "+(points?.times(10)).toString()+"g szennyezésnek felel meg")
     }
 
     private fun getData() {
@@ -124,6 +136,7 @@ class UserPageFragment : Fragment() {
             }
         )
     }
+
     //Set the achievements list as the list used by the adapter of the AchievementsListView
     //It sets the name, progress, status of the achievement
     // and the achievement description if you hold down one of the list items
@@ -148,9 +161,9 @@ class UserPageFragment : Fragment() {
 
                 return view
             }
+            achievementsView.adapter = adapter
         }
-        achievementsView.adapter = adapter
-    }}
+    }
 
     //No function yet
     private fun getChartData() {
@@ -160,39 +173,53 @@ class UserPageFragment : Fragment() {
         val requestChartData = "Bearer $token"
 
         response.sendReqChartData(requestChartData).enqueue(
-            object : Callback<ResponseModelUserPageChart>{
+            object : Callback<ResponseModelUserPageChart> {
                 override fun onResponse(
                     call: Call<ResponseModelUserPageChart>,
                     response: Response<ResponseModelUserPageChart>
-                ){
+                ) {
                     val chartdata = response.body()?.userpagechartdata
                     if (chartdata != null) {
                         val chartlist = fillChartList(chartdata)
                         setChartData(chartlist)
                     }
                 }
+
                 override fun onFailure(call: Call<ResponseModelUserPageChart>, t: Throwable) {
                     Log.e("Error", t.toString())
                 }
             }
         )
     }
-    private fun setChartData(chartdata: List<Number>){
+
+    private fun setChartData(chartdata: List<Number>) {
         if (isAdded()) {
-        // Create a new data set and add the values to it
-        val data = ArrayList<BarEntry>()
-        for (i in 0 until chartdata.size) {
-            data.add(BarEntry(i.toFloat(), chartdata[i].toFloat()))
+            // Create a new data set and add the values to it
+            val data = ArrayList<BarEntry>()
+            for (i in 0 until chartdata.size) {
+                data.add(BarEntry(i.toFloat(), chartdata[i].toFloat()))
+            }
+
+            val dataSet = BarDataSet(data, "Pontok")
+                barChart.getDescription().setEnabled(false)
+            dataSet.color = ContextCompat.getColor(requireContext(), R.color.teal_700)
+
+            val barData = BarData(dataSet)
+            barChart.data = barData
+            barChart.setFitBars(true)
+            barChart.invalidate()
+
+            if(resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES){
+                barChart.xAxis.textColor = Color.WHITE
+                dataSet.valueTextColor = Color.WHITE
+                barChart.axisLeft.textColor = Color.WHITE
+                barChart.axisRight.textColor = Color.WHITE
+                barChart.setBorderColor(Color.WHITE)
+                barChart.setGridBackgroundColor(Color.WHITE)
+            }
         }
+    }
 
-        val dataSet = BarDataSet(data, "Pontok")
-        dataSet.color = ContextCompat.getColor(requireContext(), R.color.teal_700)
-
-        val barData = BarData(dataSet)
-        barChart.data = barData
-        barChart.setFitBars(true)
-        barChart.invalidate()
-    }}
     private fun fillChartList(source: List<ChartData>): List<Double> {
         val target = mutableListOf<Double>()
         for (i in 0 until 10) {
@@ -203,5 +230,13 @@ class UserPageFragment : Fragment() {
             }
         }
         return target
+    }
+    
+    private fun getEntryList(chartdata: List<Number>): List<Entry> {
+        val entries = mutableListOf<Entry>()
+        for ((index, value) in chartdata.withIndex()) {
+            entries.add(Entry(index.toFloat(), value.toFloat()))
+        }
+        return entries
     }
 }

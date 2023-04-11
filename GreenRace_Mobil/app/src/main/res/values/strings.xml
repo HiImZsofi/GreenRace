@@ -22,4 +22,26 @@
     <string name="endingStop">Leszállás megálló</string>
     <string name="addRoute">Utazás hozzáadása</string>
     <string name="back">Vissza</string>
+    <string name="kinyit_s">Kinyitás</string>
+    <string name="pontjaim">Pontjaim</string>
+    <string name="test">Test</string>
+    <string name="kiv_laszt_s">Kiválasztás</string>
+    <string name="next_button">next_button</string>
+    <string name="profilk_p">Profilkép</string>
+    <string name="previous_button">previous_button</string>
+    <string name="profilk_p_be_ll_t_s">Profilkép Beállítás</string>
+    <string name="rang_lista">Rang Lista:</string>
+    <string name="kor_bbi_utaz_sok">Korábbi utazások:</string>
+    <string name="ez_1000_szenyez_snek_felel_meg">Ez 1000 szenyezésnek felel meg</string>
+    <string name="el_rt_eredm_nyek">Elért eredmények:</string>
+    <string name="legut_bbi_10_utad">Legutóbbi 10 utad kibocsátása:</string>
+    <string name="_0_z_ldpont_od_van">0 Zöldpont-od van</string>
+    <string name="date">Dátum</string>
+    <string name="line">Járat</string>
+    <string name="emission">Kibocsátás</string>
+    <string name="profile_picture">Profile picture</string>
+    <string name="username_placeholder">username_placeholder</string>
+    <string name="points">points</string>
+    <string name="bez_r_s">Bezárás</string>
+    <string name="email_placeholder">email_placeholder</string>
 </resources>

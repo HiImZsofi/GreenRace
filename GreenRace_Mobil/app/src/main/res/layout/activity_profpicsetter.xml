@@ -36,7 +36,7 @@
                 android:layout_marginTop="@dimen/loginViewsMargin"
                 android:gravity="center_horizontal"
                 android:padding="5dp"
-                android:text="Profilkép Beállítás"
+                android:text="@string/profilk_p_be_ll_t_s"
                 android:textAlignment="center"
                 android:textColor="@color/whiteTextColor"
                 android:textSize="30sp" />
@@ -52,7 +52,7 @@
                 android:src="@drawable/ic_back"
                 android:background="@android:color/transparent"
                 android:layout_marginEnd="10dp"
-                android:contentDescription="previous_button" />
+                android:contentDescription="@string/previous_button" />
             <androidx.cardview.widget.CardView
                 android:layout_width="200dp"
                 android:layout_height="200dp"
@@ -64,7 +64,7 @@
                     android:layout_height="200dp"
                     android:src="@drawable/npic"
                     android:scaleType="centerCrop"
-                    android:contentDescription="Profilkép" />
+                    android:contentDescription="@string/profilk_p" />
             </androidx.cardview.widget.CardView>
             <ImageButton
                 android:id="@+id/next"
@@ -73,7 +73,7 @@
                 android:src="@drawable/ic_next"
                 android:background="@android:color/transparent"
                 android:layout_marginStart="10dp"
-                android:contentDescription="next_button" />
+                android:contentDescription="@string/next_button" />
         </LinearLayout>
 
         <LinearLayout
@@ -102,7 +102,7 @@
                 android:layout_marginTop="@dimen/loginViewsMargin"
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/button_item"
-                android:text="Kiválasztás"
+                android:text="@string/kiv_laszt_s"
                 android:textAllCaps="false"
                 android:textColor="@color/whiteTextColor"
                 />

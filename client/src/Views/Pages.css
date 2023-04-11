@@ -82,6 +82,10 @@
 }
 
 /*UserPage*/
+.description {
+  font-size: 10px;
+}
+
 #pont-light {
   color: darkgreen;
 }
@@ -117,6 +121,12 @@
   text-align: center;
   text-decoration: none;
   display: inline-block;
+}
+.formbackground-image {
+  background-image: url("../../public/web_background.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 }
 
 /*checkbox*/

@@ -24,7 +24,7 @@ interface MenuPoints {
 let NavMenuPoints: MenuPoints[] = [
 	{ text: "Pontjaim", link: "/userPage", class: "me-2" },
 	{ text: "Rangsor", link: "/rankPage", class: "me-2" },
-	{ text: "Barátok", link: "/friendPage", class: "me-auto" },
+	{ text: "Korábi Utazások", link: "/routesPage", class: "me-auto" },
 ];
 
 
