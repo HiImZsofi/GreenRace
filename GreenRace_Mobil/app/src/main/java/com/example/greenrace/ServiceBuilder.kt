@@ -5,10 +5,11 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.jackson.JacksonConverterFactory
+import java.util.concurrent.TimeUnit
 
 
 object ServiceBuilder {
-    private val client = OkHttpClient.Builder().build()
+    private val client = OkHttpClient.Builder().readTimeout(30, TimeUnit.SECONDS).build()
 
 
     private val retrofit = Retrofit.Builder()
