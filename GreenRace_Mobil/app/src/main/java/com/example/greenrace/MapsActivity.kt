@@ -57,13 +57,6 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         //Request location permissions
         getLocationPermission()
-        //TODO load map to correct place if the permission need enabling
-
-        //Show a zoomed out map of Budapest in the background
-        initMap(mapFragment)
-
-        //Check if GPS is on then re-render the map
-        locationStateCheck()
     }
 
     private fun locationStateCheck() {
@@ -90,28 +83,35 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     //Initialize the map with coordinates
     //And move the camera to the correct location
     private fun initMap(mapFragment: SupportMapFragment) {
-        try {
-            fusedLocationClient.lastLocation
-                .addOnSuccessListener { location: Location? ->
-                    // Got last known location. In some rare situations this can be null.
-                    if (location != null) {
-                        try {
-                            lat = location.latitude
-                            lng = location.longitude
-                            mapFragment.getMapAsync(this)
-                        } catch (e: SecurityException) {
-                            Log.e("Security Exception", e.message.toString())
-                        }
-                    } else {
-                        mapFragment.getMapAsync { mMap ->
-                            val notSydney = LatLng(47.4980635, 19.0472096)
-                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(notSydney, 10F))
+        //Check if the location permissions are granted then load the map
+        if (mLocationPermissionGranted) {
+            try {
+                fusedLocationClient.lastLocation
+                    .addOnSuccessListener { location: Location? ->
+                        // Got last known location. In some rare situations this can be null.
+                        if (location != null) {
+                            try {
+
+                                //Show the current location of the user
+                                lat = location.latitude
+                                lng = location.longitude
+                                mapFragment.getMapAsync(this)
+                            } catch (e: SecurityException) {
+                                Log.e("Security Exception", e.message.toString())
+                            }
+                        } else {
+
+                            //Show a zoomed out map of Budapest in the background
+                            mapFragment.getMapAsync { mMap ->
+                                val notSydney = LatLng(47.4980635, 19.0472096)
+                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(notSydney, 10F))
+                            }
                         }
                     }
-                }
-        } catch (e: SecurityException) {
-            // Handle exception
-            Log.e("Security Exception", e.message.toString())
+            } catch (e: SecurityException) {
+                // Handle exception
+                Log.e("Security Exception", e.message.toString())
+            }
         }
     }
 
@@ -162,12 +162,35 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             == PackageManager.PERMISSION_GRANTED
         ) {
             mLocationPermissionGranted = true
+
+            //Check if the GPS is turned of if yes then reload the map to the current position
+            locationStateCheck()
         } else {
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                 PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
             )
+        }
+    }
+
+    //Executed when the getRequestPermissions functions
+    // runs the permission request pop up and one of the buttons is clicked
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            //Reload the map if the permissions are granted
+            PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    mLocationPermissionGranted = true
+                    //Check if the gps is turned on then refresh the map to the current location
+                    locationStateCheck()
+                }
+            }
         }
     }
 }
