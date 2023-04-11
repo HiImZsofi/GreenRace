@@ -31,7 +31,8 @@ class MainActivity : AppCompatActivity() {
 
     private var menulist: List<String> = listOf("Pontjaim", "Rangsor", "Utak")
     private var pagenumber: Int = 0
-    private var fragmentlist: List<Fragment> = listOf(UserPageFragment(), RankPageFragment(), RouteLogedPageFragment())
+    private var fragmentlist: List<Fragment> =
+        listOf(UserPageFragment(), RankPageFragment(), RouteLogedPageFragment())
 
     private var username: String? = null
     private var email: String? = null
@@ -53,6 +54,7 @@ class MainActivity : AppCompatActivity() {
         setUpSwiper()
 
     }
+
     // Initialize views and variables
     fun init() {
         myView = findViewById(R.id.myView)
@@ -62,12 +64,13 @@ class MainActivity : AppCompatActivity() {
 
         val pageNum = PageNum(this@MainActivity)
         val page = pageNum.getPageNum()
-        pagenumber = if(!page.isNullOrEmpty()){
+        pagenumber = if (!page.isNullOrEmpty()) {
             page.toInt()
         } else {
             0
         }
     }
+
     // Get data from database
     private fun getData(callback: (username: String?, email: String?, picfilepath: String?) -> Unit) {
         val response = ServiceBuilder.buildService(ApiInterface::class.java)
@@ -96,13 +99,14 @@ class MainActivity : AppCompatActivity() {
             }
         )
     }
+
     // Set up the drawer layout, including open and close drawer methods
     private fun setUpDrawer() {
         buttonOpenDrawer.setOnClickListener {
             openCloseDrawer(buttonOpenDrawer)
         }
         val navigationView = findViewById<NavigationView>(R.id.navigation_drawer)
-        val headerDialog : View = navigationView.getHeaderView(0)
+        val headerDialog: View = navigationView.getHeaderView(0)
         val closeButton = headerDialog.findViewById<ImageButton>(R.id.close_button)
         val usernameHeader = headerDialog.findViewById<TextView>(R.id.nav_username)
         val emailHeader = headerDialog.findViewById<TextView>(R.id.nav_email)
@@ -113,7 +117,8 @@ class MainActivity : AppCompatActivity() {
         usernameHeader?.text = username.toString()
         emailHeader?.text = email.toString()
         if (picfilepath != null) {
-            val drawableResId = resources.getIdentifier(picfilepath?.split(".")?.get(0), "drawable", packageName)
+            val drawableResId =
+                resources.getIdentifier(picfilepath?.split(".")?.get(0), "drawable", packageName)
             profilepicHeader?.setImageResource(drawableResId)
         } else {
             profilepicHeader?.setImageResource(R.drawable.npic)
@@ -163,20 +168,24 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
     fun navigateToPage(pageNum: Int?, intent: Intent) {
-        if(pageNum != null) {
+        if (pageNum != null) {
             val pageNumObj = PageNum(this@MainActivity)
             pageNumObj.savePageNum(pageNum)
         }
         startActivity(intent)
+        finish()
     }
-    fun openCloseDrawer(view: View){
+
+    fun openCloseDrawer(view: View) {
         if (drawerLayout.isDrawerOpen(GravityCompat.END)) {
             drawerLayout.closeDrawer(GravityCompat.END)
         } else {
             drawerLayout.openDrawer(GravityCompat.END)
         }
     }
+
     // Set up the swipe listener for the view
     private fun setUpSwiper() {
         val swipeListener = object : OnSwipeTouchListener(this@MainActivity) {
@@ -210,17 +219,19 @@ class MainActivity : AppCompatActivity() {
         }
         myView.setOnTouchListener(swipeListener)
     }
+
     // Set the page name, replace the fragment and set data values
     private fun setData() {
         pageName.text = menulist[pagenumber]
         replaceFragment(R.id.fragmentContainerView, fragmentlist[pagenumber])
     }
+
     // Replace the current fragment with the fragment at the given frame ID
     private inline fun FragmentManager.doTransaction(func: FragmentTransaction.() -> FragmentTransaction) {
         beginTransaction().func().commit()
     }
 
     private fun AppCompatActivity.replaceFragment(frameId: Int, fragment: Fragment) {
-        supportFragmentManager.doTransaction { replace(frameId, fragment) }
+        supportFragmentManager.doTransaction {  replace(frameId, fragment) }
     }
 }
