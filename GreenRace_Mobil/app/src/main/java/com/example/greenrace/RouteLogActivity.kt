@@ -104,8 +104,6 @@ class RouteLogActivity : AppCompatActivity() {
 
     //Set the list for getOnStopSpinner
     private fun setGetOnStopSpinnerAdapter() {
-        //TODO Fix the bug where the current get off stop is still in the get on stop list when it's first loaded
-        //TODO It should be filtered out as well
         val summedStops: List<Stop> = if (this@RouteLogActivity::currentGetOffStop.isInitialized) {
             getSummedStopList().filter { stop -> stop != currentGetOffStop }
         } else {
@@ -302,7 +300,6 @@ class RouteLogActivity : AppCompatActivity() {
         logRouteButton.setOnClickListener {
             val response = ServiceBuilder.buildService(ApiInterface::class.java)
             val requestModelLogRoute = RequestModelLogRoute(
-                //TODO fix token
                 currentTypeCode,
                 currentLine,
                 currentGetOnStop.stopName,
@@ -314,9 +311,6 @@ class RouteLogActivity : AppCompatActivity() {
                 .setPositiveButton(
                     "OK"
                 ) { _, _ ->
-                    val backToMap = Intent(this@RouteLogActivity, MapsActivity::class.java)
-                    startActivity(backToMap)
-                    finish()
                 }
                 .setCancelable(false)
             // Create the AlertDialog object and return it

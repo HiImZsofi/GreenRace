@@ -1,12 +1,15 @@
 package com.example.greenrace
 
 import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.util.Log
+import android.util.TypedValue
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +18,10 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.greenrace.sharedPreferences.TokenUtils
+import com.fasterxml.jackson.databind.exc.ValueInstantiationException
 import com.github.mikephil.charting.data.*
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -28,7 +34,8 @@ class UserPageFragment : Fragment() {
     private lateinit var barChart: com.github.mikephil.charting.charts.BarChart
 
     private lateinit var mContext: Context
-    private lateinit var AchievementsList: List<Achievement>
+    private lateinit var achievementsList: List<Achievement>
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mContext = context
@@ -48,17 +55,9 @@ class UserPageFragment : Fragment() {
         emissionText = view.findViewById(R.id.emission_textview)
         barChart = view.findViewById(R.id.user_barChart)
         achievementsView = view.findViewById(R.id.achievementList)
-        getData()
-        getAchievementData(object : AchievementDataCallback {
-            override fun onAchievementDataReceived(achievementsList: List<Achievement>) {
-                AchievementsList = achievementsList
-                setAchievementsListViewAdapter()
-            }
 
-            override fun onFailure(errorMessage: String) {
-                Log.e("Error", errorMessage)
-            }
-        })
+        getData()
+        getAchievementData()
         getChartData()
     }
 
@@ -99,13 +98,8 @@ class UserPageFragment : Fragment() {
         )
     }
 
-    interface AchievementDataCallback {
-        fun onAchievementDataReceived(achievementsList: List<Achievement>)
-        fun onFailure(errorMessage: String)
-    }
-
     //GETs the progress for each achievement for the current user from the backend
-    private fun getAchievementData(callback: AchievementDataCallback) {
+    private fun getAchievementData() {
         val response = ServiceBuilder.buildService(ApiInterface::class.java)
         val tokenUtils = TokenUtils(requireContext())
         val token = tokenUtils.getAccessToken()
@@ -117,18 +111,27 @@ class UserPageFragment : Fragment() {
                     response: Response<ResponseModelAchievements>
                 ) {
                     //Store the achievements
-                    if (response.isSuccessful) {
-                        val achievements = response.body()?.achievements
-                        if (achievements != null) {
-                            callback.onAchievementDataReceived(achievements)
-                        }
-                    } else {
-                        callback.onFailure("Failed to get achievements: ${response.code()}")
+
+                    if(response.body()?.achievements==null){
+                        val parentView = achievementsView.parent as ViewGroup
+                        val replaceTextView = TextView(requireContext())
+                        replaceTextView.text = "Rögzíts egy utat, hogy hozzáférj a küldetésekhez."
+                        replaceTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20F)
+                        replaceTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.warning))
+                        replaceTextView.gravity = Gravity.CENTER
+
+                        val listViewIndex = parentView.indexOfChild(achievementsView)
+                        parentView.removeView(achievementsView)
+                        parentView.addView(replaceTextView, listViewIndex)
+                    }
+                    else {
+                        achievementsList = response.body()?.achievements!!
+                        setAchievementsListViewAdapter()
                     }
                 }
 
                 override fun onFailure(call: Call<ResponseModelAchievements>, t: Throwable) {
-                    callback.onFailure(t.toString())
+                    t.message?.let { Log.e("Achievement onFailure", it) }
                 }
             }
         )
@@ -139,27 +142,24 @@ class UserPageFragment : Fragment() {
     // and the achievement description if you hold down one of the list items
     fun setAchievementsListViewAdapter() {
         if (isAdded()) {
-            val adapter = object : ArrayAdapter<Achievement>(
-                requireContext(),
-                R.layout.achievement_list_item,
-                AchievementsList
-            ) {
-                @RequiresApi(Build.VERSION_CODES.O)
-                override fun getView(postion: Int, convertView: View?, parent: ViewGroup): View {
-                    val view = convertView ?: LayoutInflater.from(context)
-                        .inflate(R.layout.achievement_list_item, parent, false)
-                    val item = getItem(postion)
+        val adapter = object : ArrayAdapter<Achievement>(
+            requireContext(),
+            R.layout.achievement_list_item,
+            achievementsList
+        ) {
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun getView(postion: Int, convertView: View?, parent: ViewGroup): View {
+                val view = convertView ?: LayoutInflater.from(context)
+                    .inflate(R.layout.achievement_list_item, parent, false)
+                val item = getItem(postion)
 
-                    view.findViewById<LinearLayout>(R.id.achievementListItem).tooltipText =
-                        item!!.description
-                    view.findViewById<TextView>(R.id.achievementName).text = item?.name
-                    view.findViewById<ProgressBar>(R.id.achievementProgress).progress =
-                        item!!.progress
-                    view.findViewById<CheckBox>(R.id.achievementCompletion).isChecked =
-                        item.completed
+                view.findViewById<LinearLayout>(R.id.achievementListItem).tooltipText =
+                    item!!.description
+                view.findViewById<TextView>(R.id.achievementName).text = item.name
+                view.findViewById<ProgressBar>(R.id.achievementProgress).progress = item.progress
+                view.findViewById<CheckBox>(R.id.achievementCompletion).isChecked = item.completed
 
-                    return view
-                }
+                return view
             }
             achievementsView.adapter = adapter
         }
@@ -231,7 +231,7 @@ class UserPageFragment : Fragment() {
         }
         return target
     }
-
+    
     private fun getEntryList(chartdata: List<Number>): List<Entry> {
         val entries = mutableListOf<Entry>()
         for ((index, value) in chartdata.withIndex()) {

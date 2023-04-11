@@ -21,6 +21,7 @@
     <string name="startingStop">Induló megálló</string>
     <string name="endingStop">Leszállás megálló</string>
     <string name="addRoute">Utazás hozzáadása</string>
+    <string name="back">Vissza</string>
     <string name="kinyit_s">Kinyitás</string>
     <string name="pontjaim">Pontjaim</string>
     <string name="test">Test</string>
