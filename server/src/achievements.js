@@ -7,10 +7,10 @@ var completion;
 var lineStops;
 
 export async function loadRouteData(user_id) {
-  routeData = await getRouteData(user_id).catch((err) => {
-    //returns false for completion if the number of routes logged is 0
-    return { completed: false };
-  });
+  routeData = await getRouteData(user_id);
+  if (routeData.length == 0) {
+    return { completion: "false" };
+  }
 }
 
 export async function firstLoggedRouteAchievement(user_id) {
@@ -216,6 +216,8 @@ export async function fromOneEndToAnother(user_id) {
     completed: false,
     progress: 0,
   };
+
+  lineStops = [];
 
   for (let i = 0; i < routeData.length; i++) {
     lineStops.push(await getLongerRoute(routeData[i].route_id));
