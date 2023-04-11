@@ -264,23 +264,20 @@ app.get("/check/completion", async (req, res) => {
 
   try {
     await loadRouteData(user_id);
-    const promises = [
-      firstLoggedRouteAchievement(user_id),
-      first500gEmission(user_id),
-      atLeastThreeKilometersLoggedAchievement(user_id),
-      atLeastThreeDifferentTypesTravelledOn(user_id),
-      atLeast2kgEmission(user_id),
-      onceOnEveryVehicleType(user_id),
-      atLeastTenKilometersInOneLog(user_id),
-      fromOneEndToAnother(user_id),
-      travelFiftyKilometers(user_id),
-      kingOfTheBudaRiverBank(user_id),
-      kingOfThePestRiverBank(user_id),
-      suburbanRailwayTraveller(user_id),
-    ];
-
-    const results = await Promise.all(promises);
-    completionArray = results.filter((result) => result !== undefined);
+    completionArray.push(
+      await firstLoggedRouteAchievement(user_id),
+      await first500gEmission(user_id),
+      await atLeastThreeKilometersLoggedAchievement(user_id),
+      await atLeastThreeDifferentTypesTravelledOn(user_id),
+      await atLeast2kgEmission(user_id),
+      await onceOnEveryVehicleType(user_id),
+      await atLeastTenKilometersInOneLog(user_id),
+      await fromOneEndToAnother(user_id),
+      await travelFiftyKilometers(user_id),
+      await kingOfTheBudaRiverBank(user_id),
+      await kingOfThePestRiverBank(user_id),
+      await suburbanRailwayTraveller(user_id)
+    );
   } catch (error) {
     res.status(500).send({ error: error });
     return;
