@@ -90,7 +90,7 @@
         android:layout_marginTop="30dp"
         android:backgroundTint="@color/white"
         android:gravity="center"
-        android:text="@string/cancel"
+        android:text="@string/back"
         android:textColor="@color/green_700"
         tools:ignore="TextContrastCheck" />
 </androidx.appcompat.widget.LinearLayoutCompat>
