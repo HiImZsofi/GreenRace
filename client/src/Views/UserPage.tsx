@@ -58,6 +58,7 @@ const UserPage = () => {
           .get("content-type")
           ?.includes("application/json");
         const achivementdata = isJson && (await response.json());
+        if (achivementdata.achievements.length != undefined){
         for (let i = 0; i < achivementdata.achievements.length; i++) {
           if (achivementdata.achievements[i] !== undefined) {
             let name: string = achivementdata.achievements[i].name;
@@ -68,6 +69,7 @@ const UserPage = () => {
             Achilist[i] = achievement;
           }
         }
+      }
         setAchivementlist(Achilist);
         console.log(Achivementlist);
       }
