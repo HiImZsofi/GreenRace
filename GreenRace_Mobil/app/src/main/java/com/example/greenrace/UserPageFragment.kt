@@ -15,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.greenrace.sharedPreferences.TokenUtils
@@ -68,7 +69,7 @@ class UserPageFragment : Fragment() {
     private fun updateUserInfo(points: Int?) {
         var zpoint = getColoredString("Zöldpont", "#006400");
         pointsText.setText(Html.fromHtml(points.toString() + " " + zpoint + "-od van"))
-        emissionText.setText("Ez "+(points?.times(10)).toString()+"g szennyezésnek felel meg")
+        emissionText.setText("Ez " + (points?.times(10)).toString() + "g szennyezésnek felel meg")
     }
 
     private fun getData() {
@@ -112,19 +113,23 @@ class UserPageFragment : Fragment() {
                 ) {
                     //Store the achievements
 
-                    if(response.body()?.achievements==null){
+                    if (response.body()?.achievements == null) {
                         val parentView = achievementsView.parent as ViewGroup
                         val replaceTextView = TextView(requireContext())
                         replaceTextView.text = "Rögzíts egy utat, hogy hozzáférj a küldetésekhez."
                         replaceTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20F)
-                        replaceTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.warning))
+                        replaceTextView.setTextColor(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.warning
+                            )
+                        )
                         replaceTextView.gravity = Gravity.CENTER
 
                         val listViewIndex = parentView.indexOfChild(achievementsView)
                         parentView.removeView(achievementsView)
                         parentView.addView(replaceTextView, listViewIndex)
-                    }
-                    else {
+                    } else {
                         achievementsList = response.body()?.achievements!!
                         setAchievementsListViewAdapter()
                     }
@@ -142,24 +147,27 @@ class UserPageFragment : Fragment() {
     // and the achievement description if you hold down one of the list items
     fun setAchievementsListViewAdapter() {
         if (isAdded()) {
-        val adapter = object : ArrayAdapter<Achievement>(
-            requireContext(),
-            R.layout.achievement_list_item,
-            achievementsList
-        ) {
-            @RequiresApi(Build.VERSION_CODES.O)
-            override fun getView(postion: Int, convertView: View?, parent: ViewGroup): View {
-                val view = convertView ?: LayoutInflater.from(context)
-                    .inflate(R.layout.achievement_list_item, parent, false)
-                val item = getItem(postion)
+            val adapter = object : ArrayAdapter<Achievement>(
+                requireContext(),
+                R.layout.achievement_list_item,
+                achievementsList
+            ) {
+                @RequiresApi(Build.VERSION_CODES.O)
+                override fun getView(postion: Int, convertView: View?, parent: ViewGroup): View {
+                    val view = convertView ?: LayoutInflater.from(context)
+                        .inflate(R.layout.achievement_list_item, parent, false)
+                    val item = getItem(postion)
 
-                view.findViewById<LinearLayout>(R.id.achievementListItem).tooltipText =
-                    item!!.description
-                view.findViewById<TextView>(R.id.achievementName).text = item.name
-                view.findViewById<ProgressBar>(R.id.achievementProgress).progress = item.progress
-                view.findViewById<CheckBox>(R.id.achievementCompletion).isChecked = item.completed
+                    view.findViewById<LinearLayout>(R.id.achievementListItem).tooltipText =
+                        item!!.description
+                    view.findViewById<TextView>(R.id.achievementName).text = item.name
+                    view.findViewById<ProgressBar>(R.id.achievementProgress).progress =
+                        item.progress
+                    view.findViewById<CheckBox>(R.id.achievementCompletion).isChecked =
+                        item.completed
 
-                return view
+                    return view
+                }
             }
             achievementsView.adapter = adapter
         }
@@ -192,6 +200,7 @@ class UserPageFragment : Fragment() {
         )
     }
 
+
     private fun setChartData(chartdata: List<Number>) {
         if (isAdded()) {
             // Create a new data set and add the values to it
@@ -201,7 +210,7 @@ class UserPageFragment : Fragment() {
             }
 
             val dataSet = BarDataSet(data, "Pontok")
-                barChart.getDescription().setEnabled(false)
+            barChart.getDescription().setEnabled(false)
             dataSet.color = ContextCompat.getColor(requireContext(), R.color.teal_700)
 
             val barData = BarData(dataSet)
@@ -209,7 +218,7 @@ class UserPageFragment : Fragment() {
             barChart.setFitBars(true)
             barChart.invalidate()
 
-            if(resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES){
+            if (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES) {
                 barChart.xAxis.textColor = Color.WHITE
                 dataSet.valueTextColor = Color.WHITE
                 barChart.axisLeft.textColor = Color.WHITE
@@ -231,7 +240,7 @@ class UserPageFragment : Fragment() {
         }
         return target
     }
-    
+
     private fun getEntryList(chartdata: List<Number>): List<Entry> {
         val entries = mutableListOf<Entry>()
         for ((index, value) in chartdata.withIndex()) {
