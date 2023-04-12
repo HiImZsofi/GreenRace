@@ -112,26 +112,28 @@ class UserPageFragment : Fragment() {
                     response: Response<ResponseModelAchievements>
                 ) {
                     //Store the achievements
-
-                    if (response.body()?.achievements == null) {
-                        val parentView = achievementsView.parent as ViewGroup
-                        val replaceTextView = TextView(requireContext())
-                        replaceTextView.text = "Rögzíts egy utat, hogy hozzáférj a küldetésekhez."
-                        replaceTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20F)
-                        replaceTextView.setTextColor(
-                            ContextCompat.getColor(
-                                requireContext(),
-                                R.color.warning
+                    if (isAdded()) {
+                        if (response.body()?.achievements == null) {
+                            val parentView = achievementsView.parent as ViewGroup
+                            val replaceTextView = TextView(requireContext())
+                            replaceTextView.text =
+                                "Rögzíts egy utat, hogy hozzáférj a küldetésekhez."
+                            replaceTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20F)
+                            replaceTextView.setTextColor(
+                                ContextCompat.getColor(
+                                    requireContext(),
+                                    R.color.warning
+                                )
                             )
-                        )
-                        replaceTextView.gravity = Gravity.CENTER
+                            replaceTextView.gravity = Gravity.CENTER
 
-                        val listViewIndex = parentView.indexOfChild(achievementsView)
-                        parentView.removeView(achievementsView)
-                        parentView.addView(replaceTextView, listViewIndex)
-                    } else {
-                        achievementsList = response.body()?.achievements!!
-                        setAchievementsListViewAdapter()
+                            val listViewIndex = parentView.indexOfChild(achievementsView)
+                            parentView.removeView(achievementsView)
+                            parentView.addView(replaceTextView, listViewIndex)
+                        } else {
+                            achievementsList = response.body()?.achievements!!
+                            setAchievementsListViewAdapter()
+                        }
                     }
                 }
 
