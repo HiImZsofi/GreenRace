@@ -74,10 +74,10 @@ class RegisterActivity : AppCompatActivity() {
                                 //change background resource to red
                                 registrationEmail.setBackgroundResource(R.drawable.email_error)
                                 registrationEmail.error = "Ez az e-mail cím már foglalt!"
-                            } /*else if(response.code() == 200) {
-                                    startActivity(regSuccessful)
-                                    finish()
-                                }*/ else {
+                            } else if(response.code() == 204) {
+                                registrationPassword.setBackgroundResource(R.drawable.email_error)
+                                registrationPassword.error = "Jelszó nem lehet üres!"
+                                } else {
                                 val regSuccessful =
                                     Intent(this@RegisterActivity, LoginActivity::class.java)
 
@@ -91,11 +91,6 @@ class RegisterActivity : AppCompatActivity() {
 
                         //response failure call
                         override fun onFailure(call: Call<RegistrationResponseModel>, t: Throwable) {
-                            /*startActivity(regSuccessful)
-                                finish()
-                                registrationEmail.setBackgroundResource(R.drawable.email_normal)
-                                registrationPassword.setBackgroundResource(R.drawable.email_normal)
-                                registrationUsername.setBackgroundResource(R.drawable.email_normal)*/
                             Log.i("Error", t.toString())
                         }
                     }
