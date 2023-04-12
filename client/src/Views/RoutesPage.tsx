@@ -53,6 +53,7 @@ const RoutesPage = () => {
           .get("content-type")
           ?.includes("application/json");
         const routedata = isJson && (await response.json());
+        if (routedata.userData.length != undefined){
         for (let i = 0; i < routedata.userData.length; i++) {
           if (routedata.userData[i] !== undefined){
             let line: string = routedata.userData[i].line;
@@ -62,6 +63,7 @@ const RoutesPage = () => {
             Routelist[i] = route;
           }
         }
+      }
         Routelist= Routelist.sort((a, b) => b.emission - a.emission);
       }
     );
