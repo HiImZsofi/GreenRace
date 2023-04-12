@@ -5,6 +5,8 @@ import android.icu.text.SimpleDateFormat
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +15,8 @@ import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
+import androidx.core.view.marginTop
 import com.example.greenrace.sharedPreferences.TokenUtils
 import retrofit2.Call
 import retrofit2.Callback
@@ -48,9 +52,29 @@ class RouteLogedPageFragment : Fragment() {
                     call: Call<ResponseModelLoggedRoutes>,
                     response: Response<ResponseModelLoggedRoutes>
                 ) {
-                    //Store the achievements
-                    loggedRoutes = response.body()!!.loggedRoutes
-                    setLoggedRoutesListViewAdapter()
+                    if(response.body()?.loggedRoutes == null){
+                        val parentView = loggedRoutesView.parent as ViewGroup
+                        val marginInPixels = 20
+                        val replaceTextView = TextView(requireContext())
+                        replaceTextView.text = "Még nincs regisztráld utad."
+                        replaceTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20F)
+                        replaceTextView.setTextColor(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.warning
+                            )
+                        )
+                        replaceTextView.gravity = Gravity.CENTER
+
+
+                        val listViewIndex = parentView.indexOfChild(loggedRoutesView)
+                        parentView.removeView(loggedRoutesView)
+                        parentView.addView(replaceTextView, listViewIndex)
+                    } else {
+                        //Store the achievements
+                        loggedRoutes = response.body()!!.loggedRoutes!!
+                        setLoggedRoutesListViewAdapter()
+                    }
                 }
 
                 override fun onFailure(call: Call<ResponseModelLoggedRoutes>, t: Throwable) {
