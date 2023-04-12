@@ -69,7 +69,6 @@ const UserPage = () => {
           }
         }
         setAchivementlist(Achilist);
-        console.log(Achivementlist);
       }
     );
   };

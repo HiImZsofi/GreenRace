@@ -4,6 +4,7 @@ import "./Pages.css";
 import "bootstrap/dist/css/bootstrap.css";
 import { Navigate, useNavigate } from "react-router-dom";
 import NavMenu from "../components/NavBarLogic";
+import { Table } from "react-bootstrap";
 
 //Creating variables
 interface Ranking {
@@ -90,19 +91,19 @@ const RankPage = () => {
           <div>
             <h1>Rang Lista:</h1>
             <div className="text-center overflow-auto zoom" style={{maxHeight:"55.7vh"}}>
-            <table className="mx-auto">
+            <Table striped bordered hover size="sm" variant={dark == "false" ? 'dark':''} className="mx-auto">
               <tbody>
               {Ranglist.map((Ranking, i) => (
                 <tr key={i}>
-                  <td className="px-2"><img id="profpic" alt="Profpic" 
+                  <td className="px-2 align-middle"><img id="profpic" alt="Profpic" 
                   src={Ranking.picfilepath !== null ? Ranking.picfilepath : "npic.png"}
 									width="40vh=" height="40vh="/></td>
-                  <td className="px-2">{Ranking.username}</td>
-                  <td className="px-2">{Ranking.points}p</td>
+                  <td className="px-2 align-middle">{Ranking.username}</td>
+                  <td className="px-2 align-middle">{Ranking.points}p</td>
                 </tr>
               ))}
               </tbody>
-            </table>
+            </Table>
             </div>
           </div>
         </div>

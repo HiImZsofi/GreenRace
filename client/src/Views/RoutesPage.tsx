@@ -4,6 +4,7 @@ import "./Pages.css";
 import NavMenu from "../components/NavBarLogic";
 import "bootstrap/dist/css/bootstrap.css";
 import { useNavigate } from "react-router-dom";
+import { Table } from "react-bootstrap";
 
 //Creating variables
 interface Routes {
@@ -89,8 +90,13 @@ const RoutesPage = () => {
         <div>
           <h1>Utazások:</h1>
           <div className="text-center overflow-auto zoom" style={{maxHeight:"55.7vh"}}>
-            <table className="mx-auto">
+            <Table striped bordered hover size="sm" variant={dark == "false" ? 'dark':''} className="mx-auto">
               <tbody>
+                <tr>
+                  <td className="px-2 align-middle">Dátum</td>
+                  <td className="px-2 align-middle">Járatszám</td>
+                  <td className="px-2 align-middle">Megspórolt szennyezés</td>
+                </tr>
                 {Routelist.map((Route, i) => (
                   <tr key={i}>
                     <td className="px-2">{new Date(Route.date).toISOString().slice(0, 10)}</td>
@@ -99,7 +105,7 @@ const RoutesPage = () => {
                   </tr>
                 ))}
               </tbody>
-            </table>
+            </Table>
             </div>
         </div>
       </div>
