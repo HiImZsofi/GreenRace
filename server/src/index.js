@@ -83,10 +83,7 @@ app.post("/register", async (req, res) => {
 
   //request data
   const { username, password, email } = req.body;
-
-  const saltRounds = 10; //higher number harder it is to reverse
-  let hash = bcrypt.hashSync(password, saltRounds); //hash the given password with salt before inserting
-
+  let hash;
   //Check for duplicate email
   //If it "succeeds" then it sets the status code to 500
   try {
@@ -97,16 +94,28 @@ app.post("/register", async (req, res) => {
     console.log("code changed to", res.statusCode);
   }
 
-  //Insert user into database
-  try {
-    await insertNewUser(username, hash, email);
-    res.statusCode = 200;
-    console.log("Inserted user", res.statusCode);
-    res.send({ result: "Successful registration" });
-  } catch (error) {
-    res.statusCode = 500;
+  if (req.body.password === "") {
+    res.statusCode = 204;
     console.log("Server error", res.statusCode);
-    res.send({ error: "Duplicate email" });
+  } else {
+    const saltRounds = 10; //higher number harder it is to reverse
+    hash = bcrypt.hashSync(password, saltRounds); //hash the given password with salt before inserting
+  }
+
+  if (res.statusCode !== 204) {
+    //Insert user into database
+    try {
+      await insertNewUser(username, hash, email);
+      res.statusCode = 200;
+      console.log("Inserted user", res.statusCode);
+      res.send({ result: "Successful registration" });
+    } catch (error) {
+      res.statusCode = 500;
+      console.log("Server error", res.statusCode);
+      res.send({ error: "Duplicate email" });
+    }
+  } else {
+    res.send({ error: "kutya" });
   }
 });
 
