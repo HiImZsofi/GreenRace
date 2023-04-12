@@ -244,7 +244,7 @@ class RequestModelSettingsPage @JsonCreator constructor(
     val currentpassword: String = currentpassword
 }
 
-class ResponseModelLoggedRoutes @JsonCreator constructor(@JsonProperty("userData") val loggedRoutes: List<LoggedRoute>)
+class ResponseModelLoggedRoutes @JsonCreator constructor(@JsonProperty("userData") val loggedRoutes: List<LoggedRoute>?)
 
 class LoggedRoute @JsonCreator constructor(
     @JsonProperty("line") line: String,
