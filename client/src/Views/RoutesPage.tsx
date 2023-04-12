@@ -19,7 +19,7 @@ const RoutesPage = () => {
   const [username, setUsername] = useState("");
   const [picFilePath, setPicFilePath] = useState("");
   const [windowSize, setWindowSize] = useState(window.innerWidth);
-  let dark = localStorage.getItem('darkmode');
+  let dark = localStorage.getItem("darkmode");
   const navigate = useNavigate();
 
   //Getting data form Server
@@ -54,19 +54,18 @@ const RoutesPage = () => {
           ?.includes("application/json");
         const routedata = isJson && (await response.json());
         for (let i = 0; i < routedata.userData.length; i++) {
-          if (routedata.userData[i] !== undefined){
+          if (routedata.userData[i] !== undefined) {
             let line: string = routedata.userData[i].line;
             let date: Date = routedata.userData[i].date;
             let emission: number = routedata.userData[i]["emission"];
-            let route: Routes = { line: line, date: date, emission: emission};
+            let route: Routes = { line: line, date: date, emission: emission };
             Routelist[i] = route;
           }
         }
-        Routelist= Routelist.sort((a, b) => b.emission - a.emission);
+        Routelist = Routelist.sort((a, b) => b.emission - a.emission);
       }
     );
   };
-
 
   function handleResize() {
     setWindowSize(window.innerWidth);
@@ -74,23 +73,37 @@ const RoutesPage = () => {
 
   useEffect(() => {
     authenticationHandler();
-    if (dark == "false"){
+    if (dark == "false") {
       document.body.className = "body-dark body-zoom";
     } else {
       document.body.className = "body-light body-zoom";
     }
-    window.addEventListener('resize', handleResize)
+    window.addEventListener("resize", handleResize);
   });
 
   //Page Visual Part
   return (
     <div key={"routesPage"}>
-      <NavMenu username={username} profilePicturePath={picFilePath} width={windowSize}/>
+      <NavMenu
+        username={username}
+        profilePicturePath={picFilePath}
+        width={windowSize}
+      />
       <div className="text-center mt-3">
         <div>
           <h1>Utazások:</h1>
-          <div className="text-center overflow-auto zoom" style={{maxHeight:"55.7vh"}}>
-            <Table striped bordered hover size="sm" variant={dark == "false" ? 'dark':''} className="mx-auto">
+          <div
+            className="text-center overflow-auto zoom"
+            style={{ maxHeight: "55.7vh" }}
+          >
+            <Table
+              striped
+              bordered
+              hover
+              size="sm"
+              variant={dark == "false" ? "dark" : "secondary"}
+              className="mx-auto"
+            >
               <tbody>
                 <tr>
                   <td className="px-2 align-middle">Dátum</td>
@@ -99,14 +112,16 @@ const RoutesPage = () => {
                 </tr>
                 {Routelist.map((Route, i) => (
                   <tr key={i}>
-                    <td className="px-2">{new Date(Route.date).toISOString().slice(0, 10)}</td>
+                    <td className="px-2">
+                      {new Date(Route.date).toISOString().slice(0, 10)}
+                    </td>
                     <td className="px-2">{Route.line}</td>
                     <td className="px-2">{Route.emission}g</td>
                   </tr>
                 ))}
               </tbody>
             </Table>
-            </div>
+          </div>
         </div>
       </div>
     </div>

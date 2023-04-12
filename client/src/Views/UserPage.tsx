@@ -23,7 +23,7 @@ const UserPage = () => {
   const [points, setPoints] = useState(0);
   const [Achivementlist, setAchivementlist] = useState<Achivements[]>([]);
   const [windowSize, setWindowSize] = useState(window.innerWidth);
-  let dark = localStorage.getItem('darkmode');
+  let dark = localStorage.getItem("darkmode");
   const navigate = useNavigate();
 
   //Getting data form Server
@@ -61,10 +61,16 @@ const UserPage = () => {
         for (let i = 0; i < achivementdata.achievements.length; i++) {
           if (achivementdata.achievements[i] !== undefined) {
             let name: string = achivementdata.achievements[i].name;
-            let description: string = achivementdata.achievements[i].description;
+            let description: string =
+              achivementdata.achievements[i].description;
             let completed: boolean = achivementdata.achievements[i].completed;
             let progress: number = achivementdata.achievements[i].progress;
-            let achievement: Achivements = {name: name, description: description, completed: completed, progress: progress}
+            let achievement: Achivements = {
+              name: name,
+              description: description,
+              completed: completed,
+              progress: progress,
+            };
             Achilist[i] = achievement;
           }
         }
@@ -78,50 +84,66 @@ const UserPage = () => {
   }
 
   useEffect(() => {
-		authenticationHandler();
-    if (dark == "false"){
+    authenticationHandler();
+    if (dark == "false") {
       document.body.className = "body-dark body-zoom";
     } else {
       document.body.className = "body-light body-zoom";
     }
-     window.addEventListener('resize', handleResize)
-	},[]);
-  
+    window.addEventListener("resize", handleResize);
+  });
+
   //Page Visual Part
   return (
     <div key={"userPage"}>
-      <NavMenu username={username} profilePicturePath={picfilepath} width={windowSize}/>
-      <div className="text-center overflow-auto" style={{maxHeight:"55.7vh"}}>
+      <NavMenu
+        username={username}
+        profilePicturePath={picfilepath}
+        width={windowSize}
+      />
+      <div
+        className="text-center overflow-auto"
+        style={{ maxHeight: "55.7vh" }}
+      >
         <div>
           <h1>
-            {points} <span id={dark == "false" ? "pont-dark": "pont-light"}>Zöldpont</span>-od van
+            {points}{" "}
+            <span id={dark == "false" ? "pont-dark" : "pont-light"}>
+              Zöldpont
+            </span>
+            -od van
           </h1>
-          <p>Ez {points*10}g szennyezésnek felel meg</p>
+          <p>Ez {points * 10}g szennyezésnek felel meg</p>
         </div>
         <div>
           <h3>Elért eredmények:</h3>
           <table className="mx-auto">
             <tbody>
-            {Achivementlist.map((Achivement, i) => (
-              i % 4 === 0 ? (
-                <tr key={i}>
-                {[0, 1, 2, 3].map((j) => (
-                  Achivementlist[i+j] ? (
-                    <td key={i+j} className="px-2">
-                      <h6>{Achivementlist[i+j].name}</h6>
-                      <p className="description">{Achivementlist[i+j].description}</p>
-                       <ProgressBar variant="success" now={Achivementlist[i+j].progress} />
-                    </td>
-                  ) : null
-                ))}
-                </tr>
-              )  : null
-            ))}
-            </tbody> 
+              {Achivementlist.map((Achivement, i) =>
+                i % 4 === 0 ? (
+                  <tr key={i}>
+                    {[0, 1, 2, 3].map((j) =>
+                      Achivementlist[i + j] ? (
+                        <td key={i + j} className="px-2">
+                          <h6>{Achivementlist[i + j].name}</h6>
+                          <p className="description">
+                            {Achivementlist[i + j].description}
+                          </p>
+                          <ProgressBar
+                            variant="success"
+                            now={Achivementlist[i + j].progress}
+                          />
+                        </td>
+                      ) : null
+                    )}
+                  </tr>
+                ) : null
+              )}
+            </tbody>
           </table>
         </div>
         <div className="Chart">
-          <GreenChart/>
+          <GreenChart />
         </div>
       </div>
     </div>

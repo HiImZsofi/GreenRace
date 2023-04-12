@@ -19,7 +19,7 @@ const RankPage = () => {
   const [username, setUsername] = useState("");
   const [picFilePath, setPicFilePath] = useState("");
   const [windowSize, setWindowSize] = useState(window.innerWidth);
-  let dark = localStorage.getItem('darkmode');
+  let dark = localStorage.getItem("darkmode");
   const navigate = useNavigate();
 
   //Getting data form Server
@@ -56,13 +56,18 @@ const RankPage = () => {
         for (let i = 0; i < rankdata.userData.length; i++) {
           if (rankdata.userData[i] !== undefined) {
             let username: string = rankdata.userData[i].username;
-            let points:number = rankdata.userData[i].points;
-            let picfilepath:string = rankdata.userData[i].picfilepath;
-            let rang: Ranking = { username: username, points: points , picfilepath: picfilepath};
+            let points: number = rankdata.userData[i].points;
+            let picfilepath: string = rankdata.userData[i].picfilepath;
+            let rang: Ranking = {
+              username: username,
+              points: points,
+              picfilepath: picfilepath,
+            };
             Ranglist[i] = rang;
           }
         }
-      });
+      }
+    );
   };
 
   function handleResize() {
@@ -71,43 +76,63 @@ const RankPage = () => {
 
   useEffect(() => {
     authenticationHandler();
-    if (dark == "false"){
+    if (dark == "false") {
       document.body.className = "body-dark body-zoom";
     } else {
       document.body.className = "body-light body-zoom";
     }
-    window.addEventListener('resize', handleResize)
+    window.addEventListener("resize", handleResize);
   });
 
   //Page Visual Part
-    return (
-      <div key={"rankPage"}>
-        <NavMenu
-          username={username}
-          profilePicturePath={picFilePath}
-          width={windowSize}
-        />
-        <div className="text-center mt-3">
-          <div>
-            <h1>Rang Lista:</h1>
-            <div className="text-center overflow-auto zoom" style={{maxHeight:"55.7vh"}}>
-            <Table striped bordered hover size="sm" variant={dark == "false" ? 'dark':''} className="mx-auto">
+  return (
+    <div key={"rankPage"}>
+      <NavMenu
+        username={username}
+        profilePicturePath={picFilePath}
+        width={windowSize}
+      />
+      <div className="text-center mt-3">
+        <div>
+          <h1>Rang Lista:</h1>
+          <div
+            className="text-center overflow-auto zoom"
+            style={{ maxHeight: "55.7vh" }}
+          >
+            <Table
+              striped
+              bordered
+              hover
+              size="sm"
+              variant={dark == "false" ? "dark" : "secondary"}
+              className="mx-auto"
+            >
               <tbody>
-              {Ranglist.map((Ranking, i) => (
-                <tr key={i}>
-                  <td className="px-2 align-middle"><img id="profpic" alt="Profpic" 
-                  src={Ranking.picfilepath !== null ? Ranking.picfilepath : "npic.png"}
-									width="40vh=" height="40vh="/></td>
-                  <td className="px-2 align-middle">{Ranking.username}</td>
-                  <td className="px-2 align-middle">{Ranking.points}p</td>
-                </tr>
-              ))}
+                {Ranglist.map((Ranking, i) => (
+                  <tr key={i}>
+                    <td className="px-2 align-middle">
+                      <img
+                        id="profpic"
+                        alt="Profpic"
+                        src={
+                          Ranking.picfilepath !== null
+                            ? Ranking.picfilepath
+                            : "npic.png"
+                        }
+                        width="40vh="
+                        height="40vh="
+                      />
+                    </td>
+                    <td className="px-2 align-middle">{Ranking.username}</td>
+                    <td className="px-2 align-middle">{Ranking.points}p</td>
+                  </tr>
+                ))}
               </tbody>
             </Table>
-            </div>
           </div>
         </div>
       </div>
-    );
+    </div>
+  );
 };
 export default RankPage;
