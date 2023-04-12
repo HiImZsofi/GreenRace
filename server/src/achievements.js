@@ -10,6 +10,15 @@ export async function loadRouteData(user_id) {
   routeData = await getRouteData(user_id);
   if (routeData.length == 0) {
     return { completion: "false" };
+  } else {
+    await loadLineStops();
+  }
+}
+
+async function loadLineStops() {
+  lineStops = [];
+  for (let i = 0; i < routeData.length; i++) {
+    lineStops.push(await getLongerRoute(routeData[i].route_id));
   }
 }
 
@@ -217,28 +226,22 @@ export async function fromOneEndToAnother(user_id) {
     progress: 0,
   };
 
-  lineStops = [];
-
-  for (let i = 0; i < routeData.length; i++) {
-    lineStops.push(await getLongerRoute(routeData[i].route_id));
-    for (let j = 0; j < lineStops.length; j++) {
-      if (
-        (lineStops[0].stopname === routeData[i].onstop ||
-          lineStops[0].stopname === routeData[i].offstop) &&
-        (lineStops[lineStops.length - 1].stopname === routeData[i].onstop ||
-          lineStops[lineStops.length - 1].stopname === routeData[i].offstop)
-      ) {
-        await insertNewAchievement("8", routeData[0].user_id).catch((err) => {
-          throw err;
-        });
-        return {
-          name: "Elkötelezett",
-          description:
-            "Menj végig bármelyik vonalon végállomástól végállomásig",
-          completed: true,
-          progress: 100,
-        };
-      }
+  for (let i = 0; i < lineStops.length; i++) {
+    if (
+      (lineStops[i][0].stopname === routeData[i].onstop ||
+        lineStops[i][0].stopname === routeData[i].offstop) &&
+      (lineStops[i][lineStops[i].length - 1].stopname === routeData[i].onstop ||
+        lineStops[i][lineStops[i].length - 1].stopname === routeData[i].offstop)
+    ) {
+      await insertNewAchievement("8", routeData[0].user_id).catch((err) => {
+        throw err;
+      });
+      return {
+        name: "Elkötelezett",
+        description: "Menj végig bármelyik vonalon végállomástól végállomásig",
+        completed: true,
+        progress: 100,
+      };
     }
   }
 
@@ -281,8 +284,10 @@ export async function kingOfTheBudaRiverBank(user_id) {
       if (
         (lineStops[i][0].stopname === routeData[i].onstop ||
           lineStops[i][0].stopname === routeData[i].offstop) &&
-        (lineStops[i][lineStops.length - 1].stopname === routeData[i].onstop ||
-          lineStops[i][lineStops.length - 1].stopname === routeData[i].offstop)
+        (lineStops[i][lineStops[i].length - 1].stopname ===
+          routeData[i].onstop ||
+          lineStops[i][lineStops[i].length - 1].stopname ===
+            routeData[i].offstop)
       ) {
         return {
           name: "A budai part királya",
@@ -314,8 +319,10 @@ export async function kingOfThePestRiverBank(user_id) {
       if (
         (lineStops[i][0].stopname === routeData[i].onstop ||
           lineStops[i][0].stopname === routeData[i].offstop) &&
-        (lineStops[i][lineStops.length - 1].stopname === routeData[i].onstop ||
-          lineStops[i][lineStops.length - 1].stopname === routeData[i].offstop)
+        (lineStops[i][lineStops[i].length - 1].stopname ===
+          routeData[i].onstop ||
+          lineStops[i][lineStops[i].length - 1].stopname ===
+            routeData[i].offstop)
       ) {
         return {
           name: "A pesti part királya",
